@@ -5,6 +5,7 @@ import 'package:rxdart/subjects.dart';
 import '../interceptors/error_interceptor.dart';
 import '../interceptors/rate_limit_interceptor.dart';
 import '../models/shared/rate_limit_status.dart';
+import '../services/fuel_service.dart';
 
 /// The core client for interacting with the data.gov.gr API.
 ///
@@ -16,6 +17,9 @@ class DataGovClient {
   final Dio _dio;
   final BehaviorSubject<RateLimitStatus> _rateLimitController =
       BehaviorSubject<RateLimitStatus>.seeded(RateLimitStatus.initial());
+
+  /// Fuel-related service.
+  late final FuelService fuel;
 
   /// Creates a new instance of [DataGovClient].
   ///
@@ -33,6 +37,9 @@ class DataGovClient {
             'User-Agent': _userAgent,
           },
         )) {
+    // Initialize services
+    fuel = FuelService(this);
+
     // Add built-in interceptors
     _dio.interceptors.addAll([
       ErrorInterceptor(),
