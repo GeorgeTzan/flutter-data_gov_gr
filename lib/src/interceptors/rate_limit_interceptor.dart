@@ -2,9 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:rxdart/subjects.dart';
 import '../models/shared/rate_limit_status.dart';
 
-/// An interceptor that extracts rate limit information from the API response headers.
-///
-/// It updates a [BehaviorSubject] with the latest [RateLimitStatus].
 class RateLimitInterceptor extends Interceptor {
   final BehaviorSubject<RateLimitStatus> _statusController;
 

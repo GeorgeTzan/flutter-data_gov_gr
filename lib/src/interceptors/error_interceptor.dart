@@ -1,10 +1,6 @@
 import 'package:dio/dio.dart';
 import '../exceptions/data_gov_exception.dart';
 
-/// An interceptor that maps [DioException]s to [DataGovException]s.
-///
-/// This ensures that the SDK users deal with a consistent exception hierarchy
-/// instead of raw network errors.
 class ErrorInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
@@ -19,7 +15,6 @@ class ErrorInterceptor extends Interceptor {
   }
 
   DataGovException _mapToDataGovException(DioException err) {
-    // Handle HTTP status code mapping
     if (err.response != null) {
       final statusCode = err.response!.statusCode;
 
@@ -39,7 +34,6 @@ class ErrorInterceptor extends Interceptor {
       }
     }
 
-    // Handle Dio-specific error types
     switch (err.type) {
       case DioExceptionType.connectionTimeout:
       case DioExceptionType.sendTimeout:

@@ -20,43 +20,22 @@ FuelStation _$FuelStationFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$FuelStation {
-  /// Unique identifier for the gas station.
   @JsonKey(name: 'station_id')
   String get stationId => throw _privateConstructorUsedError;
-
-  /// Brand name of the station (e.g., Shell, BP).
   String get brand => throw _privateConstructorUsedError;
-
-  /// Physical address of the station.
   String get address => throw _privateConstructorUsedError;
-
-  /// The municipality where the station is located.
   String get municipality => throw _privateConstructorUsedError;
-
-  /// The prefecture where the station is located.
   @PrefectureConverter()
   Prefecture get prefecture => throw _privateConstructorUsedError;
-
-  /// GPS Latitude.
   double get latitude => throw _privateConstructorUsedError;
-
-  /// GPS Longitude.
   double get longitude => throw _privateConstructorUsedError;
-
-  /// The type of fuel.
   @FuelTypeConverter()
   @JsonKey(name: 'fuel_type')
   FuelType get fuelType => throw _privateConstructorUsedError;
-
-  /// The original fuel type label from the API.
   @JsonKey(name: 'raw_fuel_type')
   String get rawFuelType => throw _privateConstructorUsedError;
-
-  /// Price per liter.
   @JsonKey(name: 'fuel_price')
   double get price => throw _privateConstructorUsedError;
-
-  /// Date of the price update.
   DateTime get date => throw _privateConstructorUsedError;
 
   /// Serializes this FuelStation to a JSON map.
@@ -280,53 +259,32 @@ class _$FuelStationImpl implements _FuelStation {
   factory _$FuelStationImpl.fromJson(Map<String, dynamic> json) =>
       _$$FuelStationImplFromJson(json);
 
-  /// Unique identifier for the gas station.
   @override
   @JsonKey(name: 'station_id')
   final String stationId;
-
-  /// Brand name of the station (e.g., Shell, BP).
   @override
   final String brand;
-
-  /// Physical address of the station.
   @override
   final String address;
-
-  /// The municipality where the station is located.
   @override
   final String municipality;
-
-  /// The prefecture where the station is located.
   @override
   @PrefectureConverter()
   final Prefecture prefecture;
-
-  /// GPS Latitude.
   @override
   final double latitude;
-
-  /// GPS Longitude.
   @override
   final double longitude;
-
-  /// The type of fuel.
   @override
   @FuelTypeConverter()
   @JsonKey(name: 'fuel_type')
   final FuelType fuelType;
-
-  /// The original fuel type label from the API.
   @override
   @JsonKey(name: 'raw_fuel_type')
   final String rawFuelType;
-
-  /// Price per liter.
   @override
   @JsonKey(name: 'fuel_price')
   final double price;
-
-  /// Date of the price update.
   @override
   final DateTime date;
 
@@ -411,53 +369,32 @@ abstract class _FuelStation implements FuelStation {
   factory _FuelStation.fromJson(Map<String, dynamic> json) =
       _$FuelStationImpl.fromJson;
 
-  /// Unique identifier for the gas station.
   @override
   @JsonKey(name: 'station_id')
   String get stationId;
-
-  /// Brand name of the station (e.g., Shell, BP).
   @override
   String get brand;
-
-  /// Physical address of the station.
   @override
   String get address;
-
-  /// The municipality where the station is located.
   @override
   String get municipality;
-
-  /// The prefecture where the station is located.
   @override
   @PrefectureConverter()
   Prefecture get prefecture;
-
-  /// GPS Latitude.
   @override
   double get latitude;
-
-  /// GPS Longitude.
   @override
   double get longitude;
-
-  /// The type of fuel.
   @override
   @FuelTypeConverter()
   @JsonKey(name: 'fuel_type')
   FuelType get fuelType;
-
-  /// The original fuel type label from the API.
   @override
   @JsonKey(name: 'raw_fuel_type')
   String get rawFuelType;
-
-  /// Price per liter.
   @override
   @JsonKey(name: 'fuel_price')
   double get price;
-
-  /// Date of the price update.
   @override
   DateTime get date;
 

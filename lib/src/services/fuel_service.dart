@@ -5,26 +5,19 @@ import '../models/fuel/fuel_type.dart';
 import '../models/shared/prefecture.dart';
 import 'fuel_query_builder.dart';
 
-/// Service for fetching fuel-related data from data.gov.gr.
 class FuelService {
   final DataGovClient _client;
 
   FuelService(this._client);
 
-  /// Starts a fluent query for fuel data.
   FuelQueryBuilder query() => FuelQueryBuilder(this);
 
-  /// Fetches gas prices per station.
-  ///
-  /// [date] filters for a specific day.
-  /// [prefecture] filters by region.
-  /// [fuelType] filters by fuel category.
   Future<List<FuelStation>> getGasPricesPerStation({
     DateTime? date,
     Prefecture? prefecture,
     FuelType? fuelType,
   }) async {
-    final Map<String, dynamic> queryParameters = {};
+    final queryParameters = <String, dynamic>{};
 
     if (date != null) {
       queryParameters['date'] = date.toIso8601String().split('T').first;
@@ -43,7 +36,7 @@ class FuelService {
       queryParameters: queryParameters,
     );
 
-    final List<dynamic> data = response.data;
+    final data = response.data as List;
     return data.map((json) => FuelStation.fromJson(json)).toList();
   }
 }

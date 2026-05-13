@@ -7,9 +7,6 @@ import '../interceptors/rate_limit_interceptor.dart';
 import '../models/shared/rate_limit_status.dart';
 import '../services/fuel_service.dart';
 
-/// The core client for interacting with the data.gov.gr API.
-///
-/// This client handles authentication, rate-limiting, and error mapping.
 class DataGovClient {
   static const String _baseUrl = 'https://data.gov.gr/api/v1/query/';
   static const String _userAgent = 'data_gov_gr_sdk_dart/1.0.0';
@@ -18,14 +15,8 @@ class DataGovClient {
   final BehaviorSubject<RateLimitStatus> _rateLimitController =
       BehaviorSubject<RateLimitStatus>.seeded(RateLimitStatus.initial());
 
-  /// Fuel-related service.
   late final FuelService fuel;
 
-  /// Creates a new instance of [DataGovClient].
-  ///
-  /// [apiKey] is the API token provided by data.gov.gr.
-  /// [enableLogging] toggles the [LogInterceptor] for debugging.
-  /// [interceptors] allows adding custom Dio interceptors.
   DataGovClient({
     required String apiKey,
     bool enableLogging = false,
@@ -37,10 +28,8 @@ class DataGovClient {
             'User-Agent': _userAgent,
           },
         )) {
-    // Initialize services
     fuel = FuelService(this);
 
-    // Add built-in interceptors
     _dio.interceptors.addAll([
       ErrorInterceptor(),
       RateLimitInterceptor(_rateLimitController),
@@ -56,7 +45,6 @@ class DataGovClient {
       ),
     ]);
 
-    // Optional logging
     if (enableLogging) {
       _dio.interceptors.add(LogInterceptor(
         requestBody: true,
@@ -64,19 +52,15 @@ class DataGovClient {
       ));
     }
 
-    // Custom interceptors
     if (interceptors != null) {
       _dio.interceptors.addAll(interceptors);
     }
   }
 
-  /// The [Dio] instance used for network requests.
   Dio get dio => _dio;
 
-  /// A stream of the current rate limit status.
   Stream<RateLimitStatus> get rateLimitStatus => _rateLimitController.stream;
 
-  /// Closes the client and its reactive streams.
   void dispose() {
     _rateLimitController.close();
     _dio.close();

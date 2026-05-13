@@ -1,6 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
 
-/// Represents a Greek Prefecture (Nomos).
 enum Prefecture {
   attica('ΑΤΤΙΚΗΣ'),
   thessaloniki('ΘΕΣΣΑΛΟΝΙΚΗΣ'),
@@ -54,18 +53,13 @@ enum Prefecture {
   chania('ΧΑΝΙΩΝ'),
   chios('ΧΙΟΥ');
 
-  /// The raw Greek name as expected/returned by the API.
   final String rawGreekName;
-
   const Prefecture(this.rawGreekName);
 }
 
-/// Helper extension for [Prefecture] to provide localized names.
 extension PrefectureX on Prefecture {
-  /// Returns the name in Greek.
   String get greekName => rawGreekName;
 
-  /// Returns a pretty English name for the prefecture.
   String get englishName {
     switch (this) {
       case Prefecture.attica: return 'Attica';
@@ -77,7 +71,6 @@ extension PrefectureX on Prefecture {
   }
 }
 
-/// Converter to map between API strings and [Prefecture] enum.
 class PrefectureConverter implements JsonConverter<Prefecture, String> {
   const PrefectureConverter();
 
