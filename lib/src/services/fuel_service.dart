@@ -3,12 +3,16 @@ import '../client/data_gov_client.dart';
 import '../models/fuel/fuel_station.dart';
 import '../models/fuel/fuel_type.dart';
 import '../models/shared/prefecture.dart';
+import 'fuel_query_builder.dart';
 
 /// Service for fetching fuel-related data from data.gov.gr.
 class FuelService {
   final DataGovClient _client;
 
   FuelService(this._client);
+
+  /// Starts a fluent query for fuel data.
+  FuelQueryBuilder query() => FuelQueryBuilder(this);
 
   /// Fetches gas prices per station.
   ///
