@@ -17,7 +17,7 @@ class HealthService {
     if (area != null) params['area'] = area;
 
     final response = await _client.dio.get(
-      'mdg_emvolio',
+      'query/mdg_emvolio',
       queryParameters: params,
     );
 

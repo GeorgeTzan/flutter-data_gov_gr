@@ -13,7 +13,7 @@ import '../services/health_service.dart';
 import '../services/telecom_service.dart';
 
 class DataGovClient {
-  static const String _baseUrl = 'https://data.gov.gr/api/v1/query/';
+  static const String _baseUrl = 'https://data.gov.gr/api/v1/';
   static const String _userAgent = 'data_gov_gr_sdk_dart/1.0.0';
 
   final Dio _dio;

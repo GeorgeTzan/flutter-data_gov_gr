@@ -85,7 +85,7 @@ void main() {
       expect(results.first.brand, 'Shell');
 
       verify(() => mockDio.get(
-            'gas_price_per_station',
+            'query/gas_price_per_station',
             queryParameters: {
               'date': '2024-01-01',
               'prefecture': 'ΑΤΤΙΚΗΣ',

@@ -15,7 +15,7 @@ class TelecomService {
     if (to != null) params['date_to'] = to.toIso8601String().split('T').first;
 
     final response = await _client.dio.get(
-      'internet_traffic',
+      'query/internet_traffic',
       queryParameters: params,
     );
 

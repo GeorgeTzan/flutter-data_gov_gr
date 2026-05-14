@@ -15,7 +15,7 @@ class EnvironmentService {
     if (to != null) params['date_to'] = to.toIso8601String().split('T').first;
 
     final response = await _client.dio.get(
-      'mcp_forest_fires',
+      'query/mcp_forest_fires',
       queryParameters: params,
     );
 

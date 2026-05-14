@@ -10,7 +10,7 @@ class GenericService {
     Map<String, dynamic>? parameters,
   }) async {
     final response = await _client.dio.get(
-      datasetId,
+      'query/$datasetId',
       queryParameters: parameters,
     );
     final data = response.data as List;

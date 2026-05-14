@@ -42,7 +42,7 @@ void main() {
           .fetch();
 
       verify(() => mockDio.get(
-            'gas_price_per_station',
+            'query/gas_price_per_station',
             queryParameters: {
               'date': '2024-05-13',
               'prefecture': 'ΑΤΤΙΚΗΣ',

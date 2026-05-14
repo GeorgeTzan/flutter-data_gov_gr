@@ -32,7 +32,7 @@ class FuelService {
     }
 
     final response = await _client.dio.get(
-      'gas_price_per_station',
+      'query/gas_price_per_station',
       queryParameters: queryParameters,
     );
 

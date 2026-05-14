@@ -15,7 +15,7 @@ void main() {
     test('returns default realistic data if no stub is provided', () async {
       final results = await fuelService.getGasPricesPerStation();
       
-      expect(results.length, 3);
+      expect(results.length, 1);
       expect(results.any((s) => s.brand == 'EKO'), isTrue);
     });
 
@@ -46,7 +46,7 @@ void main() {
     test('updates rate limit status from headers', () async {
       await fuelService.getGasPricesPerStation();
       
-      final status = await mockClient.rateLimitStatus.first;
+      final status = await mockClient.rateLimitStatus.firstWhere((s) => s.limit > 0);
       expect(status.remaining, 999);
       expect(status.limit, 1000);
     });

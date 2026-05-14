@@ -18,22 +18,28 @@ class DataGovMockClient extends DataGovClient {
     stubVaccinations(MockData.vaccinations);
     stubInternetTraffic(MockData.internetTraffic);
     stubForestFires(MockData.forestFires);
+    
+    // Stub discovery endpoints
+    _stubs['datasets'] = [
+      {'identifier': 'gas_price_per_station', 'title': 'Gas Prices'},
+      {'identifier': 'mdg_emvolio', 'title': 'Vaccinations'},
+    ];
   }
 
   void stubFuelPrices(List<Map<String, dynamic>> data) {
-    _stubs['gas_price_per_station'] = data;
+    _stubs['query/gas_price_per_station'] = data;
   }
 
   void stubVaccinations(List<Map<String, dynamic>> data) {
-    _stubs['mdg_emvolio'] = data;
+    _stubs['query/mdg_emvolio'] = data;
   }
 
   void stubInternetTraffic(List<Map<String, dynamic>> data) {
-    _stubs['internet_traffic'] = data;
+    _stubs['query/internet_traffic'] = data;
   }
 
   void stubForestFires(List<Map<String, dynamic>> data) {
-    _stubs['mcp_forest_fires'] = data;
+    _stubs['query/mcp_forest_fires'] = data;
   }
 
   void registerStub(String endpoint, List<Map<String, dynamic>> data) {
@@ -69,7 +75,7 @@ class _MockAdapter implements HttpClientAdapter {
     }
 
     return ResponseBody.fromString(
-      '{"error": "Not Found"}',
+      '{"error": "Not Found", "path": "$path"}',
       404,
       headers: {
         Headers.contentTypeHeader: [Headers.jsonContentType],
