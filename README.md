@@ -7,12 +7,13 @@ An unofficial, type-safe, and modular Dart SDK for the Greek Government Open Dat
 
 ## Features
 
+- **Full Coverage**: Access to **all 200+ datasets** via type-safe modules or the universal generic service.
 - **Unified Authentication**: Simple API Token management.
-- **Type-Safe Models**: Built with [Freezed](https://pub.dev/packages/freezed) and [JsonSerializable](https://pub.dev/packages/json_serializable).
-- **Fluent Query DSL**: Chainable filtering for better readability.
+- **Type-Safe Models**: Built with [Freezed](https://pub.dev/packages/freezed).
+- **Fluent Query DSL**: Chainable filtering for popular datasets.
 - **Reactive Rate Limiting**: Real-time status stream of your API usage.
 - **Built-in Mocking**: Test your apps offline with `DataGovMockClient`.
-- **Localization**: Native support for Greek and English names for categories (Prefectures, Fuel Types).
+- **Discovery**: Programmatically list and search datasets, topics, and providers.
 - **Robust Networking**: Automatic retries, logging, and error mapping.
 
 ## Getting Started
@@ -34,39 +35,42 @@ import 'package:data_gov_gr/data_gov_gr.dart';
 final client = DataGovClient(apiKey: 'YOUR_API_TOKEN');
 ```
 
-### 3. Fetch Data
+### 3. Usage Examples
 
-#### Using Query DSL (Recommended)
+#### Fetch Type-Safe Vaccination Data
 ```dart
-final stations = await client.fuel
-    .query()
+final stats = await client.health.getVaccinationStatistics(
+  from: DateTime(2023, 1, 1),
+  area: 'ΑΘΗΝΩΝ',
+);
+```
+
+#### Use the Query DSL for Fuel Prices
+```dart
+final stations = await client.fuel.query()
     .wherePrefecture(Prefecture.attica)
-    .whereFuelType(FuelType.unleaded95)
     .fetch();
 ```
 
-#### Monitoring Rate Limits
+#### Generic Access to Any Dataset
 ```dart
-client.rateLimitStatus.listen((status) {
-  print('Remaining requests: ${status.remaining}/${status.limit}');
-});
+final results = await client.generic.query('mcp_forest_fires');
 ```
 
-## Testing
-
-Use the built-in mock client for your unit and UI tests:
-
+#### Discover New Datasets
 ```dart
-final mockClient = DataGovMockClient();
-// Returns realistic mock data instantly without hitting the API
-final stations = await mockClient.fuel.query().fetch();
+final datasets = await client.discovery.listDatasets();
 ```
 
-## Supported Datasets
+## Supported Type-Safe Modules
 
-- [x] **Liquid Fuel Prices**: `gas_price_per_station`
-- [ ] More coming soon...
+- [x] **Fuel**: `gas_price_per_station`
+- [x] **Health**: `mdg_emvolio` (Vaccinations)
+- [x] **Telecom**: `internet_traffic` (GR-IX)
+- [x] **Environment**: `mcp_forest_fires`
+- [x] **Discovery**: Metadata, Topics, Providers
+- [x] **Generic**: Universal access to all endpoints
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+MIT License - see LICENSE for details.

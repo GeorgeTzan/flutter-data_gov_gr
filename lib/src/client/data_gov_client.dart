@@ -5,7 +5,12 @@ import 'package:rxdart/subjects.dart';
 import '../interceptors/error_interceptor.dart';
 import '../interceptors/rate_limit_interceptor.dart';
 import '../models/shared/rate_limit_status.dart';
+import '../services/discovery_service.dart';
+import '../services/environment_service.dart';
 import '../services/fuel_service.dart';
+import '../services/generic_service.dart';
+import '../services/health_service.dart';
+import '../services/telecom_service.dart';
 
 class DataGovClient {
   static const String _baseUrl = 'https://data.gov.gr/api/v1/query/';
@@ -16,6 +21,11 @@ class DataGovClient {
       BehaviorSubject<RateLimitStatus>.seeded(RateLimitStatus.initial());
 
   late final FuelService fuel;
+  late final HealthService health;
+  late final TelecomService telecom;
+  late final EnvironmentService environment;
+  late final DiscoveryService discovery;
+  late final GenericService generic;
 
   DataGovClient({
     required String apiKey,
@@ -29,6 +39,11 @@ class DataGovClient {
           },
         )) {
     fuel = FuelService(this);
+    health = HealthService(this);
+    telecom = TelecomService(this);
+    environment = EnvironmentService(this);
+    discovery = DiscoveryService(this);
+    generic = GenericService(this);
 
     _dio.interceptors.addAll([
       ErrorInterceptor(),

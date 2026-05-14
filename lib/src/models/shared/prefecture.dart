@@ -86,7 +86,6 @@ class PrefectureConverter implements JsonConverter<Prefecture, String> {
   @override
   String toJson(Prefecture object) => object.rawGreekName;
 
-  /// Removes accents and converts to uppercase for robust comparison.
   String _normalize(String input) {
     return input
         .toUpperCase()

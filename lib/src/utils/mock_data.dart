@@ -1,6 +1,4 @@
-/// Static realistic mock data for testing the data.gov.gr SDK.
 class MockData {
-  /// Realistic JSON response for gas stations.
   static const List<Map<String, dynamic>> fuelStations = [
     {
       'station_id': '1001',
@@ -14,29 +12,51 @@ class MockData {
       'fuel_price': 1.899,
       'date': '2024-05-13T09:00:00Z',
     },
+  ];
+
+  static const List<Map<String, dynamic>> vaccinations = [
     {
-      'station_id': '1002',
-      'brand': 'SHELL',
-      'address': 'ΛΕΩΦ. ΠΟΣΕΙΔΩΝΟΣ 50',
-      'municipality': 'ΓΛΥΦΑΔΑ',
-      'prefecture': 'ΑΤΤΙΚΗΣ',
-      'latitude': 37.8667,
-      'longitude': 23.7500,
-      'fuel_type': 'Αμόλυβδη 100',
-      'fuel_price': 2.059,
-      'date': '2024-05-13T10:30:00Z',
+      'area': 'ΑΘΗΝΩΝ',
+      'areaid': 1,
+      'dailydose1': 1200,
+      'dailydose2': 800,
+      'daydiff': 50,
+      'daytotal': 2000,
+      'referencedate': '2024-05-13T00:00:00Z',
+      'totaldose1': 500000,
+      'totaldose2': 450000,
+      'totalvaccinations': 950000,
     },
     {
-      'station_id': '2001',
-      'brand': 'BP',
-      'address': 'ΕΓΝΑΤΙΑ 1',
-      'municipality': 'ΘΕΣΣΑΛΟΝΙΚΗ',
-      'prefecture': 'ΘΕΣΣΑΛΟΝΙΚΗΣ',
-      'latitude': 40.6333,
-      'longitude': 22.9500,
-      'fuel_type': 'Πετρέλαιο Κίνησης',
-      'fuel_price': 1.659,
-      'date': '2024-05-13T08:15:00Z',
+      'area': 'ΘΕΣΣΑΛΟΝΙΚΗΣ',
+      'areaid': 2,
+      'dailydose1': 600,
+      'dailydose2': 400,
+      'daydiff': 20,
+      'daytotal': 1000,
+      'referencedate': '2024-05-13T00:00:00Z',
+      'totaldose1': 200000,
+      'totaldose2': 180000,
+      'totalvaccinations': 380000,
+    },
+  ];
+
+  static const List<Map<String, dynamic>> internetTraffic = [
+    {
+      'date': '2024-05-13T00:00:00Z',
+      'inbound': 450.5,
+      'outbound': 420.2,
+      'total_traffic': 870.7,
+    },
+  ];
+
+  static const List<Map<String, dynamic>> forestFires = [
+    {
+      'date': '2024-05-13T00:00:00Z',
+      'area': 12.5,
+      'location': 'ΕΥΒΟΙΑ',
+      'fire_type': 'Δασική',
+      'cause': 'Άγνωστη',
     },
   ];
 }

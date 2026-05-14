@@ -9,11 +9,31 @@ class DataGovMockClient extends DataGovClient {
 
   DataGovMockClient() : super(apiKey: 'mock-key') {
     dio.httpClientAdapter = _MockAdapter(_stubs);
+    
+    _seedDefaultStubs();
+  }
+
+  void _seedDefaultStubs() {
     stubFuelPrices(MockData.fuelStations);
+    stubVaccinations(MockData.vaccinations);
+    stubInternetTraffic(MockData.internetTraffic);
+    stubForestFires(MockData.forestFires);
   }
 
   void stubFuelPrices(List<Map<String, dynamic>> data) {
     _stubs['gas_price_per_station'] = data;
+  }
+
+  void stubVaccinations(List<Map<String, dynamic>> data) {
+    _stubs['mdg_emvolio'] = data;
+  }
+
+  void stubInternetTraffic(List<Map<String, dynamic>> data) {
+    _stubs['internet_traffic'] = data;
+  }
+
+  void stubForestFires(List<Map<String, dynamic>> data) {
+    _stubs['mcp_forest_fires'] = data;
   }
 
   void registerStub(String endpoint, List<Map<String, dynamic>> data) {
@@ -36,9 +56,8 @@ class _MockAdapter implements HttpClientAdapter {
     
     if (stubs.containsKey(path)) {
       final data = stubs[path]!;
-      final jsonString = jsonEncode(data);
       return ResponseBody.fromString(
-        jsonString,
+        jsonEncode(data),
         200,
         headers: {
           Headers.contentTypeHeader: [Headers.jsonContentType],
