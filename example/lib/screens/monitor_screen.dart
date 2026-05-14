@@ -6,8 +6,51 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../state.dart';
 import '../theme.dart';
 
-class MonitorScreen extends StatelessWidget {
+class MonitorScreen extends StatefulWidget {
   const MonitorScreen({super.key});
+
+  @override
+  State<MonitorScreen> createState() => _MonitorScreenState();
+}
+
+class _MonitorScreenState extends State<MonitorScreen> {
+  Prefecture _selectedPrefecture = Prefecture.attica;
+
+  void _showPrefecturePicker(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: CommandCenterTheme.cardBg,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text('SELECT PREFECTURE', style: Theme.of(context).textTheme.labelSmall),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: Prefecture.values.length,
+                itemBuilder: (context, index) {
+                  final p = Prefecture.values[index];
+                  return ListTile(
+                    title: Text(p.englishName, style: const TextStyle(fontSize: 14)),
+                    trailing: p == _selectedPrefecture ? const Icon(Icons.check, color: CommandCenterTheme.secondaryCyan) : null,
+                    onTap: () {
+                      setState(() => _selectedPrefecture = p);
+                      Navigator.pop(context);
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +68,34 @@ class MonitorScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SectionHeader(title: 'LIQUID FUEL PRICES'),
-            const SizedBox(height: 16),
-            const FuelMonitorModule(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const SectionHeader(title: 'LIQUID FUEL PRICES'),
+                TextButton.icon(
+                  onPressed: () => _showPrefecturePicker(context),
+                  icon: const Icon(Icons.filter_list, size: 16),
+                  label: Text(_selectedPrefecture.englishName, style: const TextStyle(fontSize: 12)),
+                  style: TextButton.styleFrom(foregroundColor: CommandCenterTheme.secondaryCyan),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            FuelMonitorModule(prefecture: _selectedPrefecture),
             const SizedBox(height: 32),
-            const SectionHeader(title: 'HEALTH STATISTICS'),
+            const SectionHeader(title: 'NETWORK & INFRASTRUCTURE'),
             const SizedBox(height: 16),
-            const HealthMonitorModule(),
+            const TelecomMonitorModule(),
+            const SizedBox(height: 32),
+            const SectionHeader(title: 'PUBLIC HEALTH & SAFETY'),
+            const SizedBox(height: 16),
+            const Row(
+              children: [
+                Expanded(child: HealthMonitorModule()),
+                SizedBox(width: 12),
+                Expanded(child: EnvironmentMonitorModule()),
+              ],
+            ),
           ],
         ),
       ),
@@ -92,17 +156,19 @@ class SectionHeader extends StatelessWidget {
 }
 
 class FuelMonitorModule extends StatelessWidget {
-  const FuelMonitorModule({super.key});
+  final Prefecture prefecture;
+  const FuelMonitorModule({super.key, required this.prefecture});
 
   @override
   Widget build(BuildContext context) {
     final client = context.watch<SDKState>().client;
 
     return FutureBuilder<List<FuelStation>>(
-      future: client.fuel.query().wherePrefecture(Prefecture.attica).fetch(),
+      key: ValueKey(prefecture),
+      future: client.fuel.query().wherePrefecture(prefecture).fetch(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return const SizedBox(height: 200, child: Center(child: CircularProgressIndicator()));
         }
         
         if (snapshot.hasError) {
@@ -130,6 +196,106 @@ class FuelMonitorModule extends StatelessWidget {
                 ),
               );
             },
+          ),
+        );
+      },
+    );
+  }
+}
+
+class TelecomMonitorModule extends StatelessWidget {
+  const TelecomMonitorModule({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final client = context.watch<SDKState>().client;
+
+    return FutureBuilder<List<InternetTraffic>>(
+      future: client.telecom.getInternetTraffic(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: LinearProgressIndicator());
+        }
+
+        final data = snapshot.data ?? [];
+        if (data.isEmpty) return const SizedBox();
+        final latest = data.last;
+
+        return Card(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('GR-IX Internet Traffic', style: TextStyle(fontWeight: FontWeight.bold)),
+                    FaIcon(FontAwesomeIcons.networkWired, size: 14, color: Colors.blue[300]),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    _TrafficMetric(label: 'INBOUND', value: '${latest.inbound.toStringAsFixed(1)} Gbps'),
+                    const SizedBox(width: 24),
+                    _TrafficMetric(label: 'OUTBOUND', value: '${latest.outbound.toStringAsFixed(1)} Gbps'),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _TrafficMetric extends StatelessWidget {
+  final String label;
+  final String value;
+  const _TrafficMetric({required this.label, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: Theme.of(context).textTheme.labelSmall),
+        Text(value, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: CommandCenterTheme.secondaryCyan)),
+      ],
+    );
+  }
+}
+
+class EnvironmentMonitorModule extends StatelessWidget {
+  const EnvironmentMonitorModule({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final client = context.watch<SDKState>().client;
+
+    return FutureBuilder<List<ForestFire>>(
+      future: client.environment.getForestFires(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const SizedBox();
+        }
+
+        final data = snapshot.data ?? [];
+        final count = data.length;
+
+        return Card(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const FaIcon(FontAwesomeIcons.fire, size: 14, color: Colors.orangeAccent),
+                const SizedBox(height: 12),
+                const Text('Forest Fires', style: TextStyle(fontSize: 12, color: Colors.white54)),
+                Text(count.toString(), style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+              ],
+            ),
           ),
         );
       },
@@ -193,31 +359,24 @@ class HealthMonitorModule extends StatelessWidget {
       future: client.health.getVaccinationStatistics(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return const SizedBox();
         }
 
         final data = snapshot.data ?? [];
-        if (data.isEmpty) return const SizedBox();
-
-        final total = data.fold<int>(0, (sum, item) => sum + item.dayTotal);
+        final total = data.isEmpty ? 0 : data.fold<int>(0, (sum, item) => sum + item.dayTotal);
 
         return Card(
-          color: CommandCenterTheme.secondaryCyan.withAlpha(13),
           child: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(16),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Daily Doses (Total)', style: TextStyle(color: Colors.white54)),
-                    FaIcon(FontAwesomeIcons.syringe, size: 16, color: CommandCenterTheme.secondaryCyan),
-                  ],
-                ),
-                const SizedBox(height: 8),
+                const FaIcon(FontAwesomeIcons.syringe, size: 14, color: CommandCenterTheme.secondaryCyan),
+                const SizedBox(height: 12),
+                const Text('Vaccinations', style: TextStyle(fontSize: 12, color: Colors.white54)),
                 Text(
-                  total.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (m) => '${m[1]},'),
-                  style: Theme.of(context).textTheme.displayLarge?.copyWith(fontSize: 48),
+                  total > 1000 ? '${(total / 1000).toStringAsFixed(1)}k' : total.toString(),
+                  style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
               ],
             ),

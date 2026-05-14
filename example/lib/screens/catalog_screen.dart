@@ -10,82 +10,131 @@ class CatalogScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('CATALOG', style: Theme.of(context).textTheme.headlineMedium),
+          backgroundColor: Colors.transparent,
+          bottom: const TabBar(
+            tabs: [
+              Tab(text: 'Datasets'),
+              Tab(text: 'Topics'),
+              Tab(text: 'Providers'),
+            ],
+            indicatorColor: CommandCenterTheme.secondaryCyan,
+            labelStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+          ),
+        ),
+        body: const TabBarView(
+          children: [
+            DatasetListTab(),
+            StringListTab(mode: DiscoveryType.topics),
+            StringListTab(mode: DiscoveryType.providers),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+enum DiscoveryType { topics, providers }
+
+class DatasetListTab extends StatelessWidget {
+  const DatasetListTab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     final client = context.watch<SDKState>().client;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('CATALOG', style: Theme.of(context).textTheme.headlineMedium),
-        backgroundColor: Colors.transparent,
-      ),
-      body: FutureBuilder<List<DatasetMetadata>>(
-        future: client.discovery.listDatasets(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
+    return FutureBuilder<List<DatasetMetadata>>(
+      future: client.discovery.listDatasets(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-          if (snapshot.hasError) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const FaIcon(FontAwesomeIcons.circleExclamation, size: 48, color: Colors.redAccent),
-                  const SizedBox(height: 16),
-                  Text('Discovery Error', style: Theme.of(context).textTheme.titleLarge),
-                  const SizedBox(height: 8),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32),
-                    child: Text(
-                      snapshot.error.toString(),
-                      textAlign: MainAxisAlignment.center,
-                      style: const TextStyle(color: Colors.white54, fontSize: 12),
-                    ),
-                  ),
-                ],
+        final datasets = snapshot.data ?? [];
+        if (datasets.isEmpty) return const _EmptyState();
+
+        return ListView.builder(
+          padding: const EdgeInsets.all(16),
+          itemCount: datasets.length,
+          itemBuilder: (context, index) {
+            final ds = datasets[index];
+            return Card(
+              margin: const EdgeInsets.only(bottom: 12),
+              child: ListTile(
+                leading: const FaIcon(FontAwesomeIcons.database, size: 16, color: CommandCenterTheme.secondaryCyan),
+                title: Text(ds.title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                subtitle: Text('${ds.publisher} • ${ds.identifier}', style: Theme.of(context).textTheme.labelSmall),
+                trailing: const Icon(Icons.chevron_right, size: 16, color: Colors.white24),
+                onTap: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Endpoint: query/${ds.identifier}')),
+                  );
+                },
               ),
             );
-          }
+          },
+        );
+      },
+    );
+  }
+}
 
-          final datasets = snapshot.data ?? [];
+class StringListTab extends StatelessWidget {
+  final DiscoveryType mode;
+  const StringListTab({super.key, required this.mode});
 
-          if (datasets.isEmpty) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const FaIcon(FontAwesomeIcons.boxOpen, size: 48, color: Colors.white24),
-                  const SizedBox(height: 16),
-                  Text('No datasets found', style: Theme.of(context).textTheme.titleLarge),
-                ],
+  @override
+  Widget build(BuildContext context) {
+    final client = context.watch<SDKState>().client;
+    final future = mode == DiscoveryType.topics ? client.discovery.listTopics() : client.discovery.listProviders();
+
+    return FutureBuilder<List<String>>(
+      future: future,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        final items = snapshot.data ?? [];
+        if (items.isEmpty) return const _EmptyState();
+
+        return ListView.builder(
+          padding: const EdgeInsets.all(16),
+          itemCount: items.length,
+          itemBuilder: (context, index) {
+            final item = items[index];
+            return Card(
+              margin: const EdgeInsets.only(bottom: 8),
+              child: ListTile(
+                dense: true,
+                title: Text(item, style: const TextStyle(fontSize: 13)),
+                leading: Icon(mode == DiscoveryType.topics ? Icons.tag : Icons.business, size: 14, color: Colors.white38),
               ),
             );
-          }
+          },
+        );
+      },
+    );
+  }
+}
 
-          return ListView.builder(
-            padding: const EdgeInsets.all(16),
-            itemCount: datasets.length,
-            itemBuilder: (context, index) {
-              final ds = datasets[index];
-              return Card(
-                margin: const EdgeInsets.only(bottom: 12),
-                child: ListTile(
-                  leading: const FaIcon(FontAwesomeIcons.database, size: 16, color: CommandCenterTheme.secondaryCyan),
-                  title: Text(ds.title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
-                  subtitle: Text(
-                    '${ds.publisher} • ${ds.identifier}',
-                    style: Theme.of(context).textTheme.labelSmall,
-                  ),
-                  trailing: const Icon(Icons.chevron_right, size: 16, color: Colors.white24),
-                  onTap: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Endpoint: query/${ds.identifier}')),
-                    );
-                  },
-                ),
-              );
-            },
-          );
-        },
+class _EmptyState extends StatelessWidget {
+  const _EmptyState();
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const FaIcon(FontAwesomeIcons.boxOpen, size: 48, color: Colors.white24),
+          const SizedBox(height: 16),
+          Text('No results found', style: Theme.of(context).textTheme.titleLarge),
+        ],
       ),
     );
   }
