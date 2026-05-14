@@ -45,6 +45,27 @@ class SystemScreen extends StatelessWidget {
                       ),
                       onChanged: (val) => sdkState.updateApiKey(val),
                     ),
+                    const SizedBox(height: 16),
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.blue.withAlpha(20),
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: Colors.blue.withAlpha(40)),
+                      ),
+                      child: const Row(
+                        children: [
+                          Icon(Icons.info_outline, size: 16, color: Colors.blueAccent),
+                          SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              'Web Browser Hint: If you see "No Internet Connection" in Live Mode, it is likely a CORS restriction. Run Chrome with --disable-web-security for testing.',
+                              style: TextStyle(fontSize: 10, color: Colors.blueAccent),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ],
               ),
