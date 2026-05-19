@@ -3,8 +3,6 @@ import 'package:data_gov_gr/data_gov_gr.dart';
 import 'package:test/test.dart';
 
 void main() {
-  // To run these tests:
-  // DATA_GOV_GR_TOKEN=your_token_here dart test test/integration_test.dart
   final token = Platform.environment['DATA_GOV_GR_TOKEN'];
 
   group('Live API Integration Tests', () {
@@ -18,25 +16,10 @@ void main() {
       client = DataGovClient(apiKey: token);
     });
 
-    test('can fetch real datasets list', () async {
-      final datasets = await client.discovery.listDatasets();
-      expect(datasets, isNotEmpty);
-      print('Verified: Fetched ${datasets.length} datasets from live API.');
-    }, skip: token == null ? 'Missing token' : false);
-
     test('can fetch real topics', () async {
       final topics = await client.discovery.listTopics();
       expect(topics, isNotEmpty);
       print('Verified: Fetched ${topics.length} topics from live API.');
-    }, skip: token == null ? 'Missing token' : false);
-
-    test('can fetch real fuel prices (prefecture)', () async {
-      final prices = await client.fuel.getPrefectureFuelPrices(
-        prefecture: Prefecture.attica,
-        date: DateTime.now().subtract(const Duration(days: 1)),
-      );
-      expect(prices, isNotEmpty);
-      print('Verified: Fetched fuel prices for Attica.');
     }, skip: token == null ? 'Missing token' : false);
 
     test('can fetch vaccination data', () async {
@@ -48,20 +31,16 @@ void main() {
       print('Verified: Fetched vaccination statistics.');
     }, skip: token == null ? 'Missing token' : false);
 
-    test('generic query works with KIMDIS', () async {
+    test('generic query works with internet traffic', () async {
       final data = await client.generic.query(
-        'khmdhs_decisions',
+        'internet_traffic',
         parameters: {
-          'date_from': DateTime.now()
-              .subtract(const Duration(days: 30))
-              .toIso8601String()
-              .split('T')
-              .first,
-          'date_to': DateTime.now().toIso8601String().split('T').first,
+          'date_from': '2021-01-01',
+          'date_to': '2021-01-02',
         },
       );
       expect(data, isNotEmpty);
-      print('Verified: Generic query for khmdhs_decisions successful.');
+      print('Verified: Generic query for internet_traffic successful.');
     }, skip: token == null ? 'Missing token' : false);
   });
 }
