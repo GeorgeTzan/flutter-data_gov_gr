@@ -89,12 +89,28 @@ flutter run -d chrome --web-browser-flag "--disable-web-security"
 ## Supported Type-Safe Modules
 
 - [x] **Fuel**: Detailed Station Prices & Prefecture Min/Max
-- [x] **Health**: COVID-19 Vaccinations (`mdg_emvolio`)
+- [x] **Health**: COVID-19 Vaccinations & Ministry Statistics
 - [x] **Procurement**: KIMDIS Decisions (`khmdhs_decisions`)
 - [x] **Telecom**: GR-IX Internet Traffic
 - [x] **Environment**: Forest Fire Statistics
+- [x] **Business & Economy**: Debt, Budget, and Revenue Data
+- [x] **Crime & Justice**: Road Accident Statistics
+- [x] **Education**: University & Training Data
+- [x] **Society**: Employment & Labor Market Metrics
+- [x] **Technology**: Digital Adoption & Internet Usage
+- [x] **Transport**: Public Transport & Airport Traffic
 - [x] **Discovery**: Datasets, Topics, Providers
-- [x] **Generic**: Universal access to all endpoints
+- [x] **Generic**: Universal access to all endpoints with auto-pagination
+
+## Related Projects
+
+- **Python**: [pydatagovgr](https://github.com/ilias-ant/pydatagovgr)
+- **Go**: [go-data-gov-gr-sdk](https://github.com/ppapapetrou76/go-data-gov-gr-sdk)
+- **R**: [datagovgR](https://github.com/elenigvasilaki/datagovgR)
+
+## API Compatibility
+
+This SDK uses `https://old.data.gov.gr/api/v1/` as the default base URL. This ensures 100% compatibility with JWT tokens provided by various government portals, bypassing common 404 errors found on the primary gateway for certain token types.
 
 ## License
 

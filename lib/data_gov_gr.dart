@@ -25,6 +25,13 @@ export 'src/services/environment_service.dart';
 export 'src/services/discovery_service.dart';
 export 'src/services/generic_service.dart';
 export 'src/services/procurement_service.dart';
+export 'src/services/business_service.dart';
+export 'src/services/justice_service.dart';
+export 'src/services/education_service.dart';
+export 'src/services/society_service.dart';
+export 'src/services/technology_service.dart';
+export 'src/services/transport_service.dart';
 
 // Utils
 export 'src/utils/mock_data.dart';
+export 'src/utils/transliteration.dart';

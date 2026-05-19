@@ -33,19 +33,33 @@ void main() {
     test('can fetch real fuel prices (prefecture)', () async {
       final prices = await client.fuel.getPrefectureFuelPrices(
         prefecture: Prefecture.attica,
+        date: DateTime.now().subtract(const Duration(days: 1)),
       );
       expect(prices, isNotEmpty);
       print('Verified: Fetched fuel prices for Attica.');
     }, skip: token == null ? 'Missing token' : false);
 
     test('can fetch vaccination data', () async {
-      final data = await client.health.getVaccinationStatistics();
+      final data = await client.health.getVaccinationStatistics(
+        from: DateTime(2021, 5, 1),
+        to: DateTime(2021, 5, 7),
+      );
       expect(data, isNotEmpty);
       print('Verified: Fetched vaccination statistics.');
     }, skip: token == null ? 'Missing token' : false);
 
     test('generic query works with KIMDIS', () async {
-      final data = await client.generic.query('khmdhs_decisions');
+      final data = await client.generic.query(
+        'khmdhs_decisions',
+        parameters: {
+          'date_from': DateTime.now()
+              .subtract(const Duration(days: 30))
+              .toIso8601String()
+              .split('T')
+              .first,
+          'date_to': DateTime.now().toIso8601String().split('T').first,
+        },
+      );
       expect(data, isNotEmpty);
       print('Verified: Generic query for khmdhs_decisions successful.');
     }, skip: token == null ? 'Missing token' : false);

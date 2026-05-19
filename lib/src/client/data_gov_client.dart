@@ -5,16 +5,22 @@ import 'package:rxdart/subjects.dart';
 import '../interceptors/error_interceptor.dart';
 import '../interceptors/rate_limit_interceptor.dart';
 import '../models/shared/rate_limit_status.dart';
+import '../services/business_service.dart';
 import '../services/discovery_service.dart';
+import '../services/education_service.dart';
 import '../services/environment_service.dart';
 import '../services/fuel_service.dart';
 import '../services/generic_service.dart';
 import '../services/health_service.dart';
+import '../services/justice_service.dart';
 import '../services/procurement_service.dart';
+import '../services/society_service.dart';
+import '../services/technology_service.dart';
 import '../services/telecom_service.dart';
+import '../services/transport_service.dart';
 
 class DataGovClient {
-  static const String _baseUrl = 'https://data.gov.gr/api/v1/';
+  static const String _baseUrl = 'https://old.data.gov.gr/api/v1/';
   static const String _userAgent = 'data_gov_gr_sdk_dart/1.0.0';
 
   final Dio _dio;
@@ -28,6 +34,12 @@ class DataGovClient {
   late final DiscoveryService discovery;
   late final GenericService generic;
   late final ProcurementService procurement;
+  late final BusinessService business;
+  late final JusticeService justice;
+  late final EducationService education;
+  late final SocietyService society;
+  late final TechnologyService technology;
+  late final TransportService transport;
 
   DataGovClient({
     required String apiKey,
@@ -49,6 +61,12 @@ class DataGovClient {
     discovery = DiscoveryService(this);
     generic = GenericService(this);
     procurement = ProcurementService(this);
+    business = BusinessService(this);
+    justice = JusticeService(this);
+    education = EducationService(this);
+    society = SocietyService(this);
+    technology = TechnologyService(this);
+    transport = TransportService(this);
 
     _dio.interceptors.addAll([
       ErrorInterceptor(),
