@@ -14,6 +14,17 @@ class MockData {
     },
   ];
 
+  static const List<Map<String, dynamic>> prefectureFuelPrices = [
+    {
+      'prefecture': 'ΑΤΤΙΚΗΣ',
+      'fuel_type': 'Αμόλυβδη 95',
+      'min_price': 1.845,
+      'max_price': 2.099,
+      'avg_price': 1.882,
+      'date': '2024-05-13',
+    }
+  ];
+
   static const List<Map<String, dynamic>> vaccinations = [
     {
       'area': 'ΑΘΗΝΩΝ',
@@ -26,18 +37,6 @@ class MockData {
       'totaldose1': 500000,
       'totaldose2': 450000,
       'totalvaccinations': 950000,
-    },
-    {
-      'area': 'ΘΕΣΣΑΛΟΝΙΚΗΣ',
-      'areaid': 2,
-      'dailydose1': 600,
-      'dailydose2': 400,
-      'daydiff': 20,
-      'daytotal': 1000,
-      'referencedate': '2024-05-13T00:00:00Z',
-      'totaldose1': 200000,
-      'totaldose2': 180000,
-      'totalvaccinations': 380000,
     },
   ];
 
@@ -57,6 +56,22 @@ class MockData {
       'location': 'ΕΥΒΟΙΑ',
       'fire_type': 'Δασική',
       'cause': 'Άγνωστη',
+    },
+  ];
+
+  static const List<Map<String, dynamic>> procurementDecisions = [
+    {
+      'ada': '6Ψ8Ω46ΜΤΛ6-Ξ0Β',
+      'adam': '23SYMV012345678',
+      'subject': 'Προμήθεια ειδών γραφικής ύλης',
+      'amount': 12500.50,
+      'currency': 'EUR',
+      'organization': 'ΔΗΜΟΣ ΑΘΗΝΑΙΩΝ',
+      'organization_id': '99200827',
+      'date': '2024-05-13T10:30:00Z',
+      'type': 'ΣΥΜΒΑΣΗ',
+      'status': 'ΟΛΟΚΛΗΡΩΜΕΝΗ',
+      'url': 'https://example.com/procurement/1',
     },
   ];
 }

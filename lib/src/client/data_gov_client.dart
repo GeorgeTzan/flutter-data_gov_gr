@@ -10,6 +10,7 @@ import '../services/environment_service.dart';
 import '../services/fuel_service.dart';
 import '../services/generic_service.dart';
 import '../services/health_service.dart';
+import '../services/procurement_service.dart';
 import '../services/telecom_service.dart';
 
 class DataGovClient {
@@ -26,6 +27,7 @@ class DataGovClient {
   late final EnvironmentService environment;
   late final DiscoveryService discovery;
   late final GenericService generic;
+  late final ProcurementService procurement;
 
   DataGovClient({
     required String apiKey,
@@ -44,6 +46,7 @@ class DataGovClient {
     environment = EnvironmentService(this);
     discovery = DiscoveryService(this);
     generic = GenericService(this);
+    procurement = ProcurementService(this);
 
     _dio.interceptors.addAll([
       ErrorInterceptor(),

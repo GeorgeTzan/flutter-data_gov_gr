@@ -83,6 +83,10 @@ class _MonitorScreenState extends State<MonitorScreen> {
             const SizedBox(height: 8),
             FuelMonitorModule(prefecture: _selectedPrefecture),
             const SizedBox(height: 32),
+            const SectionHeader(title: 'KIMDIS PROCUREMENT'),
+            const SizedBox(height: 16),
+            const ProcurementMonitorModule(),
+            const SizedBox(height: 32),
             const SectionHeader(title: 'NETWORK & INFRASTRUCTURE'),
             const SizedBox(height: 16),
             const TelecomMonitorModule(),
@@ -196,6 +200,55 @@ class FuelMonitorModule extends StatelessWidget {
                 ),
               );
             },
+          ),
+        );
+      },
+    );
+  }
+}
+
+class ProcurementMonitorModule extends StatelessWidget {
+  const ProcurementMonitorModule({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final client = context.watch<SDKState>().client;
+
+    return FutureBuilder<List<ProcurementDecision>>(
+      future: client.procurement.getKimdisDecisions(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: LinearProgressIndicator());
+        }
+
+        if (snapshot.hasError) {
+          return ErrorCard(error: snapshot.error.toString());
+        }
+
+        final data = snapshot.data ?? [];
+        if (data.isEmpty) return const SizedBox();
+        final latest = data.first;
+
+        return Card(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(child: Text(latest.subject, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13), maxLines: 1, overflow: TextOverflow.ellipsis)),
+                    const SizedBox(width: 12),
+                    Text('€${latest.amount.toStringAsFixed(0)}', style: const TextStyle(color: Colors.greenAccent, fontWeight: FontWeight.bold)),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Text(latest.organization, style: Theme.of(context).textTheme.labelSmall),
+                const SizedBox(height: 4),
+                Text('ADAM: ${latest.adam}', style: Theme.of(context).textTheme.labelSmall?.copyWith(fontSize: 10)),
+              ],
+            ),
           ),
         );
       },

@@ -27,6 +27,10 @@ mixin _$VaccinationData {
   int get dailyDose1 => throw _privateConstructorUsedError;
   @JsonKey(name: 'dailydose2')
   int get dailyDose2 => throw _privateConstructorUsedError;
+  @JsonKey(name: 'dailydose3')
+  int? get dailyDose3 => throw _privateConstructorUsedError;
+  @JsonKey(name: 'dailydose4')
+  int? get dailyDose4 => throw _privateConstructorUsedError;
   @JsonKey(name: 'daydiff')
   int get dayDiff => throw _privateConstructorUsedError;
   @JsonKey(name: 'daytotal')
@@ -37,6 +41,12 @@ mixin _$VaccinationData {
   int get totalDose1 => throw _privateConstructorUsedError;
   @JsonKey(name: 'totaldose2')
   int get totalDose2 => throw _privateConstructorUsedError;
+  @JsonKey(name: 'totaldose3')
+  int? get totalDose3 => throw _privateConstructorUsedError;
+  @JsonKey(name: 'totaldose4')
+  int? get totalDose4 => throw _privateConstructorUsedError;
+  @JsonKey(name: 'totaldistinctpersons')
+  int? get totalDistinctPersons => throw _privateConstructorUsedError;
   @JsonKey(name: 'totalvaccinations')
   int get totalVaccinations => throw _privateConstructorUsedError;
 
@@ -61,11 +71,16 @@ abstract class $VaccinationDataCopyWith<$Res> {
       @JsonKey(name: 'areaid') int areaId,
       @JsonKey(name: 'dailydose1') int dailyDose1,
       @JsonKey(name: 'dailydose2') int dailyDose2,
+      @JsonKey(name: 'dailydose3') int? dailyDose3,
+      @JsonKey(name: 'dailydose4') int? dailyDose4,
       @JsonKey(name: 'daydiff') int dayDiff,
       @JsonKey(name: 'daytotal') int dayTotal,
       @JsonKey(name: 'referencedate') DateTime referenceDate,
       @JsonKey(name: 'totaldose1') int totalDose1,
       @JsonKey(name: 'totaldose2') int totalDose2,
+      @JsonKey(name: 'totaldose3') int? totalDose3,
+      @JsonKey(name: 'totaldose4') int? totalDose4,
+      @JsonKey(name: 'totaldistinctpersons') int? totalDistinctPersons,
       @JsonKey(name: 'totalvaccinations') int totalVaccinations});
 }
 
@@ -88,11 +103,16 @@ class _$VaccinationDataCopyWithImpl<$Res, $Val extends VaccinationData>
     Object? areaId = null,
     Object? dailyDose1 = null,
     Object? dailyDose2 = null,
+    Object? dailyDose3 = freezed,
+    Object? dailyDose4 = freezed,
     Object? dayDiff = null,
     Object? dayTotal = null,
     Object? referenceDate = null,
     Object? totalDose1 = null,
     Object? totalDose2 = null,
+    Object? totalDose3 = freezed,
+    Object? totalDose4 = freezed,
+    Object? totalDistinctPersons = freezed,
     Object? totalVaccinations = null,
   }) {
     return _then(_value.copyWith(
@@ -112,6 +132,14 @@ class _$VaccinationDataCopyWithImpl<$Res, $Val extends VaccinationData>
           ? _value.dailyDose2
           : dailyDose2 // ignore: cast_nullable_to_non_nullable
               as int,
+      dailyDose3: freezed == dailyDose3
+          ? _value.dailyDose3
+          : dailyDose3 // ignore: cast_nullable_to_non_nullable
+              as int?,
+      dailyDose4: freezed == dailyDose4
+          ? _value.dailyDose4
+          : dailyDose4 // ignore: cast_nullable_to_non_nullable
+              as int?,
       dayDiff: null == dayDiff
           ? _value.dayDiff
           : dayDiff // ignore: cast_nullable_to_non_nullable
@@ -132,6 +160,18 @@ class _$VaccinationDataCopyWithImpl<$Res, $Val extends VaccinationData>
           ? _value.totalDose2
           : totalDose2 // ignore: cast_nullable_to_non_nullable
               as int,
+      totalDose3: freezed == totalDose3
+          ? _value.totalDose3
+          : totalDose3 // ignore: cast_nullable_to_non_nullable
+              as int?,
+      totalDose4: freezed == totalDose4
+          ? _value.totalDose4
+          : totalDose4 // ignore: cast_nullable_to_non_nullable
+              as int?,
+      totalDistinctPersons: freezed == totalDistinctPersons
+          ? _value.totalDistinctPersons
+          : totalDistinctPersons // ignore: cast_nullable_to_non_nullable
+              as int?,
       totalVaccinations: null == totalVaccinations
           ? _value.totalVaccinations
           : totalVaccinations // ignore: cast_nullable_to_non_nullable
@@ -153,11 +193,16 @@ abstract class _$$VaccinationDataImplCopyWith<$Res>
       @JsonKey(name: 'areaid') int areaId,
       @JsonKey(name: 'dailydose1') int dailyDose1,
       @JsonKey(name: 'dailydose2') int dailyDose2,
+      @JsonKey(name: 'dailydose3') int? dailyDose3,
+      @JsonKey(name: 'dailydose4') int? dailyDose4,
       @JsonKey(name: 'daydiff') int dayDiff,
       @JsonKey(name: 'daytotal') int dayTotal,
       @JsonKey(name: 'referencedate') DateTime referenceDate,
       @JsonKey(name: 'totaldose1') int totalDose1,
       @JsonKey(name: 'totaldose2') int totalDose2,
+      @JsonKey(name: 'totaldose3') int? totalDose3,
+      @JsonKey(name: 'totaldose4') int? totalDose4,
+      @JsonKey(name: 'totaldistinctpersons') int? totalDistinctPersons,
       @JsonKey(name: 'totalvaccinations') int totalVaccinations});
 }
 
@@ -178,11 +223,16 @@ class __$$VaccinationDataImplCopyWithImpl<$Res>
     Object? areaId = null,
     Object? dailyDose1 = null,
     Object? dailyDose2 = null,
+    Object? dailyDose3 = freezed,
+    Object? dailyDose4 = freezed,
     Object? dayDiff = null,
     Object? dayTotal = null,
     Object? referenceDate = null,
     Object? totalDose1 = null,
     Object? totalDose2 = null,
+    Object? totalDose3 = freezed,
+    Object? totalDose4 = freezed,
+    Object? totalDistinctPersons = freezed,
     Object? totalVaccinations = null,
   }) {
     return _then(_$VaccinationDataImpl(
@@ -202,6 +252,14 @@ class __$$VaccinationDataImplCopyWithImpl<$Res>
           ? _value.dailyDose2
           : dailyDose2 // ignore: cast_nullable_to_non_nullable
               as int,
+      dailyDose3: freezed == dailyDose3
+          ? _value.dailyDose3
+          : dailyDose3 // ignore: cast_nullable_to_non_nullable
+              as int?,
+      dailyDose4: freezed == dailyDose4
+          ? _value.dailyDose4
+          : dailyDose4 // ignore: cast_nullable_to_non_nullable
+              as int?,
       dayDiff: null == dayDiff
           ? _value.dayDiff
           : dayDiff // ignore: cast_nullable_to_non_nullable
@@ -222,6 +280,18 @@ class __$$VaccinationDataImplCopyWithImpl<$Res>
           ? _value.totalDose2
           : totalDose2 // ignore: cast_nullable_to_non_nullable
               as int,
+      totalDose3: freezed == totalDose3
+          ? _value.totalDose3
+          : totalDose3 // ignore: cast_nullable_to_non_nullable
+              as int?,
+      totalDose4: freezed == totalDose4
+          ? _value.totalDose4
+          : totalDose4 // ignore: cast_nullable_to_non_nullable
+              as int?,
+      totalDistinctPersons: freezed == totalDistinctPersons
+          ? _value.totalDistinctPersons
+          : totalDistinctPersons // ignore: cast_nullable_to_non_nullable
+              as int?,
       totalVaccinations: null == totalVaccinations
           ? _value.totalVaccinations
           : totalVaccinations // ignore: cast_nullable_to_non_nullable
@@ -238,11 +308,16 @@ class _$VaccinationDataImpl implements _VaccinationData {
       @JsonKey(name: 'areaid') required this.areaId,
       @JsonKey(name: 'dailydose1') required this.dailyDose1,
       @JsonKey(name: 'dailydose2') required this.dailyDose2,
+      @JsonKey(name: 'dailydose3') required this.dailyDose3,
+      @JsonKey(name: 'dailydose4') required this.dailyDose4,
       @JsonKey(name: 'daydiff') required this.dayDiff,
       @JsonKey(name: 'daytotal') required this.dayTotal,
       @JsonKey(name: 'referencedate') required this.referenceDate,
       @JsonKey(name: 'totaldose1') required this.totalDose1,
       @JsonKey(name: 'totaldose2') required this.totalDose2,
+      @JsonKey(name: 'totaldose3') required this.totalDose3,
+      @JsonKey(name: 'totaldose4') required this.totalDose4,
+      @JsonKey(name: 'totaldistinctpersons') required this.totalDistinctPersons,
       @JsonKey(name: 'totalvaccinations') required this.totalVaccinations});
 
   factory _$VaccinationDataImpl.fromJson(Map<String, dynamic> json) =>
@@ -260,6 +335,12 @@ class _$VaccinationDataImpl implements _VaccinationData {
   @JsonKey(name: 'dailydose2')
   final int dailyDose2;
   @override
+  @JsonKey(name: 'dailydose3')
+  final int? dailyDose3;
+  @override
+  @JsonKey(name: 'dailydose4')
+  final int? dailyDose4;
+  @override
   @JsonKey(name: 'daydiff')
   final int dayDiff;
   @override
@@ -275,12 +356,21 @@ class _$VaccinationDataImpl implements _VaccinationData {
   @JsonKey(name: 'totaldose2')
   final int totalDose2;
   @override
+  @JsonKey(name: 'totaldose3')
+  final int? totalDose3;
+  @override
+  @JsonKey(name: 'totaldose4')
+  final int? totalDose4;
+  @override
+  @JsonKey(name: 'totaldistinctpersons')
+  final int? totalDistinctPersons;
+  @override
   @JsonKey(name: 'totalvaccinations')
   final int totalVaccinations;
 
   @override
   String toString() {
-    return 'VaccinationData(area: $area, areaId: $areaId, dailyDose1: $dailyDose1, dailyDose2: $dailyDose2, dayDiff: $dayDiff, dayTotal: $dayTotal, referenceDate: $referenceDate, totalDose1: $totalDose1, totalDose2: $totalDose2, totalVaccinations: $totalVaccinations)';
+    return 'VaccinationData(area: $area, areaId: $areaId, dailyDose1: $dailyDose1, dailyDose2: $dailyDose2, dailyDose3: $dailyDose3, dailyDose4: $dailyDose4, dayDiff: $dayDiff, dayTotal: $dayTotal, referenceDate: $referenceDate, totalDose1: $totalDose1, totalDose2: $totalDose2, totalDose3: $totalDose3, totalDose4: $totalDose4, totalDistinctPersons: $totalDistinctPersons, totalVaccinations: $totalVaccinations)';
   }
 
   @override
@@ -294,6 +384,10 @@ class _$VaccinationDataImpl implements _VaccinationData {
                 other.dailyDose1 == dailyDose1) &&
             (identical(other.dailyDose2, dailyDose2) ||
                 other.dailyDose2 == dailyDose2) &&
+            (identical(other.dailyDose3, dailyDose3) ||
+                other.dailyDose3 == dailyDose3) &&
+            (identical(other.dailyDose4, dailyDose4) ||
+                other.dailyDose4 == dailyDose4) &&
             (identical(other.dayDiff, dayDiff) || other.dayDiff == dayDiff) &&
             (identical(other.dayTotal, dayTotal) ||
                 other.dayTotal == dayTotal) &&
@@ -303,6 +397,12 @@ class _$VaccinationDataImpl implements _VaccinationData {
                 other.totalDose1 == totalDose1) &&
             (identical(other.totalDose2, totalDose2) ||
                 other.totalDose2 == totalDose2) &&
+            (identical(other.totalDose3, totalDose3) ||
+                other.totalDose3 == totalDose3) &&
+            (identical(other.totalDose4, totalDose4) ||
+                other.totalDose4 == totalDose4) &&
+            (identical(other.totalDistinctPersons, totalDistinctPersons) ||
+                other.totalDistinctPersons == totalDistinctPersons) &&
             (identical(other.totalVaccinations, totalVaccinations) ||
                 other.totalVaccinations == totalVaccinations));
   }
@@ -315,11 +415,16 @@ class _$VaccinationDataImpl implements _VaccinationData {
       areaId,
       dailyDose1,
       dailyDose2,
+      dailyDose3,
+      dailyDose4,
       dayDiff,
       dayTotal,
       referenceDate,
       totalDose1,
       totalDose2,
+      totalDose3,
+      totalDose4,
+      totalDistinctPersons,
       totalVaccinations);
 
   /// Create a copy of VaccinationData
@@ -345,11 +450,17 @@ abstract class _VaccinationData implements VaccinationData {
       @JsonKey(name: 'areaid') required final int areaId,
       @JsonKey(name: 'dailydose1') required final int dailyDose1,
       @JsonKey(name: 'dailydose2') required final int dailyDose2,
+      @JsonKey(name: 'dailydose3') required final int? dailyDose3,
+      @JsonKey(name: 'dailydose4') required final int? dailyDose4,
       @JsonKey(name: 'daydiff') required final int dayDiff,
       @JsonKey(name: 'daytotal') required final int dayTotal,
       @JsonKey(name: 'referencedate') required final DateTime referenceDate,
       @JsonKey(name: 'totaldose1') required final int totalDose1,
       @JsonKey(name: 'totaldose2') required final int totalDose2,
+      @JsonKey(name: 'totaldose3') required final int? totalDose3,
+      @JsonKey(name: 'totaldose4') required final int? totalDose4,
+      @JsonKey(name: 'totaldistinctpersons')
+      required final int? totalDistinctPersons,
       @JsonKey(name: 'totalvaccinations')
       required final int totalVaccinations}) = _$VaccinationDataImpl;
 
@@ -368,6 +479,12 @@ abstract class _VaccinationData implements VaccinationData {
   @JsonKey(name: 'dailydose2')
   int get dailyDose2;
   @override
+  @JsonKey(name: 'dailydose3')
+  int? get dailyDose3;
+  @override
+  @JsonKey(name: 'dailydose4')
+  int? get dailyDose4;
+  @override
   @JsonKey(name: 'daydiff')
   int get dayDiff;
   @override
@@ -382,6 +499,15 @@ abstract class _VaccinationData implements VaccinationData {
   @override
   @JsonKey(name: 'totaldose2')
   int get totalDose2;
+  @override
+  @JsonKey(name: 'totaldose3')
+  int? get totalDose3;
+  @override
+  @JsonKey(name: 'totaldose4')
+  int? get totalDose4;
+  @override
+  @JsonKey(name: 'totaldistinctpersons')
+  int? get totalDistinctPersons;
   @override
   @JsonKey(name: 'totalvaccinations')
   int get totalVaccinations;
