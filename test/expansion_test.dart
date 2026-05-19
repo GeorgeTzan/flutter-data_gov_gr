@@ -4,6 +4,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
 class MockDataGovClient extends Mock implements DataGovClient {}
+
 class MockDio extends Mock implements Dio {}
 
 void main() {
@@ -34,7 +35,8 @@ void main() {
         }
       ];
 
-      when(() => mockDio.get(any(), queryParameters: any(named: 'queryParameters')))
+      when(() => mockDio.get(any(),
+              queryParameters: any(named: 'queryParameters')))
           .thenAnswer((_) async => Response(
                 data: mockResponse,
                 statusCode: 200,
@@ -59,7 +61,8 @@ void main() {
         }
       ];
 
-      when(() => mockDio.get(any(), queryParameters: any(named: 'queryParameters')))
+      when(() => mockDio.get(any(),
+              queryParameters: any(named: 'queryParameters')))
           .thenAnswer((_) async => Response(
                 data: mockResponse,
                 statusCode: 200,
@@ -85,7 +88,8 @@ void main() {
         }
       ];
 
-      when(() => mockDio.get(any(), queryParameters: any(named: 'queryParameters')))
+      when(() => mockDio.get(any(),
+              queryParameters: any(named: 'queryParameters')))
           .thenAnswer((_) async => Response(
                 data: mockResponse,
                 statusCode: 200,
@@ -131,9 +135,12 @@ void main() {
   group('GenericService', () {
     test('query returns raw maps', () async {
       final service = GenericService(mockClient);
-      final mockResponse = [{'any_key': 'any_value'}];
+      final mockResponse = [
+        {'any_key': 'any_value'}
+      ];
 
-      when(() => mockDio.get(any(), queryParameters: any(named: 'queryParameters')))
+      when(() => mockDio.get(any(),
+              queryParameters: any(named: 'queryParameters')))
           .thenAnswer((_) async => Response(
                 data: mockResponse,
                 statusCode: 200,

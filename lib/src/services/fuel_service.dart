@@ -19,9 +19,12 @@ class FuelService {
     FuelType? fuelType,
   }) async {
     final queryParameters = <String, dynamic>{};
-    if (date != null) queryParameters['date'] = date.toIso8601String().split('T').first;
-    if (prefecture != null) queryParameters['prefecture'] = prefecture.rawGreekName;
-    if (fuelType != null && fuelType != FuelType.unknown) queryParameters['fuel_type'] = fuelType.rawGreekLabel;
+    if (date != null)
+      queryParameters['date'] = date.toIso8601String().split('T').first;
+    if (prefecture != null)
+      queryParameters['prefecture'] = prefecture.rawGreekName;
+    if (fuelType != null && fuelType != FuelType.unknown)
+      queryParameters['fuel_type'] = fuelType.rawGreekLabel;
 
     final response = await _client.dio.get(
       'query/gas_price_per_station',
@@ -38,9 +41,12 @@ class FuelService {
     FuelType? fuelType,
   }) async {
     final queryParameters = <String, dynamic>{};
-    if (date != null) queryParameters['date'] = date.toIso8601String().split('T').first;
-    if (prefecture != null) queryParameters['prefecture'] = prefecture.rawGreekName;
-    if (fuelType != null && fuelType != FuelType.unknown) queryParameters['fuel_type'] = fuelType.rawGreekLabel;
+    if (date != null)
+      queryParameters['date'] = date.toIso8601String().split('T').first;
+    if (prefecture != null)
+      queryParameters['prefecture'] = prefecture.rawGreekName;
+    if (fuelType != null && fuelType != FuelType.unknown)
+      queryParameters['fuel_type'] = fuelType.rawGreekLabel;
 
     final response = await _client.dio.get(
       'query/min_max_fuel_prices_per_prefecture',

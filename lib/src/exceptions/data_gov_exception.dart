@@ -15,11 +15,13 @@ class UnauthorizedException extends DataGovException {
 
 class RateLimitException extends DataGovException {
   const RateLimitException([Object? originalError])
-      : super('Rate Limit Exceeded: Please slow down your requests.', originalError);
+      : super('Rate Limit Exceeded: Please slow down your requests.',
+            originalError);
 }
 
 class ServerException extends DataGovException {
-  const ServerException([String message = 'Internal Server Error.', Object? originalError])
+  const ServerException(
+      [String message = 'Internal Server Error.', Object? originalError])
       : super(message, originalError);
 }
 

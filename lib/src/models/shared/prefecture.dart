@@ -62,8 +62,10 @@ extension PrefectureX on Prefecture {
 
   String get englishName {
     switch (this) {
-      case Prefecture.attica: return 'Attica';
-      case Prefecture.thessaloniki: return 'Thessaloniki';
+      case Prefecture.attica:
+        return 'Attica';
+      case Prefecture.thessaloniki:
+        return 'Thessaloniki';
       default:
         final name = toString().split('.').last;
         return name[0].toUpperCase() + name.substring(1);

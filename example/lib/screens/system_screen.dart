@@ -14,13 +14,24 @@ class SystemScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('SYSTEM', style: Theme.of(context).textTheme.headlineMedium),
+        title: Text(
+          'SYSTEM',
+          style: Theme.of(context).textTheme.headlineMedium,
+        ),
         backgroundColor: Colors.transparent,
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          const Text('API CONFIGURATION', style: TextStyle(letterSpacing: 2, fontWeight: FontWeight.bold, fontSize: 10, color: Colors.white38)),
+          const Text(
+            'API CONFIGURATION',
+            style: TextStyle(
+              letterSpacing: 2,
+              fontWeight: FontWeight.bold,
+              fontSize: 10,
+              color: Colors.white38,
+            ),
+          ),
           const SizedBox(height: 16),
           Card(
             child: Padding(
@@ -28,8 +39,13 @@ class SystemScreen extends StatelessWidget {
               child: Column(
                 children: [
                   SwitchListTile(
-                    title: const Text('Use Mock Client', style: TextStyle(fontWeight: FontWeight.bold)),
-                    subtitle: const Text('Simulate data without hitting the API'),
+                    title: const Text(
+                      'Use Mock Client',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: const Text(
+                      'Simulate data without hitting the API',
+                    ),
                     value: sdkState.useMock,
                     onChanged: (val) => sdkState.toggleMock(val),
                     activeColor: Colors.amber,
@@ -55,12 +71,19 @@ class SystemScreen extends StatelessWidget {
                       ),
                       child: const Row(
                         children: [
-                          Icon(Icons.info_outline, size: 16, color: Colors.blueAccent),
+                          Icon(
+                            Icons.info_outline,
+                            size: 16,
+                            color: Colors.blueAccent,
+                          ),
                           SizedBox(width: 12),
                           Expanded(
                             child: Text(
                               'Web Browser Hint: If you see "No Internet Connection" in Live Mode, it is likely a CORS restriction. Run Chrome with --disable-web-security for testing.',
-                              style: TextStyle(fontSize: 10, color: Colors.blueAccent),
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: Colors.blueAccent,
+                              ),
                             ),
                           ),
                         ],
@@ -72,7 +95,15 @@ class SystemScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 32),
-          const Text('RATE LIMIT STATUS', style: TextStyle(letterSpacing: 2, fontWeight: FontWeight.bold, fontSize: 10, color: Colors.white38)),
+          const Text(
+            'RATE LIMIT STATUS',
+            style: TextStyle(
+              letterSpacing: 2,
+              fontWeight: FontWeight.bold,
+              fontSize: 10,
+              color: Colors.white38,
+            ),
+          ),
           const SizedBox(height: 16),
           const RateLimitMeter(),
         ],
@@ -92,8 +123,14 @@ class RateLimitMeter extends StatelessWidget {
       stream: client.rateLimitStatus,
       builder: (context, snapshot) {
         final status = snapshot.data ?? RateLimitStatus.initial();
-        final percentage = status.limit == 0 ? 0.0 : status.remaining / status.limit;
-        final color = percentage < 0.2 ? Colors.redAccent : (percentage < 0.5 ? Colors.orangeAccent : CommandCenterTheme.pulseGreen);
+        final percentage = status.limit == 0
+            ? 0.0
+            : status.remaining / status.limit;
+        final color = percentage < 0.2
+            ? Colors.redAccent
+            : (percentage < 0.5
+                  ? Colors.orangeAccent
+                  : CommandCenterTheme.pulseGreen);
 
         return Card(
           child: Padding(
@@ -103,7 +140,10 @@ class RateLimitMeter extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('${status.remaining} / ${status.limit} remaining', style: const TextStyle(fontWeight: FontWeight.bold)),
+                    Text(
+                      '${status.remaining} / ${status.limit} remaining',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
                     FaIcon(FontAwesomeIcons.gauge, size: 16, color: color),
                   ],
                 ),

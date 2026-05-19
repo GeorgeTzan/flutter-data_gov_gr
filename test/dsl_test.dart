@@ -7,6 +7,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
 class MockDataGovClient extends Mock implements DataGovClient {}
+
 class MockDio extends Mock implements Dio {}
 
 void main() {
@@ -34,8 +35,9 @@ void main() {
           ));
 
       final testDate = DateTime(2024, 5, 13);
-      
-      await fuelService.query()
+
+      await fuelService
+          .query()
           .atDate(testDate)
           .wherePrefecture(Prefecture.attica)
           .whereFuelType(FuelType.unleaded95)

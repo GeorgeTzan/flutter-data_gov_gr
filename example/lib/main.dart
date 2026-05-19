@@ -52,9 +52,7 @@ class _MainScaffoldState extends State<MainScaffold> {
       body: _screens[_currentIndex],
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          border: Border(
-            top: BorderSide(color: Colors.white.withAlpha(13)),
-          ),
+          border: Border(top: BorderSide(color: Colors.white.withAlpha(13))),
         ),
         child: BottomNavigationBar(
           currentIndex: _currentIndex,

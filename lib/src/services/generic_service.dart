@@ -16,4 +16,18 @@ class GenericService {
     final data = response.data as List;
     return data.map((json) => json as Map<String, dynamic>).toList();
   }
+
+  Future<String> downloadCsv(
+    String datasetId, {
+    Map<String, dynamic>? parameters,
+  }) async {
+    final params = <String, dynamic>{'type': 'csv'};
+    if (parameters != null) params.addAll(parameters);
+
+    final response = await _client.dio.get(
+      'query/download/$datasetId',
+      queryParameters: params,
+    );
+    return response.data.toString();
+  }
 }

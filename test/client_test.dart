@@ -20,7 +20,8 @@ void main() {
     test('initializes with correct base URL and headers', () {
       expect(client.dio.options.baseUrl, 'https://data.gov.gr/api/v1/');
       expect(client.dio.options.headers['Authorization'], 'Token $testApiKey');
-      expect(client.dio.options.headers['User-Agent'], contains('data_gov_gr_sdk_dart'));
+      expect(client.dio.options.headers['User-Agent'],
+          contains('data_gov_gr_sdk_dart'));
     });
 
     test('rateLimitStatus stream starts with initial value', () async {

@@ -14,7 +14,10 @@ class CatalogScreen extends StatelessWidget {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('CATALOG', style: Theme.of(context).textTheme.headlineMedium),
+          title: Text(
+            'CATALOG',
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
           backgroundColor: Colors.transparent,
           bottom: const TabBar(
             tabs: [
@@ -45,12 +48,14 @@ class DatasetListTab extends StatelessWidget {
 
   void _queryDataset(BuildContext context, String id, String title) async {
     final client = context.read<SDKState>().client;
-    
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: CommandCenterTheme.darkBg,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
       builder: (context) {
         return DraggableScrollableSheet(
           initialChildSize: 0.7,
@@ -63,13 +68,26 @@ class DatasetListTab extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    border: Border(bottom: BorderSide(color: Colors.white.withAlpha(13))),
+                    border: Border(
+                      bottom: BorderSide(color: Colors.white.withAlpha(13)),
+                    ),
                   ),
                   child: Row(
                     children: [
-                      const FaIcon(FontAwesomeIcons.terminal, size: 16, color: CommandCenterTheme.secondaryCyan),
+                      const FaIcon(
+                        FontAwesomeIcons.terminal,
+                        size: 16,
+                        color: CommandCenterTheme.secondaryCyan,
+                      ),
                       const SizedBox(width: 12),
-                      Expanded(child: Text(title, style: const TextStyle(fontWeight: FontWeight.bold), maxLines: 1, overflow: TextOverflow.ellipsis)),
+                      Expanded(
+                        child: Text(
+                          title,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -84,12 +102,17 @@ class DatasetListTab extends StatelessWidget {
                         return Center(
                           child: Padding(
                             padding: const EdgeInsets.all(32),
-                            child: Text(snapshot.error.toString(), textAlign: TextAlign.center, style: const TextStyle(color: Colors.redAccent)),
+                            child: Text(
+                              snapshot.error.toString(),
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(color: Colors.redAccent),
+                            ),
                           ),
                         );
                       }
                       final data = snapshot.data ?? [];
-                      if (data.isEmpty) return const Center(child: Text('No records returned'));
+                      if (data.isEmpty)
+                        return const Center(child: Text('No records returned'));
 
                       return ListView.builder(
                         controller: scrollController,
@@ -97,7 +120,10 @@ class DatasetListTab extends StatelessWidget {
                         itemBuilder: (context, index) {
                           final item = data[index];
                           return Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 8,
+                            ),
                             padding: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
                               color: Colors.white.withAlpha(5),
@@ -105,7 +131,11 @@ class DatasetListTab extends StatelessWidget {
                             ),
                             child: SelectableText(
                               item.toString(),
-                              style: const TextStyle(fontFamily: 'monospace', fontSize: 11, color: Colors.white70),
+                              style: const TextStyle(
+                                fontFamily: 'monospace',
+                                fontSize: 11,
+                                color: Colors.white70,
+                              ),
                             ),
                           );
                         },
@@ -147,10 +177,27 @@ class DatasetListTab extends StatelessWidget {
             return Card(
               margin: const EdgeInsets.only(bottom: 12),
               child: ListTile(
-                leading: const FaIcon(FontAwesomeIcons.database, size: 16, color: CommandCenterTheme.secondaryCyan),
-                title: Text(ds.title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
-                subtitle: Text('${ds.publisher} • ${ds.identifier}', style: Theme.of(context).textTheme.labelSmall),
-                trailing: const Icon(Icons.chevron_right, size: 16, color: Colors.white24),
+                leading: const FaIcon(
+                  FontAwesomeIcons.database,
+                  size: 16,
+                  color: CommandCenterTheme.secondaryCyan,
+                ),
+                title: Text(
+                  ds.title,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                subtitle: Text(
+                  '${ds.publisher} • ${ds.identifier}',
+                  style: Theme.of(context).textTheme.labelSmall,
+                ),
+                trailing: const Icon(
+                  Icons.chevron_right,
+                  size: 16,
+                  color: Colors.white24,
+                ),
                 onTap: () => _queryDataset(context, ds.identifier, ds.title),
               ),
             );
@@ -168,7 +215,9 @@ class StringListTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final client = context.watch<SDKState>().client;
-    final future = mode == DiscoveryType.topics ? client.discovery.listTopics() : client.discovery.listProviders();
+    final future = mode == DiscoveryType.topics
+        ? client.discovery.listTopics()
+        : client.discovery.listProviders();
 
     return FutureBuilder<List<String>>(
       future: future,
@@ -194,7 +243,11 @@ class StringListTab extends StatelessWidget {
               child: ListTile(
                 dense: true,
                 title: Text(item, style: const TextStyle(fontSize: 13)),
-                leading: Icon(mode == DiscoveryType.topics ? Icons.tag : Icons.business, size: 14, color: Colors.white38),
+                leading: Icon(
+                  mode == DiscoveryType.topics ? Icons.tag : Icons.business,
+                  size: 14,
+                  color: Colors.white38,
+                ),
               ),
             );
           },
@@ -213,9 +266,16 @@ class _EmptyState extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const FaIcon(FontAwesomeIcons.boxOpen, size: 48, color: Colors.white24),
+          const FaIcon(
+            FontAwesomeIcons.boxOpen,
+            size: 48,
+            color: Colors.white24,
+          ),
           const SizedBox(height: 16),
-          Text('No results found', style: Theme.of(context).textTheme.titleLarge),
+          Text(
+            'No results found',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
         ],
       ),
     );
@@ -234,9 +294,17 @@ class _ErrorState extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const FaIcon(FontAwesomeIcons.triangleExclamation, color: Colors.redAccent, size: 40),
+            const FaIcon(
+              FontAwesomeIcons.triangleExclamation,
+              color: Colors.redAccent,
+              size: 40,
+            ),
             const SizedBox(height: 16),
-            Text(error, textAlign: TextAlign.center, style: const TextStyle(color: Colors.white54, fontSize: 12)),
+            Text(
+              error,
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.white54, fontSize: 12),
+            ),
           ],
         ),
       ),

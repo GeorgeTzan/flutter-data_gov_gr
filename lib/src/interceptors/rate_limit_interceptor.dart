@@ -9,9 +9,12 @@ class RateLimitInterceptor extends Interceptor {
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    final limit = int.tryParse(response.headers.value('X-RateLimit-Limit') ?? '');
-    final remaining = int.tryParse(response.headers.value('X-RateLimit-Remaining') ?? '');
-    final reset = int.tryParse(response.headers.value('X-RateLimit-Reset') ?? '');
+    final limit =
+        int.tryParse(response.headers.value('X-RateLimit-Limit') ?? '');
+    final remaining =
+        int.tryParse(response.headers.value('X-RateLimit-Remaining') ?? '');
+    final reset =
+        int.tryParse(response.headers.value('X-RateLimit-Reset') ?? '');
 
     if (limit != null && remaining != null && reset != null) {
       final status = RateLimitStatus(

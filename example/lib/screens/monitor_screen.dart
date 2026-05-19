@@ -28,7 +28,10 @@ class _MonitorScreenState extends State<MonitorScreen> {
           children: [
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Text('SELECT PREFECTURE', style: Theme.of(context).textTheme.labelSmall),
+              child: Text(
+                'SELECT PREFECTURE',
+                style: Theme.of(context).textTheme.labelSmall,
+              ),
             ),
             Expanded(
               child: ListView.builder(
@@ -36,8 +39,16 @@ class _MonitorScreenState extends State<MonitorScreen> {
                 itemBuilder: (context, index) {
                   final p = Prefecture.values[index];
                   return ListTile(
-                    title: Text(p.englishName, style: const TextStyle(fontSize: 14)),
-                    trailing: p == _selectedPrefecture ? const Icon(Icons.check, color: CommandCenterTheme.secondaryCyan) : null,
+                    title: Text(
+                      p.englishName,
+                      style: const TextStyle(fontSize: 14),
+                    ),
+                    trailing: p == _selectedPrefecture
+                        ? const Icon(
+                            Icons.check,
+                            color: CommandCenterTheme.secondaryCyan,
+                          )
+                        : null,
                     onTap: () {
                       setState(() => _selectedPrefecture = p);
                       Navigator.pop(context);
@@ -56,12 +67,12 @@ class _MonitorScreenState extends State<MonitorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('MONITOR', style: Theme.of(context).textTheme.headlineMedium),
+        title: Text(
+          'MONITOR',
+          style: Theme.of(context).textTheme.headlineMedium,
+        ),
         backgroundColor: Colors.transparent,
-        actions: [
-          const PulseIndicator(),
-          const SizedBox(width: 16),
-        ],
+        actions: [const PulseIndicator(), const SizedBox(width: 16)],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -75,8 +86,13 @@ class _MonitorScreenState extends State<MonitorScreen> {
                 TextButton.icon(
                   onPressed: () => _showPrefecturePicker(context),
                   icon: const Icon(Icons.filter_list, size: 16),
-                  label: Text(_selectedPrefecture.englishName, style: const TextStyle(fontSize: 12)),
-                  style: TextButton.styleFrom(foregroundColor: CommandCenterTheme.secondaryCyan),
+                  label: Text(
+                    _selectedPrefecture.englishName,
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                  style: TextButton.styleFrom(
+                    foregroundColor: CommandCenterTheme.secondaryCyan,
+                  ),
                 ),
               ],
             ),
@@ -114,7 +130,7 @@ class PulseIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     final useMock = context.watch<SDKState>().useMock;
     final color = useMock ? Colors.amber : CommandCenterTheme.pulseGreen;
-    
+
     return Row(
       children: [
         Container(
@@ -128,7 +144,7 @@ class PulseIndicator extends StatelessWidget {
                 color: color.withAlpha(128),
                 blurRadius: 4,
                 spreadRadius: 2,
-              )
+              ),
             ],
           ),
         ),
@@ -172,15 +188,18 @@ class FuelMonitorModule extends StatelessWidget {
       future: client.fuel.query().wherePrefecture(prefecture).fetch(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const SizedBox(height: 200, child: Center(child: CircularProgressIndicator()));
+          return const SizedBox(
+            height: 200,
+            child: Center(child: CircularProgressIndicator()),
+          );
         }
-        
+
         if (snapshot.hasError) {
           return ErrorCard(error: snapshot.error.toString());
         }
 
         final stations = snapshot.data ?? [];
-        
+
         return AnimationLimiter(
           child: ListView.separated(
             shrinkWrap: true,
@@ -194,9 +213,7 @@ class FuelMonitorModule extends StatelessWidget {
                 duration: const Duration(milliseconds: 375),
                 child: SlideAnimation(
                   verticalOffset: 50.0,
-                  child: FadeInAnimation(
-                    child: StationCard(station: station),
-                  ),
+                  child: FadeInAnimation(child: StationCard(station: station)),
                 ),
               );
             },
@@ -238,15 +255,39 @@ class ProcurementMonitorModule extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(child: Text(latest.subject, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13), maxLines: 1, overflow: TextOverflow.ellipsis)),
+                    Expanded(
+                      child: Text(
+                        latest.subject,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
                     const SizedBox(width: 12),
-                    Text('€${latest.amount.toStringAsFixed(0)}', style: const TextStyle(color: Colors.greenAccent, fontWeight: FontWeight.bold)),
+                    Text(
+                      '€${latest.amount.toStringAsFixed(0)}',
+                      style: const TextStyle(
+                        color: Colors.greenAccent,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 8),
-                Text(latest.organization, style: Theme.of(context).textTheme.labelSmall),
+                Text(
+                  latest.organization,
+                  style: Theme.of(context).textTheme.labelSmall,
+                ),
                 const SizedBox(height: 4),
-                Text('ADAM: ${latest.adam}', style: Theme.of(context).textTheme.labelSmall?.copyWith(fontSize: 10)),
+                Text(
+                  'ADAM: ${latest.adam}',
+                  style: Theme.of(
+                    context,
+                  ).textTheme.labelSmall?.copyWith(fontSize: 10),
+                ),
               ],
             ),
           ),
@@ -282,16 +323,29 @@ class TelecomMonitorModule extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('GR-IX Internet Traffic', style: TextStyle(fontWeight: FontWeight.bold)),
-                    FaIcon(FontAwesomeIcons.networkWired, size: 14, color: Colors.blue[300]),
+                    const Text(
+                      'GR-IX Internet Traffic',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    FaIcon(
+                      FontAwesomeIcons.networkWired,
+                      size: 14,
+                      color: Colors.blue[300],
+                    ),
                   ],
                 ),
                 const SizedBox(height: 16),
                 Row(
                   children: [
-                    _TrafficMetric(label: 'INBOUND', value: '${latest.inbound.toStringAsFixed(1)} Gbps'),
+                    _TrafficMetric(
+                      label: 'INBOUND',
+                      value: '${latest.inbound.toStringAsFixed(1)} Gbps',
+                    ),
                     const SizedBox(width: 24),
-                    _TrafficMetric(label: 'OUTBOUND', value: '${latest.outbound.toStringAsFixed(1)} Gbps'),
+                    _TrafficMetric(
+                      label: 'OUTBOUND',
+                      value: '${latest.outbound.toStringAsFixed(1)} Gbps',
+                    ),
                   ],
                 ),
               ],
@@ -314,7 +368,14 @@ class _TrafficMetric extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(label, style: Theme.of(context).textTheme.labelSmall),
-        Text(value, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: CommandCenterTheme.secondaryCyan)),
+        Text(
+          value,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+            color: CommandCenterTheme.secondaryCyan,
+          ),
+        ),
       ],
     );
   }
@@ -343,10 +404,23 @@ class EnvironmentMonitorModule extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const FaIcon(FontAwesomeIcons.fire, size: 14, color: Colors.orangeAccent),
+                const FaIcon(
+                  FontAwesomeIcons.fire,
+                  size: 14,
+                  color: Colors.orangeAccent,
+                ),
                 const SizedBox(height: 12),
-                const Text('Forest Fires', style: TextStyle(fontSize: 12, color: Colors.white54)),
-                Text(count.toString(), style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                const Text(
+                  'Forest Fires',
+                  style: TextStyle(fontSize: 12, color: Colors.white54),
+                ),
+                Text(
+                  count.toString(),
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ],
             ),
           ),
@@ -369,15 +443,27 @@ class StationCard extends StatelessWidget {
           children: [
             CircleAvatar(
               backgroundColor: Colors.white.withAlpha(13),
-              child: const FaIcon(FontAwesomeIcons.gasPump, size: 16, color: Colors.amber),
+              child: const FaIcon(
+                FontAwesomeIcons.gasPump,
+                size: 16,
+                color: Colors.amber,
+              ),
             ),
             const SizedBox(width: 16),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(station.brand, style: const TextStyle(fontWeight: FontWeight.bold)),
-                  Text(station.address, style: Theme.of(context).textTheme.labelSmall, maxLines: 1, overflow: TextOverflow.ellipsis),
+                  Text(
+                    station.brand,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    station.address,
+                    style: Theme.of(context).textTheme.labelSmall,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ],
               ),
             ),
@@ -391,7 +477,10 @@ class StationCard extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text(station.fuelType.englishName, style: Theme.of(context).textTheme.labelSmall),
+                Text(
+                  station.fuelType.englishName,
+                  style: Theme.of(context).textTheme.labelSmall,
+                ),
               ],
             ),
           ],
@@ -416,7 +505,9 @@ class HealthMonitorModule extends StatelessWidget {
         }
 
         final data = snapshot.data ?? [];
-        final total = data.isEmpty ? 0 : data.fold<int>(0, (sum, item) => sum + item.dayTotal);
+        final total = data.isEmpty
+            ? 0
+            : data.fold<int>(0, (sum, item) => sum + item.dayTotal);
 
         return Card(
           child: Padding(
@@ -424,12 +515,24 @@ class HealthMonitorModule extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const FaIcon(FontAwesomeIcons.syringe, size: 14, color: CommandCenterTheme.secondaryCyan),
+                const FaIcon(
+                  FontAwesomeIcons.syringe,
+                  size: 14,
+                  color: CommandCenterTheme.secondaryCyan,
+                ),
                 const SizedBox(height: 12),
-                const Text('Vaccinations', style: TextStyle(fontSize: 12, color: Colors.white54)),
+                const Text(
+                  'Vaccinations',
+                  style: TextStyle(fontSize: 12, color: Colors.white54),
+                ),
                 Text(
-                  total > 1000 ? '${(total / 1000).toStringAsFixed(1)}k' : total.toString(),
-                  style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  total > 1000
+                      ? '${(total / 1000).toStringAsFixed(1)}k'
+                      : total.toString(),
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
@@ -454,7 +557,10 @@ class ErrorCard extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.all(16),
-        child: Text(error, style: const TextStyle(color: Colors.redAccent, fontSize: 12)),
+        child: Text(
+          error,
+          style: const TextStyle(color: Colors.redAccent, fontSize: 12),
+        ),
       ),
     );
   }

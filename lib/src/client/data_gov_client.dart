@@ -35,6 +35,8 @@ class DataGovClient {
     List<Interceptor>? interceptors,
   }) : _dio = Dio(BaseOptions(
           baseUrl: _baseUrl,
+          connectTimeout: const Duration(seconds: 60),
+          receiveTimeout: const Duration(seconds: 60),
           headers: {
             'Authorization': 'Token $apiKey',
             'User-Agent': _userAgent,

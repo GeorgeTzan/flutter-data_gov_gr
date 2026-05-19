@@ -20,23 +20,24 @@ class CommandCenterTheme {
         surface: cardBg,
         error: Colors.redAccent,
       ),
-      textTheme: GoogleFonts.interTextTheme(ThemeData.dark().textTheme).copyWith(
-        displayLarge: GoogleFonts.publicSans(
-          fontSize: 32,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-        headlineMedium: GoogleFonts.publicSans(
-          fontSize: 24,
-          fontWeight: FontWeight.w600,
-          color: Colors.white,
-        ),
-        bodyLarge: const TextStyle(fontSize: 16, color: Colors.white70),
-        labelSmall: GoogleFonts.jetBrainsMono(
-          fontSize: 12,
-          color: Colors.white38,
-        ),
-      ),
+      textTheme: GoogleFonts.interTextTheme(ThemeData.dark().textTheme)
+          .copyWith(
+            displayLarge: GoogleFonts.publicSans(
+              fontSize: 32,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+            headlineMedium: GoogleFonts.publicSans(
+              fontSize: 24,
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
+            ),
+            bodyLarge: const TextStyle(fontSize: 16, color: Colors.white70),
+            labelSmall: GoogleFonts.jetBrainsMono(
+              fontSize: 12,
+              color: Colors.white38,
+            ),
+          ),
       cardTheme: CardThemeData(
         color: cardBg,
         elevation: 0,

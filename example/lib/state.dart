@@ -4,7 +4,7 @@ import 'package:data_gov_gr/data_gov_gr.dart';
 class SDKState extends ChangeNotifier {
   bool _useMock = true;
   String _apiKey = '';
-  
+
   late DataGovClient _client;
 
   SDKState() {

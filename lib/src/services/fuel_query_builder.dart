@@ -5,7 +5,7 @@ import 'fuel_service.dart';
 
 class FuelQueryBuilder {
   final FuelService _service;
-  
+
   DateTime? _date;
   Prefecture? _prefecture;
   FuelType? _fuelType;

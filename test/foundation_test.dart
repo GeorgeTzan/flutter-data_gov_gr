@@ -4,7 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
-class MockErrorInterceptorHandler extends Mock implements ErrorInterceptorHandler {}
+class MockErrorInterceptorHandler extends Mock
+    implements ErrorInterceptorHandler {}
 
 void main() {
   late ErrorInterceptor interceptor;
@@ -28,7 +29,9 @@ void main() {
 
       interceptor.onError(dioError, mockHandler);
 
-      final captured = verify(() => mockHandler.next(captureAny())).captured.first as DioException;
+      final captured = verify(() => mockHandler.next(captureAny()))
+          .captured
+          .first as DioException;
       expect(captured.error, isA<UnauthorizedException>());
     });
 
@@ -43,7 +46,9 @@ void main() {
 
       interceptor.onError(dioError, mockHandler);
 
-      final captured = verify(() => mockHandler.next(captureAny())).captured.first as DioException;
+      final captured = verify(() => mockHandler.next(captureAny()))
+          .captured
+          .first as DioException;
       expect(captured.error, isA<RateLimitException>());
     });
 
@@ -58,7 +63,9 @@ void main() {
 
       interceptor.onError(dioError, mockHandler);
 
-      final captured = verify(() => mockHandler.next(captureAny())).captured.first as DioException;
+      final captured = verify(() => mockHandler.next(captureAny()))
+          .captured
+          .first as DioException;
       expect(captured.error, isA<ServerException>());
     });
 
@@ -70,9 +77,12 @@ void main() {
 
       interceptor.onError(dioError, mockHandler);
 
-      final captured = verify(() => mockHandler.next(captureAny())).captured.first as DioException;
+      final captured = verify(() => mockHandler.next(captureAny()))
+          .captured
+          .first as DioException;
       expect(captured.error, isA<NetworkException>());
-      expect((captured.error as NetworkException).message, contains('timed out'));
+      expect(
+          (captured.error as NetworkException).message, contains('timed out'));
     });
   });
 }

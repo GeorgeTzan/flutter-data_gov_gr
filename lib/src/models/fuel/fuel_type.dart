@@ -20,15 +20,24 @@ extension FuelTypeX on FuelType {
 
   String get englishName {
     switch (this) {
-      case FuelType.unleaded95: return 'Unleaded 95';
-      case FuelType.unleaded100: return 'Unleaded 100';
-      case FuelType.superUnleaded: return 'Super';
-      case FuelType.diesel: return 'Diesel';
-      case FuelType.dieselPremium: return 'Premium Diesel';
-      case FuelType.lpg: return 'LPG';
-      case FuelType.cng: return 'CNG';
-      case FuelType.heatingDiesel: return 'Heating Diesel';
-      case FuelType.unknown: return 'Unknown';
+      case FuelType.unleaded95:
+        return 'Unleaded 95';
+      case FuelType.unleaded100:
+        return 'Unleaded 100';
+      case FuelType.superUnleaded:
+        return 'Super';
+      case FuelType.diesel:
+        return 'Diesel';
+      case FuelType.dieselPremium:
+        return 'Premium Diesel';
+      case FuelType.lpg:
+        return 'LPG';
+      case FuelType.cng:
+        return 'CNG';
+      case FuelType.heatingDiesel:
+        return 'Heating Diesel';
+      case FuelType.unknown:
+        return 'Unknown';
     }
   }
 }

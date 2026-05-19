@@ -11,7 +11,8 @@ class TelecomService {
     DateTime? to,
   }) async {
     final params = <String, dynamic>{};
-    if (from != null) params['date_from'] = from.toIso8601String().split('T').first;
+    if (from != null)
+      params['date_from'] = from.toIso8601String().split('T').first;
     if (to != null) params['date_to'] = to.toIso8601String().split('T').first;
 
     final response = await _client.dio.get(
