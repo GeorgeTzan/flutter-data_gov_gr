@@ -1,6 +1,5 @@
-# data_gov_gr
+# flutter-data_gov_gr
 
-[![Pub Version](https://img.shields.io/pub/v/data_gov_gr?logo=dart)](https://pub.dev/packages/data_gov_gr)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 An unofficial, type-safe, and modular Dart SDK for the Greek Government Open Data API ([data.gov.gr](https://data.gov.gr)).
@@ -20,11 +19,14 @@ An unofficial, type-safe, and modular Dart SDK for the Greek Government Open Dat
 
 ### 1. Add dependency
 
-Add this to your `pubspec.yaml`:
+Add this to your `pubspec.yaml` to fetch the package directly from GitHub:
 
 ```yaml
 dependencies:
-  data_gov_gr: ^1.0.0
+  data_gov_gr:
+    git:
+      url: https://github.com/georgetzan/flutter-data_gov_gr.git
+      ref: main
 ```
 
 ### 2. Initialize the client
@@ -108,10 +110,12 @@ flutter run -d chrome --web-browser-flag "--disable-web-security"
 - **Go**: [go-data-gov-gr-sdk](https://github.com/ppapapetrou76/go-data-gov-gr-sdk)
 - **R**: [datagovgR](https://github.com/elenigvasilaki/datagovgR)
 
-## API Compatibility
+## API Compatibility & Architecture
 
-This SDK uses `https://old.data.gov.gr/api/v1/` as the default base URL. This ensures 100% compatibility with JWT tokens provided by various government portals, bypassing common 404 errors found on the primary gateway for certain token types.
+The SDK targets the modern **`data.gov.gr` CKAN Action API v3** (`https://data.gov.gr/api/3/action/`).
+
+To prevent breaking existing applications, a built-in `CkanCompatibilityInterceptor` automatically intercepts legacy REST-style endpoints (e.g., vaccine, fuel, and traffic paths) and translates them on-the-fly into CKAN action queries (like `datastore_search`). This ensures 100% backward compatibility for all API methods.
 
 ## License
 
-MIT License - see LICENSE for details.
+MIT License - see [LICENSE](file:///home/georgetzan/git-repos/data_gov_gr/LICENSE) for details.
