@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  analyze_and_test:
+    name: Code Quality & Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter SDK
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Print Flutter & Dart versions
+        run: |
+          flutter --version
+          dart --version
+
+      - name: Check SDK Formatting
+        run: dart format --output=none --set-exit-if-changed .
+
+      - name: Install SDK Dependencies
+        run: dart pub get
+
+      - name: Analyze SDK Core
+        run: dart analyze --fatal-infos --fatal-warnings
+
+      - name: Run SDK Tests
+        run: dart test
+
+      - name: Install Example App Dependencies
+        run: |
+          cd example
+          flutter pub get
+
+      - name: Analyze Example App
+        run: |
+          cd example
+          flutter analyze

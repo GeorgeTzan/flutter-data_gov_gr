@@ -19,7 +19,7 @@ An unofficial, type-safe, and modular Dart SDK for the Greek Government Open Dat
 
 ### 1. Add dependency
 
-Add this to your `pubspec.yaml` to fetch the package directly from GitHub:
+For now, you can add this to your `pubspec.yaml` to fetch the package directly from GitHub:
 
 ```yaml
 dependencies:
@@ -28,6 +28,9 @@ dependencies:
       url: https://github.com/georgetzan/flutter-data_gov_gr.git
       ref: main
 ```
+
+*(Once published to **[pub.dev](https://pub.dev)**, you can install it standardly via `dart pub add data_gov_gr` or add `data_gov_gr: ^1.0.0` to your dependencies).*
+
 
 ### 2. Initialize the client
 
