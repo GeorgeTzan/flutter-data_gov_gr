@@ -1,3 +1,4 @@
+/// A utility class for transliterating Greek characters to Latin characters.
 class Transliteration {
   static const Map<String, String> _map = {
     'Α': 'A',
@@ -62,6 +63,7 @@ class Transliteration {
     'ΰ': 'y',
   };
 
+  /// Transliterates Greek characters in a string to their Latin equivalents.
   static String greekToLatin(String input) {
     final buffer = StringBuffer();
     for (var i = 0; i < input.length; i++) {

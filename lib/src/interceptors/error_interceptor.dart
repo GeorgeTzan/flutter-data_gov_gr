@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import '../exceptions/data_gov_exception.dart';
 
+/// An interceptor that maps [DioException]s to custom [DataGovException]s.
 class ErrorInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {

@@ -20,6 +20,10 @@ import '../services/technology_service.dart';
 import '../services/telecom_service.dart';
 import '../services/transport_service.dart';
 
+/// The main client for interacting with the Greek Government Open Data API (data.gov.gr).
+///
+/// It provides access to individual type-safe services (e.g. [fuel], [health]) as well
+/// as a [generic] service for querying any endpoint dynamically.
 class DataGovClient {
   static const String _baseUrl = 'https://data.gov.gr/api/3/action/';
   static const String _userAgent = 'data_gov_gr_sdk_dart/1.0.0';
@@ -28,20 +32,49 @@ class DataGovClient {
   final BehaviorSubject<RateLimitStatus> _rateLimitController =
       BehaviorSubject<RateLimitStatus>.seeded(RateLimitStatus.initial());
 
+  /// Fuel prices and station information.
   late final FuelService fuel;
+
+  /// Health-related statistics (e.g. vaccinations).
   late final HealthService health;
+
+  /// Telecom data and GR-IX internet traffic.
   late final TelecomService telecom;
+
+  /// Environment-related metrics (e.g. forest fire data).
   late final EnvironmentService environment;
+
+  /// Programmatic metadata discovery of datasets, topics, and providers.
   late final DiscoveryService discovery;
+
+  /// Generic client query service for dynamic and custom datasets.
   late final GenericService generic;
+
+  /// Procurement data (KIMDIS decisions).
   late final ProcurementService procurement;
+
+  /// Business, economy, debt, budget, and revenue data.
   late final BusinessService business;
+
+  /// Crime and road safety statistics.
   late final JusticeService justice;
+
+  /// University and vocational training metrics.
   late final EducationService education;
+
+  /// Labor market and employment metrics.
   late final SocietyService society;
+
+  /// Digital adoption and technology statistics.
   late final TechnologyService technology;
+
+  /// Public transport and airport traffic metrics.
   late final TransportService transport;
 
+  /// Creates a new [DataGovClient] instance.
+  ///
+  /// Requires an [apiKey] for authentication. Set [enableLogging] to true
+  /// to log request/response details to stdout.
   DataGovClient({
     required String apiKey,
     bool enableLogging = false,
@@ -98,10 +131,13 @@ class DataGovClient {
     }
   }
 
+  /// The underlying [Dio] HTTP client instance.
   Dio get dio => _dio;
 
+  /// A stream that emits updates on the current rate-limit usage (remaining requests, resets, etc.).
   Stream<RateLimitStatus> get rateLimitStatus => _rateLimitController.stream;
 
+  /// Closes the HTTP client and releases any active resources.
   void dispose() {
     _rateLimitController.close();
     _dio.close();

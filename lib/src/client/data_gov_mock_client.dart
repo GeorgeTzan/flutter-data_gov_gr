@@ -4,9 +4,14 @@ import 'package:dio/dio.dart';
 import 'data_gov_client.dart';
 import '../utils/mock_data.dart';
 
+/// A mock client for testing the data.gov.gr SDK offline.
+///
+/// Pre-populates default mock data stubs for the SDK services and allows
+/// registering custom stubs for specific endpoints.
 class DataGovMockClient extends DataGovClient {
   final Map<String, List<dynamic>> _stubs = {};
 
+  /// Creates a new [DataGovMockClient] instance with predefined mock stubs.
   DataGovMockClient() : super(apiKey: 'mock-key') {
     dio.httpClientAdapter = _MockAdapter(_stubs);
     _seedDefaultStubs();
@@ -77,23 +82,36 @@ class DataGovMockClient extends DataGovClient {
     ];
   }
 
+  /// Stubs the detailed fuel station query endpoint with [data].
   void stubFuelPrices(List<Map<String, dynamic>> data) =>
       _stubs['query/gas_price_per_station'] = data;
+
+  /// Stubs the prefecture-level fuel price query endpoint with [data].
   void stubPrefectureFuelPrices(List<Map<String, dynamic>> data) =>
       _stubs['query/min_max_fuel_prices_per_prefecture'] = data;
+
+  /// Stubs the vaccination statistics query endpoint with [data].
   void stubVaccinations(List<Map<String, dynamic>> data) =>
       _stubs['query/mdg_emvolio'] = data;
+
+  /// Stubs the internet traffic query endpoint with [data].
   void stubInternetTraffic(List<Map<String, dynamic>> data) =>
       _stubs['query/internet_traffic'] = data;
+
+  /// Stubs the forest fires query endpoint with [data].
   void stubForestFires(List<Map<String, dynamic>> data) =>
       _stubs['query/mcp_forest_fires'] = data;
+
+  /// Stubs the KIMDIS procurement decisions query endpoint with [data].
   void stubProcurement(List<Map<String, dynamic>> data) =>
       _stubs['query/khmdhs_decisions'] = data;
 
+  /// Stubs a generic query for a specific [datasetId] with [data].
   void stubGeneric(String datasetId, List<Map<String, dynamic>> data) {
     _stubs['query/$datasetId'] = data;
   }
 
+  /// Registers a custom mock [data] response for a specific [endpoint] path.
   void registerStub(String endpoint, List<dynamic> data) {
     _stubs[endpoint] = data;
   }

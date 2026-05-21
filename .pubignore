@@ -1,0 +1,13 @@
+# Ignore agent and IDE folders
+.gemini/
+.antigravitycli/
+.idea/
+.vscode/
+
+# Ignore local tool files
+.dart_tool/
+build/
+all_packages.json
+
+# Ignore temporary test resources
+scratch/

@@ -1,3 +1,4 @@
+/// An unofficial, type-safe, and modular Dart SDK for the Greek Government Open Data API (data.gov.gr).
 library data_gov_gr;
 
 export 'src/client/data_gov_client.dart';

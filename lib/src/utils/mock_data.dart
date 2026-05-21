@@ -1,5 +1,6 @@
 import '../models/shared/prefecture.dart';
 
+/// Mock data utility for testing and demonstration purposes.
 class MockData {
   static final List<Map<String, dynamic>> fuelStations =
       _generateFuelStations();

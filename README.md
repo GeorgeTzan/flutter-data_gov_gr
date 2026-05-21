@@ -117,6 +117,30 @@ flutter run -d chrome --web-browser-flag "--disable-web-security"
 
 ## API Compatibility & Architecture
 
+```mermaid
+graph TD
+    App[User's Application] --> Client[DataGovClient]
+    
+    subgraph SDK Client Architecture
+        Client --> Services[Type-Safe Services]
+        Client --> Generic[GenericService]
+        Client --> Interceptors[Interceptors Pipeline]
+        
+        Services --> Fuel[FuelService / Query DSL]
+        Services --> Health[HealthService]
+        Services --> Telecom[TelecomService]
+        Services --> Others[Other Services...]
+        
+        Interceptors --> Ckan[CkanCompatibilityInterceptor]
+        Interceptors --> Error[ErrorInterceptor]
+        Interceptors --> RateLimit[RateLimitInterceptor]
+        Interceptors --> Retry[RetryInterceptor]
+    end
+    
+    Interceptors --> Dio[Dio Network Client]
+    Dio --> API[data.gov.gr CKAN API v3]
+```
+
 The SDK targets the modern **`data.gov.gr` CKAN Action API v3** (`https://data.gov.gr/api/3/action/`).
 
 To prevent breaking existing applications, a built-in `CkanCompatibilityInterceptor` automatically intercepts legacy REST-style endpoints (e.g., vaccine, fuel, and traffic paths) and translates them on-the-fly into CKAN action queries (like `datastore_search`). This ensures 100% backward compatibility for all API methods.

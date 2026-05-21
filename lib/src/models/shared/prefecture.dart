@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
+/// Represents the 51 prefectures of Greece used for filtering datasets.
 enum Prefecture {
   attica('ΑΤΤΙΚΗΣ'),
   thessaloniki('ΘΕΣΣΑΛΟΝΙΚΗΣ'),
@@ -53,13 +54,19 @@ enum Prefecture {
   chania('ΧΑΝΙΩΝ'),
   chios('ΧΙΟΥ');
 
+  /// The uppercase Greek name of the prefecture as used in the API.
   final String rawGreekName;
+
+  /// Creates a [Prefecture] with its uppercase Greek name.
   const Prefecture(this.rawGreekName);
 }
 
+/// Extension methods for [Prefecture].
 extension PrefectureX on Prefecture {
+  /// Returns the uppercase Greek name of the prefecture.
   String get greekName => rawGreekName;
 
+  /// Returns the English capitalized name of the prefecture.
   String get englishName {
     switch (this) {
       case Prefecture.attica:
@@ -73,7 +80,9 @@ extension PrefectureX on Prefecture {
   }
 }
 
+/// A JSON converter for mapping prefecture names to [Prefecture] enum values.
 class PrefectureConverter implements JsonConverter<Prefecture, String> {
+  /// Creates a new [PrefectureConverter] instance.
   const PrefectureConverter();
 
   @override

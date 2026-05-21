@@ -2,12 +2,21 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import '../utils/mock_data.dart';
 
+/// An entry in the dataset cache for CKAN compatibility resolution.
 class DatasetCacheEntry {
+  /// The resource ID of the dataset.
   final String resourceId;
+
+  /// Whether the datastore is active for this dataset.
   final bool datastoreActive;
+
+  /// The download URL for the dataset.
   final String downloadUrl;
+
+  /// The format of the dataset (e.g., CSV, JSON).
   final String format;
 
+  /// Creates a new [DatasetCacheEntry] instance.
   DatasetCacheEntry({
     required this.resourceId,
     required this.datastoreActive,
@@ -16,6 +25,7 @@ class DatasetCacheEntry {
   });
 }
 
+/// An interceptor that adds support for CKAN-compatible endpoints and local mocks.
 class CkanCompatibilityInterceptor extends Interceptor {
   // In-memory cache for resolved datasets to avoid extra package_show API calls.
   static final Map<String, DatasetCacheEntry> _resolutionCache = {};
