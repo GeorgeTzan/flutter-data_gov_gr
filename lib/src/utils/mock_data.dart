@@ -1,29 +1,74 @@
-class MockData {
-  static const List<Map<String, dynamic>> fuelStations = [
-    {
-      'station_id': '1001',
-      'brand': 'EKO',
-      'address': 'ΛΕΩΦ. ΚΗΦΙΣΙΑΣ 100',
-      'municipality': 'ΜΑΡΟΥΣΙ',
-      'prefecture': 'ΑΤΤΙΚΗΣ',
-      'latitude': 38.0333,
-      'longitude': 23.8167,
-      'fuel_type': 'Αμόλυβδη 95',
-      'fuel_price': 1.899,
-      'date': '2024-05-13T09:00:00Z',
-    },
-  ];
+import '../models/shared/prefecture.dart';
 
-  static const List<Map<String, dynamic>> prefectureFuelPrices = [
-    {
-      'prefecture': 'ΑΤΤΙΚΗΣ',
-      'fuel_type': 'Αμόλυβδη 95',
-      'min_price': 1.845,
-      'max_price': 2.099,
-      'avg_price': 1.882,
-      'date': '2024-05-13',
+class MockData {
+  static final List<Map<String, dynamic>> fuelStations = _generateFuelStations();
+  static final List<Map<String, dynamic>> prefectureFuelPrices = _generatePrefectureFuelPrices();
+
+  static List<Map<String, dynamic>> _generateFuelStations() {
+    final list = <Map<String, dynamic>>[];
+    for (final pref in Prefecture.values) {
+      final name = pref.rawGreekName;
+      final code = name.hashCode.abs();
+      list.addAll([
+        {
+          'station_id': '${(1000 + code % 1000)}_1',
+          'brand': 'EKO',
+          'address': 'ΚΕΝΤΡΙΚΗ ΟΔΟΣ 1',
+          'municipality': 'ΧΩΡΑ',
+          'prefecture': name,
+          'latitude': 38.0 + (code % 100) / 100.0,
+          'longitude': 23.0 + (code % 100) / 100.0,
+          'fuel_type': 'Αμόλυβδη 95',
+          'fuel_price': 1.85 + (code % 10) / 100.0,
+          'date': '2024-05-13T09:00:00Z',
+        },
+        {
+          'station_id': '${(1000 + code % 1000)}_2',
+          'brand': 'BP',
+          'address': 'ΛΕΩΦΟΡΟΣ ΔΗΜΟΚΡΑΤΙΑΣ 12',
+          'municipality': 'ΚΕΝΤΡΟ',
+          'prefecture': name,
+          'latitude': 38.05 + (code % 100) / 100.0,
+          'longitude': 23.05 + (code % 100) / 100.0,
+          'fuel_type': 'Αμόλυβδη 95',
+          'fuel_price': 1.88 + (code % 10) / 100.0,
+          'date': '2024-05-13T09:30:00Z',
+        },
+        {
+          'station_id': '${(1000 + code % 1000)}_3',
+          'brand': 'Shell',
+          'address': 'ΕΘΝΙΚΗ ΟΔΟΣ 50',
+          'municipality': 'ΠΡΟΑΣΤΙΟ',
+          'prefecture': name,
+          'latitude': 38.1 + (code % 100) / 100.0,
+          'longitude': 23.1 + (code % 100) / 100.0,
+          'fuel_type': 'Αμόλυβδη 95',
+          'fuel_price': 1.92 + (code % 10) / 100.0,
+          'date': '2024-05-13T10:00:00Z',
+        },
+      ]);
     }
-  ];
+    return list;
+  }
+
+  static List<Map<String, dynamic>> _generatePrefectureFuelPrices() {
+    final list = <Map<String, dynamic>>[];
+    for (final pref in Prefecture.values) {
+      final name = pref.rawGreekName;
+      final code = name.hashCode.abs();
+      final basePrice = 1.85 + (code % 10) / 100.0;
+      list.add({
+        'prefecture': name,
+        'fuel_type': 'Αμόλυβδη 95',
+        'min_price': basePrice,
+        'max_price': basePrice + 0.15,
+        'avg_price': basePrice + 0.05,
+        'date': '2024-05-13',
+      });
+    }
+    return list;
+  }
+
 
   static const List<Map<String, dynamic>> vaccinations = [
     {

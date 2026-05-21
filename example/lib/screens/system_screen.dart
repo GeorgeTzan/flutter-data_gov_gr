@@ -5,12 +5,37 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../state.dart';
 import '../theme.dart';
 
-class SystemScreen extends StatelessWidget {
+class SystemScreen extends StatefulWidget {
   const SystemScreen({super.key});
+
+  @override
+  State<SystemScreen> createState() => _SystemScreenState();
+}
+
+class _SystemScreenState extends State<SystemScreen> {
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    final sdkState = context.read<SDKState>();
+    _controller = TextEditingController(text: sdkState.apiKey);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final sdkState = context.watch<SDKState>();
+
+    // Sync controller if apiKey is updated elsewhere
+    if (_controller.text != sdkState.apiKey) {
+      _controller.text = sdkState.apiKey;
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -48,12 +73,13 @@ class SystemScreen extends StatelessWidget {
                     ),
                     value: sdkState.useMock,
                     onChanged: (val) => sdkState.toggleMock(val),
-                    activeColor: Colors.amber,
+                    activeThumbColor: Colors.amber,
                     activeTrackColor: Colors.amber.withAlpha(128),
                   ),
                   if (!sdkState.useMock) ...[
                     const Divider(height: 32),
                     TextField(
+                      controller: _controller,
                       decoration: const InputDecoration(
                         labelText: 'API Token',
                         hintText: 'Enter your data.gov.gr token',

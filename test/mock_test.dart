@@ -15,7 +15,7 @@ void main() {
     test('returns default realistic data if no stub is provided', () async {
       final results = await fuelService.getGasPricesPerStation();
 
-      expect(results.length, 1);
+      expect(results.length, greaterThanOrEqualTo(1));
       expect(results.any((s) => s.brand == 'EKO'), isTrue);
     });
 

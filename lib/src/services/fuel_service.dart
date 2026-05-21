@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import '../client/data_gov_client.dart';
 import '../models/fuel/fuel_station.dart';
 import '../models/fuel/fuel_type.dart';

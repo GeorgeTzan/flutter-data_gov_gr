@@ -24,8 +24,8 @@ void main() {
 
     test('can fetch vaccination data', () async {
       final data = await client.health.getVaccinationStatistics(
-        from: DateTime(2021, 5, 1),
-        to: DateTime(2021, 5, 7),
+        from: DateTime(2024, 5, 1),
+        to: DateTime(2024, 5, 7),
       );
       expect(data, isNotEmpty);
       print('Verified: Fetched vaccination statistics.');
@@ -35,8 +35,8 @@ void main() {
       final data = await client.generic.query(
         'internet_traffic',
         parameters: {
-          'date_from': '2021-01-01',
-          'date_to': '2021-01-02',
+          'date_from': '2025-08-29',
+          'date_to': '2025-08-30',
         },
       );
       expect(data, isNotEmpty);

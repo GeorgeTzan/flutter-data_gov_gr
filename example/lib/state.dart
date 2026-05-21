@@ -12,6 +12,7 @@ class SDKState extends ChangeNotifier {
   }
 
   bool get useMock => _useMock;
+  String get apiKey => _apiKey;
   DataGovClient get client => _client;
 
   void toggleMock(bool value) {
@@ -22,10 +23,8 @@ class SDKState extends ChangeNotifier {
 
   void updateApiKey(String key) {
     _apiKey = key;
-    if (!_useMock) {
-      _initClient();
-      notifyListeners();
-    }
+    _initClient();
+    notifyListeners();
   }
 
   void _initClient() {

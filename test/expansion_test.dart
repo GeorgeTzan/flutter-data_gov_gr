@@ -120,7 +120,7 @@ void main() {
         }
       ];
 
-      when(() => mockDio.get('datasets')).thenAnswer((_) async => Response(
+      when(() => mockDio.get('datasets/')).thenAnswer((_) async => Response(
             data: mockResponse,
             statusCode: 200,
             requestOptions: RequestOptions(),

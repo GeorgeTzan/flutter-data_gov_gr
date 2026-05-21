@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:data_gov_gr/data_gov_gr.dart';
@@ -92,55 +94,10 @@ class DatasetListTab extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  child: FutureBuilder<List<Map<String, dynamic>>>(
-                    future: client.generic.query(id),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-                      if (snapshot.hasError) {
-                        return Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(32),
-                            child: Text(
-                              snapshot.error.toString(),
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(color: Colors.redAccent),
-                            ),
-                          ),
-                        );
-                      }
-                      final data = snapshot.data ?? [];
-                      if (data.isEmpty)
-                        return const Center(child: Text('No records returned'));
-
-                      return ListView.builder(
-                        controller: scrollController,
-                        itemCount: data.length,
-                        itemBuilder: (context, index) {
-                          final item = data[index];
-                          return Container(
-                            margin: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 8,
-                            ),
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withAlpha(5),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: SelectableText(
-                              item.toString(),
-                              style: const TextStyle(
-                                fontFamily: 'monospace',
-                                fontSize: 11,
-                                color: Colors.white70,
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    },
+                  child: DatasetQueryView(
+                    client: client,
+                    datasetId: id,
+                    scrollController: scrollController,
                   ),
                 ),
               ],
@@ -308,6 +265,132 @@ class _ErrorState extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class DatasetQueryView extends StatefulWidget {
+  final DataGovClient client;
+  final String datasetId;
+  final ScrollController scrollController;
+
+  const DatasetQueryView({
+    super.key,
+    required this.client,
+    required this.datasetId,
+    required this.scrollController,
+  });
+
+  @override
+  State<DatasetQueryView> createState() => _DatasetQueryViewState();
+}
+
+class _DatasetQueryViewState extends State<DatasetQueryView> {
+  StreamSubscription<List<Map<String, dynamic>>>? _subscription;
+  final List<Map<String, dynamic>> _records = [];
+  bool _isLoading = true;
+  Object? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    _startQuery();
+  }
+
+  void _startQuery() {
+    _subscription = widget.client.generic.queryPaged(widget.datasetId, pageSize: 50).listen(
+      (chunk) {
+        setState(() {
+          _records.addAll(chunk);
+        });
+      },
+      onError: (err) {
+        setState(() {
+          _error = err;
+          _isLoading = false;
+        });
+      },
+      onDone: () {
+        setState(() {
+          _isLoading = false;
+        });
+      },
+      cancelOnError: true,
+    );
+  }
+
+  @override
+  void dispose() {
+    _subscription?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_error != null && _records.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(32),
+          child: Text(
+            _error.toString(),
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: Colors.redAccent),
+          ),
+        ),
+      );
+    }
+
+    if (_records.isEmpty && _isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (_records.isEmpty && !_isLoading) {
+      return const Center(child: Text('No records returned'));
+    }
+
+    return Column(
+      children: [
+        if (_isLoading)
+          const LinearProgressIndicator(
+            backgroundColor: Colors.transparent,
+            valueColor: AlwaysStoppedAnimation<Color>(CommandCenterTheme.secondaryCyan),
+            minHeight: 2,
+          ),
+        Expanded(
+          child: ListView.builder(
+            controller: widget.scrollController,
+            itemCount: _records.length,
+            itemBuilder: (context, index) {
+              final item = _records[index];
+              String prettyJson;
+              try {
+                prettyJson = const JsonEncoder.withIndent('  ').convert(item);
+              } catch (_) {
+                prettyJson = item.toString();
+              }
+              return Container(
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.white.withAlpha(5),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: SelectableText(
+                  prettyJson,
+                  style: const TextStyle(
+                    fontFamily: 'monospace',
+                    fontSize: 11,
+                    color: Colors.white70,
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }

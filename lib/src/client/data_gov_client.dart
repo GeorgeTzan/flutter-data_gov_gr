@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:rxdart/subjects.dart';
 
+import '../interceptors/ckan_compatibility_interceptor.dart';
 import '../interceptors/error_interceptor.dart';
 import '../interceptors/rate_limit_interceptor.dart';
 import '../models/shared/rate_limit_status.dart';
@@ -20,7 +21,7 @@ import '../services/telecom_service.dart';
 import '../services/transport_service.dart';
 
 class DataGovClient {
-  static const String _baseUrl = 'https://old.data.gov.gr/api/v1/';
+  static const String _baseUrl = 'https://data.gov.gr/api/3/action/';
   static const String _userAgent = 'data_gov_gr_sdk_dart/1.0.0';
 
   final Dio _dio;
@@ -50,7 +51,8 @@ class DataGovClient {
           connectTimeout: const Duration(seconds: 60),
           receiveTimeout: const Duration(seconds: 60),
           headers: {
-            'Authorization': 'Token $apiKey',
+            'Authorization': apiKey,
+            'X-CKAN-API-Key': apiKey,
             'User-Agent': _userAgent,
           },
         )) {
@@ -69,6 +71,7 @@ class DataGovClient {
     transport = TransportService(this);
 
     _dio.interceptors.addAll([
+      CkanCompatibilityInterceptor(),
       ErrorInterceptor(),
       RateLimitInterceptor(_rateLimitController),
       RetryInterceptor(
