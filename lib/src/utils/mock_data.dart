@@ -1,8 +1,10 @@
 import '../models/shared/prefecture.dart';
 
 class MockData {
-  static final List<Map<String, dynamic>> fuelStations = _generateFuelStations();
-  static final List<Map<String, dynamic>> prefectureFuelPrices = _generatePrefectureFuelPrices();
+  static final List<Map<String, dynamic>> fuelStations =
+      _generateFuelStations();
+  static final List<Map<String, dynamic>> prefectureFuelPrices =
+      _generatePrefectureFuelPrices();
 
   static List<Map<String, dynamic>> _generateFuelStations() {
     final list = <Map<String, dynamic>>[];
@@ -68,7 +70,6 @@ class MockData {
     }
     return list;
   }
-
 
   static const List<Map<String, dynamic>> vaccinations = [
     {

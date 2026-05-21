@@ -298,25 +298,27 @@ class _DatasetQueryViewState extends State<DatasetQueryView> {
   }
 
   void _startQuery() {
-    _subscription = widget.client.generic.queryPaged(widget.datasetId, pageSize: 50).listen(
-      (chunk) {
-        setState(() {
-          _records.addAll(chunk);
-        });
-      },
-      onError: (err) {
-        setState(() {
-          _error = err;
-          _isLoading = false;
-        });
-      },
-      onDone: () {
-        setState(() {
-          _isLoading = false;
-        });
-      },
-      cancelOnError: true,
-    );
+    _subscription = widget.client.generic
+        .queryPaged(widget.datasetId, pageSize: 50)
+        .listen(
+          (chunk) {
+            setState(() {
+              _records.addAll(chunk);
+            });
+          },
+          onError: (err) {
+            setState(() {
+              _error = err;
+              _isLoading = false;
+            });
+          },
+          onDone: () {
+            setState(() {
+              _isLoading = false;
+            });
+          },
+          cancelOnError: true,
+        );
   }
 
   @override
@@ -353,7 +355,9 @@ class _DatasetQueryViewState extends State<DatasetQueryView> {
         if (_isLoading)
           const LinearProgressIndicator(
             backgroundColor: Colors.transparent,
-            valueColor: AlwaysStoppedAnimation<Color>(CommandCenterTheme.secondaryCyan),
+            valueColor: AlwaysStoppedAnimation<Color>(
+              CommandCenterTheme.secondaryCyan,
+            ),
             minHeight: 2,
           ),
         Expanded(
@@ -369,10 +373,7 @@ class _DatasetQueryViewState extends State<DatasetQueryView> {
                 prettyJson = item.toString();
               }
               return Container(
-                margin: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 8,
-                ),
+                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: Colors.white.withAlpha(5),

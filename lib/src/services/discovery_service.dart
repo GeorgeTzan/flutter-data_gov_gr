@@ -9,14 +9,14 @@ class DiscoveryService {
   Future<List<DatasetMetadata>> listDatasets() async {
     final response = await _client.dio.get('datasets/');
     final dynamic responseData = response.data;
-    
+
     List data;
     if (responseData is Map) {
       data = responseData['results'] as List;
     } else {
       data = responseData as List;
     }
-    
+
     return data.map((json) => DatasetMetadata.fromJson(json)).toList();
   }
 

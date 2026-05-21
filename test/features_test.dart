@@ -4,6 +4,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
 class MockDataGovClient extends Mock implements DataGovClient {}
+
 class MockDio extends Mock implements Dio {}
 
 void main() {

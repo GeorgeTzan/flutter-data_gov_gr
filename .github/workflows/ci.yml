@@ -26,24 +26,24 @@ jobs:
           flutter --version
           dart --version
 
-      - name: Check SDK Formatting
-        run: dart format --output=none --set-exit-if-changed .
-
       - name: Install SDK Dependencies
         run: dart pub get
-
-      - name: Analyze SDK Core
-        run: dart analyze --fatal-infos --fatal-warnings
-
-      - name: Run SDK Tests
-        run: dart test
 
       - name: Install Example App Dependencies
         run: |
           cd example
           flutter pub get
 
+      - name: Check Formatting
+        run: dart format --output=none --set-exit-if-changed .
+
+      - name: Analyze SDK Core
+        run: dart analyze --fatal-infos --fatal-warnings
+
       - name: Analyze Example App
         run: |
           cd example
           flutter analyze
+
+      - name: Run SDK Tests
+        run: dart test

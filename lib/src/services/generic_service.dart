@@ -49,7 +49,7 @@ class GenericService {
   }) async {
     final params = <String, dynamic>{'type': 'csv'};
     if (parameters != null) params.addAll(parameters);
-    
+
     final response = await _client.dio.get(
       'query/download/$datasetId',
       queryParameters: params,
