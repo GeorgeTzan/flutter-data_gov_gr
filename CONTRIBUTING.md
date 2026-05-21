@@ -66,9 +66,9 @@ Think of your commit message as a quick summary of your changes written for a fe
 ## 🛠 Project Architecture
 
 Our codebase is designed to be simple and backward-compatible:
-* **The Core SDK** is inside [lib/](file:///home/georgetzan/git-repos/data_gov_gr/lib).
-* **The Example App** is inside [example/](file:///home/georgetzan/git-repos/data_gov_gr/example).
-* **The Compatibility Interceptor** (`lib/src/interceptors/ckan_compatibility_interceptor.dart`) sits between our code and the new CKAN API. We use it to map legacy REST URLs to CKAN actions so we don't break existing apps using this SDK.
+* **The Core SDK** is inside [lib/](lib).
+* **The Example App** is inside [example/](example).
+* **The Compatibility Interceptor** ([ckan_compatibility_interceptor.dart](lib/src/interceptors/ckan_compatibility_interceptor.dart)) sits between our code and the new CKAN API. We use it to map legacy REST URLs to CKAN actions so we don't break existing apps using this SDK.
 
 ---
 

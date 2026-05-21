@@ -1,6 +1,7 @@
 # flutter-data_gov_gr
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![pub package](https://img.shields.io/pub/v/data_gov_gr.svg)](https://pub.dev/packages/data_gov_gr)
 
 An unofficial, type-safe, and modular Dart SDK for the Greek Government Open Data API ([data.gov.gr](https://data.gov.gr)).
 
@@ -19,17 +20,18 @@ An unofficial, type-safe, and modular Dart SDK for the Greek Government Open Dat
 
 ### 1. Add dependency
 
-For now, you can add this to your `pubspec.yaml` to fetch the package directly from GitHub:
+Add `data_gov_gr` to your project using the command line:
+
+```bash
+dart pub add data_gov_gr
+```
+
+Or add it directly to your `pubspec.yaml` dependencies:
 
 ```yaml
 dependencies:
-  data_gov_gr:
-    git:
-      url: https://github.com/georgetzan/flutter-data_gov_gr.git
-      ref: main
+  data_gov_gr: ^1.0.0
 ```
-
-*(Once published to **[pub.dev](https://pub.dev)**, you can install it standardly via `dart pub add data_gov_gr` or add `data_gov_gr: ^1.0.0` to your dependencies).*
 
 
 ### 2. Initialize the client
@@ -121,4 +123,4 @@ To prevent breaking existing applications, a built-in `CkanCompatibilityIntercep
 
 ## License
 
-MIT License - see [LICENSE](file:///home/georgetzan/git-repos/data_gov_gr/LICENSE) for details.
+MIT License - see [LICENSE](LICENSE) for details.
