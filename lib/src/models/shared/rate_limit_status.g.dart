@@ -6,18 +6,18 @@ part of 'rate_limit_status.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$RateLimitStatusImpl _$$RateLimitStatusImplFromJson(
-        Map<String, dynamic> json) =>
-    _$RateLimitStatusImpl(
-      remaining: (json['remaining'] as num).toInt(),
-      limit: (json['limit'] as num).toInt(),
-      resetTime: DateTime.parse(json['resetTime'] as String),
+_RateLimitStatus _$RateLimitStatusFromJson(Map<String, dynamic> json) =>
+    _RateLimitStatus(
+      limit: (json['limit'] as num?)?.toInt(),
+      remaining: (json['remaining'] as num?)?.toInt(),
+      resetAt: json['resetAt'] == null
+          ? null
+          : DateTime.parse(json['resetAt'] as String),
     );
 
-Map<String, dynamic> _$$RateLimitStatusImplToJson(
-        _$RateLimitStatusImpl instance) =>
+Map<String, dynamic> _$RateLimitStatusToJson(_RateLimitStatus instance) =>
     <String, dynamic>{
-      'remaining': instance.remaining,
       'limit': instance.limit,
-      'resetTime': instance.resetTime.toIso8601String(),
+      'remaining': instance.remaining,
+      'resetAt': instance.resetAt?.toIso8601String(),
     };

@@ -1,0 +1,4 @@
+tags:
+  live:
+    # Each live test also requires DATA_GOV_GR_LIVE=1.
+    timeout: 90s

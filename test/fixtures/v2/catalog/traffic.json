@@ -1,0 +1,30 @@
+{
+  "success": true,
+  "result": {
+    "id": "synthetic-traffic",
+    "name": "synthetic-traffic",
+    "type": "dataset",
+    "title": "Synthetic traffic fixture — not provider data",
+    "resources": [
+      {
+        "id": "synthetic-traffic-csv",
+        "package_id": "synthetic-traffic",
+        "format": "CSV",
+        "url": "https://fixtures.invalid/files/traffic.csv",
+        "datastore_active": true
+      },
+      {
+        "id": "synthetic-traffic-json",
+        "package_id": "synthetic-traffic",
+        "format": "JSON",
+        "url": "https://fixtures.invalid/files/traffic.json"
+      },
+      {
+        "id": "synthetic-traffic-file",
+        "package_id": "synthetic-traffic",
+        "format": "BIN",
+        "url": "https://fixtures.invalid/files/traffic.bin"
+      }
+    ]
+  }
+}

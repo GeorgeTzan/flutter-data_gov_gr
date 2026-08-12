@@ -1,0 +1,8 @@
+{
+  "fixture_description": "Synthetic full-field organization list for pagination tests; not production fallback data.",
+  "organizations": [
+    {"id":"org-1","name":"first","title":"Πρώτος φορέας","custom":{"retained":true}},
+    {"id":"org-2","name":"second","description":"Published description"},
+    {"id":"org-3","name":"third"}
+  ]
+}

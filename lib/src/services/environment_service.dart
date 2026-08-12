@@ -1,30 +1,35 @@
-import '../client/data_gov_client.dart';
+import '../core/cancellation.dart';
 import '../models/environment/forest_fire.dart';
+import '../models/resources/csv_options.dart';
+import 'catalog_service.dart';
+import 'resource_service.dart';
+import 'typed_source.dart';
 
-/// A service for fetching environmental data (e.g. forest fire records) from data.gov.gr.
-class EnvironmentService {
-  final DataGovClient _client;
+/// Reads a caller-selected resource of the audited forest-fire entry.
+final class EnvironmentService {
+  /// Composes catalog metadata and bounded resource downloads.
+  EnvironmentService(this._catalog, this._resources);
+  final CatalogService _catalog;
+  final ResourceService _resources;
 
-  /// Creates a new [EnvironmentService] instance.
-  EnvironmentService(this._client);
-
-  /// Fetches forest fire records, optionally filtered by a date range.
-  Future<List<ForestFire>> getForestFires({
-    DateTime? from,
-    DateTime? to,
-  }) async {
-    final params = <String, dynamic>{};
-    if (from != null) {
-      params['date_from'] = from.toIso8601String().split('T').first;
-    }
-    if (to != null) params['date_to'] = to.toIso8601String().split('T').first;
-
-    final response = await _client.dio.get(
-      'query/mcp_forest_fires',
-      queryParameters: params,
-    );
-
-    final data = response.data as List;
-    return data.map((json) => ForestFire.fromJson(json)).toList();
-  }
+  /// Streams the thirty audited source columns of `mcp_forest_fires`.
+  ///
+  /// [resourceId] must belong to that entry; no resource is chosen implicitly.
+  /// The provenance row is a source position, not an official incident ID.
+  /// CSV source row positions include the header as row one.
+  Stream<ForestFire> forestFires({
+    required String resourceId,
+    CsvOptions options = CsvOptions.defaults,
+    CancellationSignal? cancellation,
+  }) => typedCsv(
+    entry: (signal) =>
+        _catalog.getEntry('mcp_forest_fires', cancellation: signal),
+    resources: _resources,
+    resourceId: resourceId,
+    options: options,
+    requiredHeaders: const ['start_time'],
+    decode: (record, provenance) =>
+        ForestFire.fromSourceRecord(record, provenance: provenance),
+    cancellation: cancellation,
+  );
 }

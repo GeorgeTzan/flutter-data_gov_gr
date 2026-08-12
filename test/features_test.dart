@@ -1,51 +1,85 @@
 import 'package:data_gov_gr/data_gov_gr.dart';
+import 'package:data_gov_gr/testing.dart';
 import 'package:dio/dio.dart';
-import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
-class MockDataGovClient extends Mock implements DataGovClient {}
-
-class MockDio extends Mock implements Dio {}
-
 void main() {
-  late MockDataGovClient mockClient;
-  late MockDio mockDio;
+  test(
+    'anonymous reads select the configured source and default timeout',
+    () async {
+      final adapter = ScriptedAdapter([
+        (request) async => ResponseBody.fromString(
+          '{"success":true,"result":{"count":0,"results":[]}}',
+          200,
+        ),
+      ]);
+      final client = DataGovClient(
+        config: DataGovConfig(
+          actionBaseUrl: Uri.parse('https://selected.test/actions/'),
+        ),
+        adapter: adapter,
+      );
+      addTearDown(client.close);
+      expect((await client.catalog.search(CatalogQuery())).total, 0);
+      final request = adapter.requests.single;
+      expect(request.uri.host, 'selected.test');
+      expect(request.uri.path, '/actions/package_search');
+      expect(request.connectTimeout, const Duration(seconds: 30));
+      expect(request.receiveTimeout, const Duration(seconds: 30));
+      expect(
+        request.headers.keys.map((key) => key.toLowerCase()),
+        isNot(contains('authorization')),
+      );
+    },
+  );
 
-  setUp(() {
-    mockClient = MockDataGovClient();
-    mockDio = MockDio();
-    when(() => mockClient.dio).thenReturn(mockDio);
-  });
+  test(
+    'disabling metadata retention reaches the source on every read',
+    () async {
+      final adapter = ScriptedAdapter([
+        (request) async => ResponseBody.fromString(
+          '{"success":true,"result":{"id":"entry","title":"old"}}',
+          200,
+        ),
+        (request) async => ResponseBody.fromString(
+          '{"success":true,"result":{"id":"entry","title":"new"}}',
+          200,
+        ),
+      ]);
+      final client = DataGovClient(
+        config: DataGovConfig(
+          metadataCache: MetadataCachePolicy(ttl: Duration.zero),
+        ),
+        adapter: adapter,
+      );
+      addTearDown(client.close);
+      expect((await client.catalog.getEntry('entry')).title, 'old');
+      expect((await client.catalog.getEntry('entry')).title, 'new');
+      expect(adapter.requests, hasLength(2));
+    },
+  );
 
-  group('GenericService Features', () {
-    test('downloadCsv calls download endpoint and returns string', () async {
-      final service = GenericService(mockClient);
-      const csvData = 'id,name\n1,test';
-
-      when(() => mockDio.get(
-            any(),
-            queryParameters: any(named: 'queryParameters'),
-          )).thenAnswer((_) async => Response(
-            data: csvData,
-            statusCode: 200,
-            requestOptions: RequestOptions(),
-          ));
-
-      final result = await service.downloadCsv('test_dataset');
-
-      expect(result, csvData);
-      verify(() => mockDio.get(
-            'query/download/test_dataset',
-            queryParameters: {'type': 'csv'},
-          )).called(1);
-    });
-  });
-
-  group('Client Configuration', () {
-    test('DataGovClient has correct default timeouts', () {
-      final client = DataGovClient(apiKey: 'key');
-      expect(client.dio.options.connectTimeout, const Duration(seconds: 60));
-      expect(client.dio.options.receiveTimeout, const Duration(seconds: 60));
-    });
-  });
+  test(
+    'resource byte ceilings remain active through the public client',
+    () async {
+      final adapter = ScriptedAdapter([
+        (request) async => ResponseBody.fromString('too large', 200),
+      ]);
+      final client = DataGovClient(
+        config: DataGovConfig(retry: RetryPolicy(maxAttempts: 1)),
+        adapter: adapter,
+      );
+      addTearDown(client.close);
+      await expectLater(
+        client.resources.download(
+          ResourceMetadata.fromJson({
+            'id': 'file',
+            'url': 'https://files.test/file.csv',
+          }),
+          options: DownloadOptions(maxBytes: 3),
+        ),
+        throwsA(isA<ByteLimitException>()),
+      );
+    },
+  );
 }

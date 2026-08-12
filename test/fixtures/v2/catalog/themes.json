@@ -1,0 +1,9 @@
+{
+  "fixture_description": "Synthetic vocabulary metadata for absent-label tests; not production fallback data.",
+  "id":"Data theme",
+  "tags":[
+    {"name":"AGRI","label_el":"Γεωργία","label_en":"Agriculture","value_uri":"https://authority.test/AGRI","custom":true},
+    {"name":"ECON","label_el":"","label_en":""},
+    {"name":"UNKNOWN"}
+  ]
+}

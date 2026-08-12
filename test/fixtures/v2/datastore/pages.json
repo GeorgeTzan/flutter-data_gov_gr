@@ -1,0 +1,7 @@
+{
+  "reliable": [
+    {"resource_id":"fixture-id","fields":[{"id":"_id","type":"int"},{"id":"value","type":"text","source_extension":true}],"records":[{"_id":1,"value":"Αθήνα","optional":null},{"_id":2,"value":"002"}],"limit":2,"offset":0,"total":5,"total_was_estimated":false,"source_extension":{"published":true}},
+    {"resource_id":"fixture-id","fields":[{"id":"_id","type":"int"},{"id":"value","type":"text"}],"records":[{"_id":3,"value":"three"},{"_id":4,"value":"four"}],"limit":2,"offset":2,"total":5,"total_was_estimated":false},
+    {"resource_id":"fixture-id","fields":[{"id":"_id","type":"int"},{"id":"value","type":"text"}],"records":[{"_id":5,"value":"five"}],"limit":2,"offset":4,"total":5,"total_was_estimated":false}
+  ]
+}

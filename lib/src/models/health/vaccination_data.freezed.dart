@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,513 +9,348 @@ part of 'vaccination_data.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-VaccinationData _$VaccinationDataFromJson(Map<String, dynamic> json) {
-  return _VaccinationData.fromJson(json);
-}
 
 /// @nodoc
 mixin _$VaccinationData {
-  String get area => throw _privateConstructorUsedError;
-  @JsonKey(name: 'areaid')
-  int get areaId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'dailydose1')
-  int get dailyDose1 => throw _privateConstructorUsedError;
-  @JsonKey(name: 'dailydose2')
-  int get dailyDose2 => throw _privateConstructorUsedError;
-  @JsonKey(name: 'dailydose3')
-  int? get dailyDose3 => throw _privateConstructorUsedError;
-  @JsonKey(name: 'dailydose4')
-  int? get dailyDose4 => throw _privateConstructorUsedError;
-  @JsonKey(name: 'daydiff')
-  int get dayDiff => throw _privateConstructorUsedError;
-  @JsonKey(name: 'daytotal')
-  int get dayTotal => throw _privateConstructorUsedError;
-  @JsonKey(name: 'referencedate')
-  DateTime get referenceDate => throw _privateConstructorUsedError;
-  @JsonKey(name: 'totaldose1')
-  int get totalDose1 => throw _privateConstructorUsedError;
-  @JsonKey(name: 'totaldose2')
-  int get totalDose2 => throw _privateConstructorUsedError;
-  @JsonKey(name: 'totaldose3')
-  int? get totalDose3 => throw _privateConstructorUsedError;
-  @JsonKey(name: 'totaldose4')
-  int? get totalDose4 => throw _privateConstructorUsedError;
-  @JsonKey(name: 'totaldistinctpersons')
-  int? get totalDistinctPersons => throw _privateConstructorUsedError;
-  @JsonKey(name: 'totalvaccinations')
-  int get totalVaccinations => throw _privateConstructorUsedError;
+
+/// The published `area` value.
+ String get area;/// The published `areaid` value.
+@JsonKey(name: 'areaid') String get areaId;/// The published `referencedate` value.
+@SourceDateConverter()@JsonKey(name: 'referencedate') SourceDate get referenceDate;/// The published `daytotal` value.
+@JsonKey(name: 'daytotal') int? get dayTotal;/// The published `daydiff` value.
+@JsonKey(name: 'daydiff') int? get dayDiff;/// The published `totalvaccinations` value.
+@JsonKey(name: 'totalvaccinations') int? get totalVaccinations;/// The published `totaldistinctpersons` value.
+@JsonKey(name: 'totaldistinctpersons') int? get totalDistinctPersons;/// The published `dailydose1` value.
+@JsonKey(name: 'dailydose1') int? get dailyDose1;/// The published `dailydose2` value.
+@JsonKey(name: 'dailydose2') int? get dailyDose2;/// The published `dailydose3` value.
+@JsonKey(name: 'dailydose3') int? get dailyDose3;/// The published `totaldose1` value.
+@JsonKey(name: 'totaldose1') int? get totalDose1;/// The published `totaldose2` value.
+@JsonKey(name: 'totaldose2') int? get totalDose2;/// The published `totaldose3` value.
+@JsonKey(name: 'totaldose3') int? get totalDose3;/// Immutable original source cells, including unknown columns.
+@ImmutableSourceConverter() JsonObject get raw;/// Selected source identity and measured retrieval time.
+@SourceProvenanceConverter() SourceProvenance get provenance;
+/// Create a copy of VaccinationData
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$VaccinationDataCopyWith<VaccinationData> get copyWith => _$VaccinationDataCopyWithImpl<VaccinationData>(this as VaccinationData, _$identity);
 
   /// Serializes this VaccinationData to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  Map<String, dynamic> toJson();
 
-  /// Create a copy of VaccinationData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $VaccinationDataCopyWith<VaccinationData> get copyWith =>
-      throw _privateConstructorUsedError;
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is VaccinationData&&(identical(other.area, area) || other.area == area)&&(identical(other.areaId, areaId) || other.areaId == areaId)&&(identical(other.referenceDate, referenceDate) || other.referenceDate == referenceDate)&&(identical(other.dayTotal, dayTotal) || other.dayTotal == dayTotal)&&(identical(other.dayDiff, dayDiff) || other.dayDiff == dayDiff)&&(identical(other.totalVaccinations, totalVaccinations) || other.totalVaccinations == totalVaccinations)&&(identical(other.totalDistinctPersons, totalDistinctPersons) || other.totalDistinctPersons == totalDistinctPersons)&&(identical(other.dailyDose1, dailyDose1) || other.dailyDose1 == dailyDose1)&&(identical(other.dailyDose2, dailyDose2) || other.dailyDose2 == dailyDose2)&&(identical(other.dailyDose3, dailyDose3) || other.dailyDose3 == dailyDose3)&&(identical(other.totalDose1, totalDose1) || other.totalDose1 == totalDose1)&&(identical(other.totalDose2, totalDose2) || other.totalDose2 == totalDose2)&&(identical(other.totalDose3, totalDose3) || other.totalDose3 == totalDose3)&&const DeepCollectionEquality().equals(other.raw, raw)&&(identical(other.provenance, provenance) || other.provenance == provenance));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,area,areaId,referenceDate,dayTotal,dayDiff,totalVaccinations,totalDistinctPersons,dailyDose1,dailyDose2,dailyDose3,totalDose1,totalDose2,totalDose3,const DeepCollectionEquality().hash(raw),provenance);
+
+@override
+String toString() {
+  return 'VaccinationData(area: $area, areaId: $areaId, referenceDate: $referenceDate, dayTotal: $dayTotal, dayDiff: $dayDiff, totalVaccinations: $totalVaccinations, totalDistinctPersons: $totalDistinctPersons, dailyDose1: $dailyDose1, dailyDose2: $dailyDose2, dailyDose3: $dailyDose3, totalDose1: $totalDose1, totalDose2: $totalDose2, totalDose3: $totalDose3, raw: $raw, provenance: $provenance)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $VaccinationDataCopyWith<$Res> {
-  factory $VaccinationDataCopyWith(
-          VaccinationData value, $Res Function(VaccinationData) then) =
-      _$VaccinationDataCopyWithImpl<$Res, VaccinationData>;
-  @useResult
-  $Res call(
-      {String area,
-      @JsonKey(name: 'areaid') int areaId,
-      @JsonKey(name: 'dailydose1') int dailyDose1,
-      @JsonKey(name: 'dailydose2') int dailyDose2,
-      @JsonKey(name: 'dailydose3') int? dailyDose3,
-      @JsonKey(name: 'dailydose4') int? dailyDose4,
-      @JsonKey(name: 'daydiff') int dayDiff,
-      @JsonKey(name: 'daytotal') int dayTotal,
-      @JsonKey(name: 'referencedate') DateTime referenceDate,
-      @JsonKey(name: 'totaldose1') int totalDose1,
-      @JsonKey(name: 'totaldose2') int totalDose2,
-      @JsonKey(name: 'totaldose3') int? totalDose3,
-      @JsonKey(name: 'totaldose4') int? totalDose4,
-      @JsonKey(name: 'totaldistinctpersons') int? totalDistinctPersons,
-      @JsonKey(name: 'totalvaccinations') int totalVaccinations});
-}
+abstract mixin class $VaccinationDataCopyWith<$Res>  {
+  factory $VaccinationDataCopyWith(VaccinationData value, $Res Function(VaccinationData) _then) = _$VaccinationDataCopyWithImpl;
+@useResult
+$Res call({
+ String area,@JsonKey(name: 'areaid') String areaId,@SourceDateConverter()@JsonKey(name: 'referencedate') SourceDate referenceDate,@JsonKey(name: 'daytotal') int? dayTotal,@JsonKey(name: 'daydiff') int? dayDiff,@JsonKey(name: 'totalvaccinations') int? totalVaccinations,@JsonKey(name: 'totaldistinctpersons') int? totalDistinctPersons,@JsonKey(name: 'dailydose1') int? dailyDose1,@JsonKey(name: 'dailydose2') int? dailyDose2,@JsonKey(name: 'dailydose3') int? dailyDose3,@JsonKey(name: 'totaldose1') int? totalDose1,@JsonKey(name: 'totaldose2') int? totalDose2,@JsonKey(name: 'totaldose3') int? totalDose3,@ImmutableSourceConverter() JsonObject raw,@SourceProvenanceConverter() SourceProvenance provenance
+});
 
+
+
+
+}
 /// @nodoc
-class _$VaccinationDataCopyWithImpl<$Res, $Val extends VaccinationData>
+class _$VaccinationDataCopyWithImpl<$Res>
     implements $VaccinationDataCopyWith<$Res> {
-  _$VaccinationDataCopyWithImpl(this._value, this._then);
+  _$VaccinationDataCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final VaccinationData _self;
+  final $Res Function(VaccinationData) _then;
 
-  /// Create a copy of VaccinationData
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? area = null,
-    Object? areaId = null,
-    Object? dailyDose1 = null,
-    Object? dailyDose2 = null,
-    Object? dailyDose3 = freezed,
-    Object? dailyDose4 = freezed,
-    Object? dayDiff = null,
-    Object? dayTotal = null,
-    Object? referenceDate = null,
-    Object? totalDose1 = null,
-    Object? totalDose2 = null,
-    Object? totalDose3 = freezed,
-    Object? totalDose4 = freezed,
-    Object? totalDistinctPersons = freezed,
-    Object? totalVaccinations = null,
-  }) {
-    return _then(_value.copyWith(
-      area: null == area
-          ? _value.area
-          : area // ignore: cast_nullable_to_non_nullable
-              as String,
-      areaId: null == areaId
-          ? _value.areaId
-          : areaId // ignore: cast_nullable_to_non_nullable
-              as int,
-      dailyDose1: null == dailyDose1
-          ? _value.dailyDose1
-          : dailyDose1 // ignore: cast_nullable_to_non_nullable
-              as int,
-      dailyDose2: null == dailyDose2
-          ? _value.dailyDose2
-          : dailyDose2 // ignore: cast_nullable_to_non_nullable
-              as int,
-      dailyDose3: freezed == dailyDose3
-          ? _value.dailyDose3
-          : dailyDose3 // ignore: cast_nullable_to_non_nullable
-              as int?,
-      dailyDose4: freezed == dailyDose4
-          ? _value.dailyDose4
-          : dailyDose4 // ignore: cast_nullable_to_non_nullable
-              as int?,
-      dayDiff: null == dayDiff
-          ? _value.dayDiff
-          : dayDiff // ignore: cast_nullable_to_non_nullable
-              as int,
-      dayTotal: null == dayTotal
-          ? _value.dayTotal
-          : dayTotal // ignore: cast_nullable_to_non_nullable
-              as int,
-      referenceDate: null == referenceDate
-          ? _value.referenceDate
-          : referenceDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      totalDose1: null == totalDose1
-          ? _value.totalDose1
-          : totalDose1 // ignore: cast_nullable_to_non_nullable
-              as int,
-      totalDose2: null == totalDose2
-          ? _value.totalDose2
-          : totalDose2 // ignore: cast_nullable_to_non_nullable
-              as int,
-      totalDose3: freezed == totalDose3
-          ? _value.totalDose3
-          : totalDose3 // ignore: cast_nullable_to_non_nullable
-              as int?,
-      totalDose4: freezed == totalDose4
-          ? _value.totalDose4
-          : totalDose4 // ignore: cast_nullable_to_non_nullable
-              as int?,
-      totalDistinctPersons: freezed == totalDistinctPersons
-          ? _value.totalDistinctPersons
-          : totalDistinctPersons // ignore: cast_nullable_to_non_nullable
-              as int?,
-      totalVaccinations: null == totalVaccinations
-          ? _value.totalVaccinations
-          : totalVaccinations // ignore: cast_nullable_to_non_nullable
-              as int,
-    ) as $Val);
-  }
+/// Create a copy of VaccinationData
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? area = null,Object? areaId = null,Object? referenceDate = null,Object? dayTotal = freezed,Object? dayDiff = freezed,Object? totalVaccinations = freezed,Object? totalDistinctPersons = freezed,Object? dailyDose1 = freezed,Object? dailyDose2 = freezed,Object? dailyDose3 = freezed,Object? totalDose1 = freezed,Object? totalDose2 = freezed,Object? totalDose3 = freezed,Object? raw = null,Object? provenance = null,}) {
+  return _then(_self.copyWith(
+area: null == area ? _self.area : area // ignore: cast_nullable_to_non_nullable
+as String,areaId: null == areaId ? _self.areaId : areaId // ignore: cast_nullable_to_non_nullable
+as String,referenceDate: null == referenceDate ? _self.referenceDate : referenceDate // ignore: cast_nullable_to_non_nullable
+as SourceDate,dayTotal: freezed == dayTotal ? _self.dayTotal : dayTotal // ignore: cast_nullable_to_non_nullable
+as int?,dayDiff: freezed == dayDiff ? _self.dayDiff : dayDiff // ignore: cast_nullable_to_non_nullable
+as int?,totalVaccinations: freezed == totalVaccinations ? _self.totalVaccinations : totalVaccinations // ignore: cast_nullable_to_non_nullable
+as int?,totalDistinctPersons: freezed == totalDistinctPersons ? _self.totalDistinctPersons : totalDistinctPersons // ignore: cast_nullable_to_non_nullable
+as int?,dailyDose1: freezed == dailyDose1 ? _self.dailyDose1 : dailyDose1 // ignore: cast_nullable_to_non_nullable
+as int?,dailyDose2: freezed == dailyDose2 ? _self.dailyDose2 : dailyDose2 // ignore: cast_nullable_to_non_nullable
+as int?,dailyDose3: freezed == dailyDose3 ? _self.dailyDose3 : dailyDose3 // ignore: cast_nullable_to_non_nullable
+as int?,totalDose1: freezed == totalDose1 ? _self.totalDose1 : totalDose1 // ignore: cast_nullable_to_non_nullable
+as int?,totalDose2: freezed == totalDose2 ? _self.totalDose2 : totalDose2 // ignore: cast_nullable_to_non_nullable
+as int?,totalDose3: freezed == totalDose3 ? _self.totalDose3 : totalDose3 // ignore: cast_nullable_to_non_nullable
+as int?,raw: null == raw ? _self.raw : raw // ignore: cast_nullable_to_non_nullable
+as JsonObject,provenance: null == provenance ? _self.provenance : provenance // ignore: cast_nullable_to_non_nullable
+as SourceProvenance,
+  ));
 }
 
-/// @nodoc
-abstract class _$$VaccinationDataImplCopyWith<$Res>
-    implements $VaccinationDataCopyWith<$Res> {
-  factory _$$VaccinationDataImplCopyWith(_$VaccinationDataImpl value,
-          $Res Function(_$VaccinationDataImpl) then) =
-      __$$VaccinationDataImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {String area,
-      @JsonKey(name: 'areaid') int areaId,
-      @JsonKey(name: 'dailydose1') int dailyDose1,
-      @JsonKey(name: 'dailydose2') int dailyDose2,
-      @JsonKey(name: 'dailydose3') int? dailyDose3,
-      @JsonKey(name: 'dailydose4') int? dailyDose4,
-      @JsonKey(name: 'daydiff') int dayDiff,
-      @JsonKey(name: 'daytotal') int dayTotal,
-      @JsonKey(name: 'referencedate') DateTime referenceDate,
-      @JsonKey(name: 'totaldose1') int totalDose1,
-      @JsonKey(name: 'totaldose2') int totalDose2,
-      @JsonKey(name: 'totaldose3') int? totalDose3,
-      @JsonKey(name: 'totaldose4') int? totalDose4,
-      @JsonKey(name: 'totaldistinctpersons') int? totalDistinctPersons,
-      @JsonKey(name: 'totalvaccinations') int totalVaccinations});
 }
 
-/// @nodoc
-class __$$VaccinationDataImplCopyWithImpl<$Res>
-    extends _$VaccinationDataCopyWithImpl<$Res, _$VaccinationDataImpl>
-    implements _$$VaccinationDataImplCopyWith<$Res> {
-  __$$VaccinationDataImplCopyWithImpl(
-      _$VaccinationDataImpl _value, $Res Function(_$VaccinationDataImpl) _then)
-      : super(_value, _then);
 
-  /// Create a copy of VaccinationData
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? area = null,
-    Object? areaId = null,
-    Object? dailyDose1 = null,
-    Object? dailyDose2 = null,
-    Object? dailyDose3 = freezed,
-    Object? dailyDose4 = freezed,
-    Object? dayDiff = null,
-    Object? dayTotal = null,
-    Object? referenceDate = null,
-    Object? totalDose1 = null,
-    Object? totalDose2 = null,
-    Object? totalDose3 = freezed,
-    Object? totalDose4 = freezed,
-    Object? totalDistinctPersons = freezed,
-    Object? totalVaccinations = null,
-  }) {
-    return _then(_$VaccinationDataImpl(
-      area: null == area
-          ? _value.area
-          : area // ignore: cast_nullable_to_non_nullable
-              as String,
-      areaId: null == areaId
-          ? _value.areaId
-          : areaId // ignore: cast_nullable_to_non_nullable
-              as int,
-      dailyDose1: null == dailyDose1
-          ? _value.dailyDose1
-          : dailyDose1 // ignore: cast_nullable_to_non_nullable
-              as int,
-      dailyDose2: null == dailyDose2
-          ? _value.dailyDose2
-          : dailyDose2 // ignore: cast_nullable_to_non_nullable
-              as int,
-      dailyDose3: freezed == dailyDose3
-          ? _value.dailyDose3
-          : dailyDose3 // ignore: cast_nullable_to_non_nullable
-              as int?,
-      dailyDose4: freezed == dailyDose4
-          ? _value.dailyDose4
-          : dailyDose4 // ignore: cast_nullable_to_non_nullable
-              as int?,
-      dayDiff: null == dayDiff
-          ? _value.dayDiff
-          : dayDiff // ignore: cast_nullable_to_non_nullable
-              as int,
-      dayTotal: null == dayTotal
-          ? _value.dayTotal
-          : dayTotal // ignore: cast_nullable_to_non_nullable
-              as int,
-      referenceDate: null == referenceDate
-          ? _value.referenceDate
-          : referenceDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      totalDose1: null == totalDose1
-          ? _value.totalDose1
-          : totalDose1 // ignore: cast_nullable_to_non_nullable
-              as int,
-      totalDose2: null == totalDose2
-          ? _value.totalDose2
-          : totalDose2 // ignore: cast_nullable_to_non_nullable
-              as int,
-      totalDose3: freezed == totalDose3
-          ? _value.totalDose3
-          : totalDose3 // ignore: cast_nullable_to_non_nullable
-              as int?,
-      totalDose4: freezed == totalDose4
-          ? _value.totalDose4
-          : totalDose4 // ignore: cast_nullable_to_non_nullable
-              as int?,
-      totalDistinctPersons: freezed == totalDistinctPersons
-          ? _value.totalDistinctPersons
-          : totalDistinctPersons // ignore: cast_nullable_to_non_nullable
-              as int?,
-      totalVaccinations: null == totalVaccinations
-          ? _value.totalVaccinations
-          : totalVaccinations // ignore: cast_nullable_to_non_nullable
-              as int,
-    ));
-  }
+/// Adds pattern-matching-related methods to [VaccinationData].
+extension VaccinationDataPatterns on VaccinationData {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _VaccinationData value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _VaccinationData() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _VaccinationData value)  $default,){
+final _that = this;
+switch (_that) {
+case _VaccinationData():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _VaccinationData value)?  $default,){
+final _that = this;
+switch (_that) {
+case _VaccinationData() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String area, @JsonKey(name: 'areaid')  String areaId, @SourceDateConverter()@JsonKey(name: 'referencedate')  SourceDate referenceDate, @JsonKey(name: 'daytotal')  int? dayTotal, @JsonKey(name: 'daydiff')  int? dayDiff, @JsonKey(name: 'totalvaccinations')  int? totalVaccinations, @JsonKey(name: 'totaldistinctpersons')  int? totalDistinctPersons, @JsonKey(name: 'dailydose1')  int? dailyDose1, @JsonKey(name: 'dailydose2')  int? dailyDose2, @JsonKey(name: 'dailydose3')  int? dailyDose3, @JsonKey(name: 'totaldose1')  int? totalDose1, @JsonKey(name: 'totaldose2')  int? totalDose2, @JsonKey(name: 'totaldose3')  int? totalDose3, @ImmutableSourceConverter()  JsonObject raw, @SourceProvenanceConverter()  SourceProvenance provenance)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _VaccinationData() when $default != null:
+return $default(_that.area,_that.areaId,_that.referenceDate,_that.dayTotal,_that.dayDiff,_that.totalVaccinations,_that.totalDistinctPersons,_that.dailyDose1,_that.dailyDose2,_that.dailyDose3,_that.totalDose1,_that.totalDose2,_that.totalDose3,_that.raw,_that.provenance);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String area, @JsonKey(name: 'areaid')  String areaId, @SourceDateConverter()@JsonKey(name: 'referencedate')  SourceDate referenceDate, @JsonKey(name: 'daytotal')  int? dayTotal, @JsonKey(name: 'daydiff')  int? dayDiff, @JsonKey(name: 'totalvaccinations')  int? totalVaccinations, @JsonKey(name: 'totaldistinctpersons')  int? totalDistinctPersons, @JsonKey(name: 'dailydose1')  int? dailyDose1, @JsonKey(name: 'dailydose2')  int? dailyDose2, @JsonKey(name: 'dailydose3')  int? dailyDose3, @JsonKey(name: 'totaldose1')  int? totalDose1, @JsonKey(name: 'totaldose2')  int? totalDose2, @JsonKey(name: 'totaldose3')  int? totalDose3, @ImmutableSourceConverter()  JsonObject raw, @SourceProvenanceConverter()  SourceProvenance provenance)  $default,) {final _that = this;
+switch (_that) {
+case _VaccinationData():
+return $default(_that.area,_that.areaId,_that.referenceDate,_that.dayTotal,_that.dayDiff,_that.totalVaccinations,_that.totalDistinctPersons,_that.dailyDose1,_that.dailyDose2,_that.dailyDose3,_that.totalDose1,_that.totalDose2,_that.totalDose3,_that.raw,_that.provenance);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String area, @JsonKey(name: 'areaid')  String areaId, @SourceDateConverter()@JsonKey(name: 'referencedate')  SourceDate referenceDate, @JsonKey(name: 'daytotal')  int? dayTotal, @JsonKey(name: 'daydiff')  int? dayDiff, @JsonKey(name: 'totalvaccinations')  int? totalVaccinations, @JsonKey(name: 'totaldistinctpersons')  int? totalDistinctPersons, @JsonKey(name: 'dailydose1')  int? dailyDose1, @JsonKey(name: 'dailydose2')  int? dailyDose2, @JsonKey(name: 'dailydose3')  int? dailyDose3, @JsonKey(name: 'totaldose1')  int? totalDose1, @JsonKey(name: 'totaldose2')  int? totalDose2, @JsonKey(name: 'totaldose3')  int? totalDose3, @ImmutableSourceConverter()  JsonObject raw, @SourceProvenanceConverter()  SourceProvenance provenance)?  $default,) {final _that = this;
+switch (_that) {
+case _VaccinationData() when $default != null:
+return $default(_that.area,_that.areaId,_that.referenceDate,_that.dayTotal,_that.dayDiff,_that.totalVaccinations,_that.totalDistinctPersons,_that.dailyDose1,_that.dailyDose2,_that.dailyDose3,_that.totalDose1,_that.totalDose2,_that.totalDose3,_that.raw,_that.provenance);case _:
+  return null;
+
+}
+}
+
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$VaccinationDataImpl implements _VaccinationData {
-  const _$VaccinationDataImpl(
-      {required this.area,
-      @JsonKey(name: 'areaid') required this.areaId,
-      @JsonKey(name: 'dailydose1') required this.dailyDose1,
-      @JsonKey(name: 'dailydose2') required this.dailyDose2,
-      @JsonKey(name: 'dailydose3') required this.dailyDose3,
-      @JsonKey(name: 'dailydose4') required this.dailyDose4,
-      @JsonKey(name: 'daydiff') required this.dayDiff,
-      @JsonKey(name: 'daytotal') required this.dayTotal,
-      @JsonKey(name: 'referencedate') required this.referenceDate,
-      @JsonKey(name: 'totaldose1') required this.totalDose1,
-      @JsonKey(name: 'totaldose2') required this.totalDose2,
-      @JsonKey(name: 'totaldose3') required this.totalDose3,
-      @JsonKey(name: 'totaldose4') required this.totalDose4,
-      @JsonKey(name: 'totaldistinctpersons') required this.totalDistinctPersons,
-      @JsonKey(name: 'totalvaccinations') required this.totalVaccinations});
 
-  factory _$VaccinationDataImpl.fromJson(Map<String, dynamic> json) =>
-      _$$VaccinationDataImplFromJson(json);
+class _VaccinationData implements VaccinationData {
+  const _VaccinationData({required this.area, @JsonKey(name: 'areaid') required this.areaId, @SourceDateConverter()@JsonKey(name: 'referencedate') required this.referenceDate, @JsonKey(name: 'daytotal') this.dayTotal, @JsonKey(name: 'daydiff') this.dayDiff, @JsonKey(name: 'totalvaccinations') this.totalVaccinations, @JsonKey(name: 'totaldistinctpersons') this.totalDistinctPersons, @JsonKey(name: 'dailydose1') this.dailyDose1, @JsonKey(name: 'dailydose2') this.dailyDose2, @JsonKey(name: 'dailydose3') this.dailyDose3, @JsonKey(name: 'totaldose1') this.totalDose1, @JsonKey(name: 'totaldose2') this.totalDose2, @JsonKey(name: 'totaldose3') this.totalDose3, @ImmutableSourceConverter() required final  JsonObject raw, @SourceProvenanceConverter() required this.provenance}): _raw = raw;
+  factory _VaccinationData.fromJson(Map<String, dynamic> json) => _$VaccinationDataFromJson(json);
 
-  @override
-  final String area;
-  @override
-  @JsonKey(name: 'areaid')
-  final int areaId;
-  @override
-  @JsonKey(name: 'dailydose1')
-  final int dailyDose1;
-  @override
-  @JsonKey(name: 'dailydose2')
-  final int dailyDose2;
-  @override
-  @JsonKey(name: 'dailydose3')
-  final int? dailyDose3;
-  @override
-  @JsonKey(name: 'dailydose4')
-  final int? dailyDose4;
-  @override
-  @JsonKey(name: 'daydiff')
-  final int dayDiff;
-  @override
-  @JsonKey(name: 'daytotal')
-  final int dayTotal;
-  @override
-  @JsonKey(name: 'referencedate')
-  final DateTime referenceDate;
-  @override
-  @JsonKey(name: 'totaldose1')
-  final int totalDose1;
-  @override
-  @JsonKey(name: 'totaldose2')
-  final int totalDose2;
-  @override
-  @JsonKey(name: 'totaldose3')
-  final int? totalDose3;
-  @override
-  @JsonKey(name: 'totaldose4')
-  final int? totalDose4;
-  @override
-  @JsonKey(name: 'totaldistinctpersons')
-  final int? totalDistinctPersons;
-  @override
-  @JsonKey(name: 'totalvaccinations')
-  final int totalVaccinations;
-
-  @override
-  String toString() {
-    return 'VaccinationData(area: $area, areaId: $areaId, dailyDose1: $dailyDose1, dailyDose2: $dailyDose2, dailyDose3: $dailyDose3, dailyDose4: $dailyDose4, dayDiff: $dayDiff, dayTotal: $dayTotal, referenceDate: $referenceDate, totalDose1: $totalDose1, totalDose2: $totalDose2, totalDose3: $totalDose3, totalDose4: $totalDose4, totalDistinctPersons: $totalDistinctPersons, totalVaccinations: $totalVaccinations)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$VaccinationDataImpl &&
-            (identical(other.area, area) || other.area == area) &&
-            (identical(other.areaId, areaId) || other.areaId == areaId) &&
-            (identical(other.dailyDose1, dailyDose1) ||
-                other.dailyDose1 == dailyDose1) &&
-            (identical(other.dailyDose2, dailyDose2) ||
-                other.dailyDose2 == dailyDose2) &&
-            (identical(other.dailyDose3, dailyDose3) ||
-                other.dailyDose3 == dailyDose3) &&
-            (identical(other.dailyDose4, dailyDose4) ||
-                other.dailyDose4 == dailyDose4) &&
-            (identical(other.dayDiff, dayDiff) || other.dayDiff == dayDiff) &&
-            (identical(other.dayTotal, dayTotal) ||
-                other.dayTotal == dayTotal) &&
-            (identical(other.referenceDate, referenceDate) ||
-                other.referenceDate == referenceDate) &&
-            (identical(other.totalDose1, totalDose1) ||
-                other.totalDose1 == totalDose1) &&
-            (identical(other.totalDose2, totalDose2) ||
-                other.totalDose2 == totalDose2) &&
-            (identical(other.totalDose3, totalDose3) ||
-                other.totalDose3 == totalDose3) &&
-            (identical(other.totalDose4, totalDose4) ||
-                other.totalDose4 == totalDose4) &&
-            (identical(other.totalDistinctPersons, totalDistinctPersons) ||
-                other.totalDistinctPersons == totalDistinctPersons) &&
-            (identical(other.totalVaccinations, totalVaccinations) ||
-                other.totalVaccinations == totalVaccinations));
-  }
-
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      area,
-      areaId,
-      dailyDose1,
-      dailyDose2,
-      dailyDose3,
-      dailyDose4,
-      dayDiff,
-      dayTotal,
-      referenceDate,
-      totalDose1,
-      totalDose2,
-      totalDose3,
-      totalDose4,
-      totalDistinctPersons,
-      totalVaccinations);
-
-  /// Create a copy of VaccinationData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$VaccinationDataImplCopyWith<_$VaccinationDataImpl> get copyWith =>
-      __$$VaccinationDataImplCopyWithImpl<_$VaccinationDataImpl>(
-          this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$VaccinationDataImplToJson(
-      this,
-    );
-  }
+/// The published `area` value.
+@override final  String area;
+/// The published `areaid` value.
+@override@JsonKey(name: 'areaid') final  String areaId;
+/// The published `referencedate` value.
+@override@SourceDateConverter()@JsonKey(name: 'referencedate') final  SourceDate referenceDate;
+/// The published `daytotal` value.
+@override@JsonKey(name: 'daytotal') final  int? dayTotal;
+/// The published `daydiff` value.
+@override@JsonKey(name: 'daydiff') final  int? dayDiff;
+/// The published `totalvaccinations` value.
+@override@JsonKey(name: 'totalvaccinations') final  int? totalVaccinations;
+/// The published `totaldistinctpersons` value.
+@override@JsonKey(name: 'totaldistinctpersons') final  int? totalDistinctPersons;
+/// The published `dailydose1` value.
+@override@JsonKey(name: 'dailydose1') final  int? dailyDose1;
+/// The published `dailydose2` value.
+@override@JsonKey(name: 'dailydose2') final  int? dailyDose2;
+/// The published `dailydose3` value.
+@override@JsonKey(name: 'dailydose3') final  int? dailyDose3;
+/// The published `totaldose1` value.
+@override@JsonKey(name: 'totaldose1') final  int? totalDose1;
+/// The published `totaldose2` value.
+@override@JsonKey(name: 'totaldose2') final  int? totalDose2;
+/// The published `totaldose3` value.
+@override@JsonKey(name: 'totaldose3') final  int? totalDose3;
+/// Immutable original source cells, including unknown columns.
+ final  JsonObject _raw;
+/// Immutable original source cells, including unknown columns.
+@override@ImmutableSourceConverter() JsonObject get raw {
+  if (_raw is EqualUnmodifiableMapView) return _raw;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableMapView(_raw);
 }
 
-abstract class _VaccinationData implements VaccinationData {
-  const factory _VaccinationData(
-      {required final String area,
-      @JsonKey(name: 'areaid') required final int areaId,
-      @JsonKey(name: 'dailydose1') required final int dailyDose1,
-      @JsonKey(name: 'dailydose2') required final int dailyDose2,
-      @JsonKey(name: 'dailydose3') required final int? dailyDose3,
-      @JsonKey(name: 'dailydose4') required final int? dailyDose4,
-      @JsonKey(name: 'daydiff') required final int dayDiff,
-      @JsonKey(name: 'daytotal') required final int dayTotal,
-      @JsonKey(name: 'referencedate') required final DateTime referenceDate,
-      @JsonKey(name: 'totaldose1') required final int totalDose1,
-      @JsonKey(name: 'totaldose2') required final int totalDose2,
-      @JsonKey(name: 'totaldose3') required final int? totalDose3,
-      @JsonKey(name: 'totaldose4') required final int? totalDose4,
-      @JsonKey(name: 'totaldistinctpersons')
-      required final int? totalDistinctPersons,
-      @JsonKey(name: 'totalvaccinations')
-      required final int totalVaccinations}) = _$VaccinationDataImpl;
+/// Selected source identity and measured retrieval time.
+@override@SourceProvenanceConverter() final  SourceProvenance provenance;
 
-  factory _VaccinationData.fromJson(Map<String, dynamic> json) =
-      _$VaccinationDataImpl.fromJson;
+/// Create a copy of VaccinationData
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$VaccinationDataCopyWith<_VaccinationData> get copyWith => __$VaccinationDataCopyWithImpl<_VaccinationData>(this, _$identity);
 
-  @override
-  String get area;
-  @override
-  @JsonKey(name: 'areaid')
-  int get areaId;
-  @override
-  @JsonKey(name: 'dailydose1')
-  int get dailyDose1;
-  @override
-  @JsonKey(name: 'dailydose2')
-  int get dailyDose2;
-  @override
-  @JsonKey(name: 'dailydose3')
-  int? get dailyDose3;
-  @override
-  @JsonKey(name: 'dailydose4')
-  int? get dailyDose4;
-  @override
-  @JsonKey(name: 'daydiff')
-  int get dayDiff;
-  @override
-  @JsonKey(name: 'daytotal')
-  int get dayTotal;
-  @override
-  @JsonKey(name: 'referencedate')
-  DateTime get referenceDate;
-  @override
-  @JsonKey(name: 'totaldose1')
-  int get totalDose1;
-  @override
-  @JsonKey(name: 'totaldose2')
-  int get totalDose2;
-  @override
-  @JsonKey(name: 'totaldose3')
-  int? get totalDose3;
-  @override
-  @JsonKey(name: 'totaldose4')
-  int? get totalDose4;
-  @override
-  @JsonKey(name: 'totaldistinctpersons')
-  int? get totalDistinctPersons;
-  @override
-  @JsonKey(name: 'totalvaccinations')
-  int get totalVaccinations;
-
-  /// Create a copy of VaccinationData
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$VaccinationDataImplCopyWith<_$VaccinationDataImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+@override
+Map<String, dynamic> toJson() {
+  return _$VaccinationDataToJson(this, );
 }
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _VaccinationData&&(identical(other.area, area) || other.area == area)&&(identical(other.areaId, areaId) || other.areaId == areaId)&&(identical(other.referenceDate, referenceDate) || other.referenceDate == referenceDate)&&(identical(other.dayTotal, dayTotal) || other.dayTotal == dayTotal)&&(identical(other.dayDiff, dayDiff) || other.dayDiff == dayDiff)&&(identical(other.totalVaccinations, totalVaccinations) || other.totalVaccinations == totalVaccinations)&&(identical(other.totalDistinctPersons, totalDistinctPersons) || other.totalDistinctPersons == totalDistinctPersons)&&(identical(other.dailyDose1, dailyDose1) || other.dailyDose1 == dailyDose1)&&(identical(other.dailyDose2, dailyDose2) || other.dailyDose2 == dailyDose2)&&(identical(other.dailyDose3, dailyDose3) || other.dailyDose3 == dailyDose3)&&(identical(other.totalDose1, totalDose1) || other.totalDose1 == totalDose1)&&(identical(other.totalDose2, totalDose2) || other.totalDose2 == totalDose2)&&(identical(other.totalDose3, totalDose3) || other.totalDose3 == totalDose3)&&const DeepCollectionEquality().equals(other._raw, _raw)&&(identical(other.provenance, provenance) || other.provenance == provenance));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,area,areaId,referenceDate,dayTotal,dayDiff,totalVaccinations,totalDistinctPersons,dailyDose1,dailyDose2,dailyDose3,totalDose1,totalDose2,totalDose3,const DeepCollectionEquality().hash(_raw),provenance);
+
+@override
+String toString() {
+  return 'VaccinationData(area: $area, areaId: $areaId, referenceDate: $referenceDate, dayTotal: $dayTotal, dayDiff: $dayDiff, totalVaccinations: $totalVaccinations, totalDistinctPersons: $totalDistinctPersons, dailyDose1: $dailyDose1, dailyDose2: $dailyDose2, dailyDose3: $dailyDose3, totalDose1: $totalDose1, totalDose2: $totalDose2, totalDose3: $totalDose3, raw: $raw, provenance: $provenance)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$VaccinationDataCopyWith<$Res> implements $VaccinationDataCopyWith<$Res> {
+  factory _$VaccinationDataCopyWith(_VaccinationData value, $Res Function(_VaccinationData) _then) = __$VaccinationDataCopyWithImpl;
+@override @useResult
+$Res call({
+ String area,@JsonKey(name: 'areaid') String areaId,@SourceDateConverter()@JsonKey(name: 'referencedate') SourceDate referenceDate,@JsonKey(name: 'daytotal') int? dayTotal,@JsonKey(name: 'daydiff') int? dayDiff,@JsonKey(name: 'totalvaccinations') int? totalVaccinations,@JsonKey(name: 'totaldistinctpersons') int? totalDistinctPersons,@JsonKey(name: 'dailydose1') int? dailyDose1,@JsonKey(name: 'dailydose2') int? dailyDose2,@JsonKey(name: 'dailydose3') int? dailyDose3,@JsonKey(name: 'totaldose1') int? totalDose1,@JsonKey(name: 'totaldose2') int? totalDose2,@JsonKey(name: 'totaldose3') int? totalDose3,@ImmutableSourceConverter() JsonObject raw,@SourceProvenanceConverter() SourceProvenance provenance
+});
+
+
+
+
+}
+/// @nodoc
+class __$VaccinationDataCopyWithImpl<$Res>
+    implements _$VaccinationDataCopyWith<$Res> {
+  __$VaccinationDataCopyWithImpl(this._self, this._then);
+
+  final _VaccinationData _self;
+  final $Res Function(_VaccinationData) _then;
+
+/// Create a copy of VaccinationData
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? area = null,Object? areaId = null,Object? referenceDate = null,Object? dayTotal = freezed,Object? dayDiff = freezed,Object? totalVaccinations = freezed,Object? totalDistinctPersons = freezed,Object? dailyDose1 = freezed,Object? dailyDose2 = freezed,Object? dailyDose3 = freezed,Object? totalDose1 = freezed,Object? totalDose2 = freezed,Object? totalDose3 = freezed,Object? raw = null,Object? provenance = null,}) {
+  return _then(_VaccinationData(
+area: null == area ? _self.area : area // ignore: cast_nullable_to_non_nullable
+as String,areaId: null == areaId ? _self.areaId : areaId // ignore: cast_nullable_to_non_nullable
+as String,referenceDate: null == referenceDate ? _self.referenceDate : referenceDate // ignore: cast_nullable_to_non_nullable
+as SourceDate,dayTotal: freezed == dayTotal ? _self.dayTotal : dayTotal // ignore: cast_nullable_to_non_nullable
+as int?,dayDiff: freezed == dayDiff ? _self.dayDiff : dayDiff // ignore: cast_nullable_to_non_nullable
+as int?,totalVaccinations: freezed == totalVaccinations ? _self.totalVaccinations : totalVaccinations // ignore: cast_nullable_to_non_nullable
+as int?,totalDistinctPersons: freezed == totalDistinctPersons ? _self.totalDistinctPersons : totalDistinctPersons // ignore: cast_nullable_to_non_nullable
+as int?,dailyDose1: freezed == dailyDose1 ? _self.dailyDose1 : dailyDose1 // ignore: cast_nullable_to_non_nullable
+as int?,dailyDose2: freezed == dailyDose2 ? _self.dailyDose2 : dailyDose2 // ignore: cast_nullable_to_non_nullable
+as int?,dailyDose3: freezed == dailyDose3 ? _self.dailyDose3 : dailyDose3 // ignore: cast_nullable_to_non_nullable
+as int?,totalDose1: freezed == totalDose1 ? _self.totalDose1 : totalDose1 // ignore: cast_nullable_to_non_nullable
+as int?,totalDose2: freezed == totalDose2 ? _self.totalDose2 : totalDose2 // ignore: cast_nullable_to_non_nullable
+as int?,totalDose3: freezed == totalDose3 ? _self.totalDose3 : totalDose3 // ignore: cast_nullable_to_non_nullable
+as int?,raw: null == raw ? _self._raw : raw // ignore: cast_nullable_to_non_nullable
+as JsonObject,provenance: null == provenance ? _self.provenance : provenance // ignore: cast_nullable_to_non_nullable
+as SourceProvenance,
+  ));
+}
+
+
+}
+
+// dart format on

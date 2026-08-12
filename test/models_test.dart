@@ -1,45 +1,73 @@
-import 'package:data_gov_gr/src/models/fuel/fuel_type.dart';
-import 'package:data_gov_gr/src/models/shared/prefecture.dart';
+import 'package:data_gov_gr/data_gov_gr.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('Prefecture', () {
-    const converter = PrefectureConverter();
+  test(
+    'catalog metadata retains unknown source fields and translated shapes',
+    () {
+      final source = <String, Object?>{
+        'id': 'catalog-id',
+        'name': 'entry-name',
+        'type': 'future-kind',
+        'title_translated': {'el': 'Δεδομένα'},
+        'future': {
+          'values': [1, '00123'],
+        },
+        'resources': [
+          {'id': 'file', 'format': 'FUTURE', 'url': 'dummy'},
+        ],
+      };
+      final entry = CatalogEntry.fromJson(source);
+      source['id'] = 'mutated';
+      expect(entry.id, 'catalog-id');
+      expect(entry.name, 'entry-name');
+      expect(entry.kind, 'future-kind');
+      expect(entry.titleTranslated['el'], 'Δεδομένα');
+      expect(entry.raw['future'], {
+        'values': [1, '00123'],
+      });
+      expect(entry.resources.single.format, 'FUTURE');
+      expect(entry.resources.single.fileUri, isNull);
+      expect(entry.metadataModified, isNull);
+      expect(
+        () => (entry.raw['future'] as Map)['extra'] = true,
+        throwsUnsupportedError,
+      );
+    },
+  );
 
-    test('maps raw Greek name correctly', () {
-      expect(converter.fromJson('ΑΤΤΙΚΗΣ'), Prefecture.attica);
-      expect(converter.fromJson('ΘΕΣΣΑΛΟΝΙΚΗΣ'), Prefecture.thessaloniki);
-    });
-
-    test('is case-insensitive during mapping', () {
-      expect(converter.fromJson('αττικής'), Prefecture.attica);
-    });
-
-    test('throws ArgumentError for unknown prefecture', () {
-      expect(() => converter.fromJson('NOT_A_PREFECTURE'), throwsArgumentError);
-    });
-
-    test('provides English names via extension', () {
-      expect(Prefecture.attica.englishName, 'Attica');
-      expect(Prefecture.achaia.englishName, 'Achaia');
-    });
+  test('source dates preserve malformed and unqualified published values', () {
+    const malformed = SourceDate('not published as ISO');
+    expect(malformed.raw, 'not published as ISO');
+    expect(malformed.isParseable, isFalse);
+    expect(malformed.utcValue, isNull);
+    expect(const SourceDate('2024-01-01T12:00:00').utcValue, isNull);
+    expect(
+      const SourceDate('2024-01-01T12:00:00+02:00').utcValue,
+      DateTime.utc(2024, 1, 1, 10),
+    );
   });
 
-  group('FuelType', () {
-    const converter = FuelTypeConverter();
-
-    test('maps raw Greek label correctly', () {
-      expect(converter.fromJson('Αμόλυβδη 95'), FuelType.unleaded95);
-      expect(converter.fromJson('Πετρέλαιο Κίνησης'), FuelType.diesel);
-    });
-
-    test('defaults to .unknown for unrecognized strings', () {
-      expect(converter.fromJson('New Fuel Type'), FuelType.unknown);
-    });
-
-    test('provides localized names via extension', () {
-      expect(FuelType.unleaded95.englishName, 'Unleaded 95');
-      expect(FuelType.diesel.greekName, 'Πετρέλαιο Κίνησης');
-    });
+  test('unpublished quota fields stay absent instead of becoming zero', () {
+    expect(RateLimitStatus.initial().remaining, isNull);
+    expect(RateLimitStatus.initial().available, isFalse);
+    expect(const RateLimitStatus(remaining: 0).available, isTrue);
   });
+
+  test(
+    'resource URL roles retain source values without inventing file URLs',
+    () {
+      final resource = ResourceMetadata.fromJson({
+        'id': 'service',
+        'url': 'https://api.test/query',
+        'url_type': 'api',
+        'download_url': 'https://catalog.test/page',
+        'last_modified': 'unparseable',
+      });
+      expect(resource.fileUri, isNull);
+      expect(resource.url, 'https://api.test/query');
+      expect(resource.downloadUrl, 'https://catalog.test/page');
+      expect(resource.modified!.raw, 'unparseable');
+    },
+  );
 }

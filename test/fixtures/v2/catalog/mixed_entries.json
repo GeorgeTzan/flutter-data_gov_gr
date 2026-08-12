@@ -1,0 +1,11 @@
+{
+  "fixture_description": "Synthetic CKAN metadata for schema and pagination tests; not production fallback data.",
+  "count": 4,
+  "results": [
+    {"id":"dataset-1","name":"dataset","type":"dataset","title":"Δεδομένα","resources":[{"id":"csv","url":"https://files.test/a.csv","format":"CSV","datastore_active":true},{"id":"broken","url":"http://bad host/file.csv","format":"CSV"},{"id":"api","url":"https://api.test/","resource_type":"api"}],"custom":{"retained":true}},
+    {"id":"service-1","name":"service","type":"service","endpoint_url":["https://service.test/"],"resources":[]},
+    {"id":"decision-1","name":"decision","type":"decision","resources":[{"id":"decision-resource","download_url":"https://files.test/decision.pdf","url_type":"download"}]},
+    {"id":"future-1","name":"future","type":"future-kind","resources":[{"id":"no-url","custom":"retained"}]}
+  ],
+  "search_facets": {"theme":{"items":[{"name":"[\"AGRI\", \"ECON\"]","count":2}]}}
+}

@@ -1,0 +1,51 @@
+{
+  "retrievedAt": "2026-10-12T14:35:50.504261+00:00",
+  "sampling": "catalog metadata, two DataStore rows, first8192bytes of CSV then retained header and first two complete physical rows",
+  "traffic": {
+    "entryId": "78263cf3-e67b-4878-8a29-0c7e458b22a4",
+    "resourceId": "14560622-570b-479a-a05f-659afc3d92d8",
+    "sourceUrl": "https://data.gov.gr/dataset/78263cf3-e67b-4878-8a29-0c7e458b22a4/resource/14560622-570b-479a-a05f-659afc3d92d8/download/export_internet_traffic.csv",
+    "lastModified": "2025-11-23T18:10:06.928681",
+    "path": "test/fixtures/v2/domains/traffic.json",
+    "sha256": "93073cf6fa991b76cbdd8dbb3515f9ee34d8db128310ae70ffe0f7cc345e4c33",
+    "evidencePath": ".superpowers/sdd/2026-10-11-data-gov-gr-v2/helper-source-evidence/traffic.sample.json"
+  },
+  "vaccination": {
+    "entryId": "9871e167-0f72-4fa5-a7da-9afd9693e646",
+    "resourceId": "d0c5e369-461d-4110-8930-f4b656c119d5",
+    "sourceUrl": "https://data.gov.gr/dataset/9871e167-0f72-4fa5-a7da-9afd9693e646/resource/d0c5e369-461d-4110-8930-f4b656c119d5/download/export_mdg_emvolio.csv",
+    "lastModified": "2025-11-23T18:41:06.604548",
+    "path": "test/fixtures/v2/domains/vaccination.csv",
+    "sha256": "203b6f364973c3eda6d008e88e49a05ec8edcd357c52675342a7927e3c9ba49c",
+    "evidencePath": ".superpowers/sdd/2026-10-11-data-gov-gr-v2/helper-source-evidence/vaccination.sample.csv"
+  },
+  "forest_fires": {
+    "entryId": "363b7676-1604-438e-a5ee-545c29d15caf",
+    "resourceId": "3676d1d4-14e4-4758-a5c1-ac6279afe7d3",
+    "sourceUrl": "https://data.gov.gr/dataset/363b7676-1604-438e-a5ee-545c29d15caf/resource/3676d1d4-14e4-4758-a5c1-ac6279afe7d3/download/export_mcp_forest_fires.csv",
+    "lastModified": "2025-11-23T11:45:15.649463",
+    "path": "test/fixtures/v2/domains/forest_fires.csv",
+    "sha256": "6e60b2c3ea59b38cadc8421aabae74bb7ddfbaca2a9e9c1fe4d0bc6c213975d6",
+    "evidencePath": ".superpowers/sdd/2026-10-11-data-gov-gr-v2/helper-source-evidence/forest_fires.sample.csv"
+  },
+  "metadata": {
+    "internet_traffic": {
+      "path": "test/fixtures/v2/domains/internet_traffic.metadata.json",
+      "evidencePath": ".superpowers/sdd/2026-10-11-data-gov-gr-v2/helper-source-evidence/internet_traffic.metadata.json",
+      "sha256": "7a6b44db3554d51589548cecaf82d077f2fda3987ec3e271a7711ee80f0402ee",
+      "retrievedAt": "2026-10-12T14:35:50.504261+00:00"
+    },
+    "mdg_emvolio": {
+      "path": "test/fixtures/v2/domains/mdg_emvolio.metadata.json",
+      "evidencePath": ".superpowers/sdd/2026-10-11-data-gov-gr-v2/helper-source-evidence/mdg_emvolio.metadata.json",
+      "sha256": "1835ccceb1ef2e12427d32f18e15581d9cc6fa51f3d9ee1d19f7b675beea5558",
+      "retrievedAt": "2026-10-12T14:35:50.504261+00:00"
+    },
+    "mcp_forest_fires": {
+      "path": "test/fixtures/v2/domains/mcp_forest_fires.metadata.json",
+      "evidencePath": ".superpowers/sdd/2026-10-11-data-gov-gr-v2/helper-source-evidence/mcp_forest_fires.metadata.json",
+      "sha256": "bce02aa94ee79e660da8a646b4d2fef51ed59b0093a9d5908f33c680bfc09a89",
+      "retrievedAt": "2026-10-12T14:35:50.504261+00:00"
+    }
+  }
+}
