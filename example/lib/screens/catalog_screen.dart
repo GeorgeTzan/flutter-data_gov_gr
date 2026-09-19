@@ -1,397 +1,285 @@
-import 'dart:async';
-import 'dart:convert';
+import 'package:data_gov_gr/data_gov_gr.dart' hide Theme;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:data_gov_gr/data_gov_gr.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../state.dart';
 import '../theme.dart';
+import 'resource_screen.dart';
 
-class CatalogScreen extends StatelessWidget {
+/// Searches and pages through the selected source catalog.
+class CatalogScreen extends StatefulWidget {
+  /// Creates the catalog page.
   const CatalogScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'CATALOG',
-            style: Theme.of(context).textTheme.headlineMedium,
-          ),
-          backgroundColor: Colors.transparent,
-          bottom: const TabBar(
-            tabs: [
-              Tab(text: 'Datasets'),
-              Tab(text: 'Topics'),
-              Tab(text: 'Providers'),
-            ],
-            indicatorColor: CommandCenterTheme.secondaryCyan,
-            labelStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-          ),
-        ),
-        body: const TabBarView(
-          children: [
-            DatasetListTab(),
-            StringListTab(mode: DiscoveryType.topics),
-            StringListTab(mode: DiscoveryType.providers),
-          ],
-        ),
-      ),
-    );
-  }
+  State<CatalogScreen> createState() => _CatalogScreenState();
 }
 
-enum DiscoveryType { topics, providers }
-
-class DatasetListTab extends StatelessWidget {
-  const DatasetListTab({super.key});
-
-  void _queryDataset(BuildContext context, String id, String title) async {
-    final client = context.read<SDKState>().client;
-
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: CommandCenterTheme.darkBg,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) {
-        return DraggableScrollableSheet(
-          initialChildSize: 0.7,
-          minChildSize: 0.5,
-          maxChildSize: 0.95,
-          expand: false,
-          builder: (context, scrollController) {
-            return Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(color: Colors.white.withAlpha(13)),
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      const FaIcon(
-                        FontAwesomeIcons.terminal,
-                        size: 16,
-                        color: CommandCenterTheme.secondaryCyan,
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          title,
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: DatasetQueryView(
-                    client: client,
-                    datasetId: id,
-                    scrollController: scrollController,
-                  ),
-                ),
-              ],
-            );
-          },
-        );
-      },
-    );
-  }
+class _CatalogScreenState extends State<CatalogScreen> {
+  DataGovClient? _client;
+  CancellationController _cancellation = CancellationController();
+  final _search = TextEditingController();
+  final _pages = <int, Future<CatalogPage>>{};
+  final _history = <int>[];
+  late Future<CatalogPage> _future;
+  String? _query;
+  int _offset = 0;
 
   @override
-  Widget build(BuildContext context) {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     final client = context.watch<SDKState>().client;
-
-    return FutureBuilder<List<DatasetMetadata>>(
-      future: client.discovery.listDatasets(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        if (snapshot.hasError) {
-          return _ErrorState(error: snapshot.error.toString());
-        }
-
-        final datasets = snapshot.data ?? [];
-        if (datasets.isEmpty) return const _EmptyState();
-
-        return ListView.builder(
-          padding: const EdgeInsets.all(16),
-          itemCount: datasets.length,
-          itemBuilder: (context, index) {
-            final ds = datasets[index];
-            return Card(
-              margin: const EdgeInsets.only(bottom: 12),
-              child: ListTile(
-                leading: const FaIcon(
-                  FontAwesomeIcons.database,
-                  size: 16,
-                  color: CommandCenterTheme.secondaryCyan,
-                ),
-                title: Text(
-                  ds.title,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                subtitle: Text(
-                  '${ds.publisher} • ${ds.identifier}',
-                  style: Theme.of(context).textTheme.labelSmall,
-                ),
-                trailing: const Icon(
-                  Icons.chevron_right,
-                  size: 16,
-                  color: Colors.white24,
-                ),
-                onTap: () => _queryDataset(context, ds.identifier, ds.title),
-              ),
-            );
-          },
-        );
-      },
-    );
+    if (!identical(client, _client)) {
+      _client = client;
+      _reset();
+    }
   }
-}
 
-class StringListTab extends StatelessWidget {
-  final DiscoveryType mode;
-  const StringListTab({super.key, required this.mode});
-
-  @override
-  Widget build(BuildContext context) {
-    final client = context.watch<SDKState>().client;
-    final future = mode == DiscoveryType.topics
-        ? client.discovery.listTopics()
-        : client.discovery.listProviders();
-
-    return FutureBuilder<List<String>>(
-      future: future,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        if (snapshot.hasError) {
-          return _ErrorState(error: snapshot.error.toString());
-        }
-
-        final items = snapshot.data ?? [];
-        if (items.isEmpty) return const _EmptyState();
-
-        return ListView.builder(
-          padding: const EdgeInsets.all(16),
-          itemCount: items.length,
-          itemBuilder: (context, index) {
-            final item = items[index];
-            return Card(
-              margin: const EdgeInsets.only(bottom: 8),
-              child: ListTile(
-                dense: true,
-                title: Text(item, style: const TextStyle(fontSize: 13)),
-                leading: Icon(
-                  mode == DiscoveryType.topics ? Icons.tag : Icons.business,
-                  size: 14,
-                  color: Colors.white38,
-                ),
-              ),
-            );
-          },
-        );
-      },
-    );
+  void _reset() {
+    _cancellation.cancel('Catalog replaced.');
+    _cancellation = CancellationController();
+    _pages.clear();
+    _history.clear();
+    _offset = 0;
+    _future = _load(0);
   }
-}
 
-class _EmptyState extends StatelessWidget {
-  const _EmptyState();
+  Future<CatalogPage> _load(int offset) => _pages.putIfAbsent(
+    offset,
+    () => _client!.catalog.search(
+      CatalogQuery(text: _query, offset: offset),
+      cancellation: _cancellation.signal,
+    ),
+  );
 
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const FaIcon(
-            FontAwesomeIcons.boxOpen,
-            size: 48,
-            color: Colors.white24,
-          ),
-          const SizedBox(height: 16),
-          Text(
-            'No results found',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-        ],
-      ),
-    );
+  void _submit(String value) {
+    final query = value.trim().isEmpty ? null : value.trim();
+    if (query == _query) return;
+    setState(() {
+      _query = query;
+      _reset();
+    });
   }
-}
 
-class _ErrorState extends StatelessWidget {
-  final String error;
-  const _ErrorState({required this.error});
+  void _next(CatalogPage page) => setState(() {
+    _history.add(_offset);
+    _offset = page.offset + page.entries.length;
+    _future = _load(_offset);
+  });
 
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const FaIcon(
-              FontAwesomeIcons.triangleExclamation,
-              color: Colors.redAccent,
-              size: 40,
-            ),
-            const SizedBox(height: 16),
-            Text(
-              error,
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.white54, fontSize: 12),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class DatasetQueryView extends StatefulWidget {
-  final DataGovClient client;
-  final String datasetId;
-  final ScrollController scrollController;
-
-  const DatasetQueryView({
-    super.key,
-    required this.client,
-    required this.datasetId,
-    required this.scrollController,
+  void _previous() => setState(() {
+    _offset = _history.removeLast();
+    _future = _load(_offset);
   });
 
   @override
-  State<DatasetQueryView> createState() => _DatasetQueryViewState();
-}
-
-class _DatasetQueryViewState extends State<DatasetQueryView> {
-  StreamSubscription<List<Map<String, dynamic>>>? _subscription;
-  final List<Map<String, dynamic>> _records = [];
-  bool _isLoading = true;
-  Object? _error;
-
-  @override
-  void initState() {
-    super.initState();
-    _startQuery();
-  }
-
-  void _startQuery() {
-    _subscription = widget.client.generic
-        .queryPaged(widget.datasetId, pageSize: 50)
-        .listen(
-          (chunk) {
-            setState(() {
-              _records.addAll(chunk);
-            });
-          },
-          onError: (err) {
-            setState(() {
-              _error = err;
-              _isLoading = false;
-            });
-          },
-          onDone: () {
-            setState(() {
-              _isLoading = false;
-            });
-          },
-          cancelOnError: true,
-        );
-  }
-
-  @override
   void dispose() {
-    _subscription?.cancel();
+    _cancellation.cancel('Catalog closed.');
+    _search.dispose();
     super.dispose();
   }
 
   @override
-  Widget build(BuildContext context) {
-    if (_error != null && _records.isEmpty) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(32),
-          child: Text(
-            _error.toString(),
-            textAlign: TextAlign.center,
-            style: const TextStyle(color: Colors.redAccent),
+  Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(
+      title: Text('CATALOG', style: Theme.of(context).textTheme.headlineMedium),
+      backgroundColor: Colors.transparent,
+    ),
+    body: Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: TextField(
+            controller: _search,
+            decoration: InputDecoration(
+              labelText: 'Search catalog',
+              border: const OutlineInputBorder(),
+              suffixIcon: IconButton(
+                onPressed: () => _submit(_search.text),
+                icon: const Icon(Icons.search),
+              ),
+            ),
+            onSubmitted: _submit,
           ),
         ),
-      );
-    }
-
-    if (_records.isEmpty && _isLoading) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
-    if (_records.isEmpty && !_isLoading) {
-      return const Center(child: Text('No records returned'));
-    }
-
-    return Column(
-      children: [
-        if (_isLoading)
-          const LinearProgressIndicator(
-            backgroundColor: Colors.transparent,
-            valueColor: AlwaysStoppedAnimation<Color>(
-              CommandCenterTheme.secondaryCyan,
-            ),
-            minHeight: 2,
-          ),
         Expanded(
-          child: ListView.builder(
-            controller: widget.scrollController,
-            itemCount: _records.length,
-            itemBuilder: (context, index) {
-              final item = _records[index];
-              String prettyJson;
-              try {
-                prettyJson = const JsonEncoder.withIndent('  ').convert(item);
-              } catch (_) {
-                prettyJson = item.toString();
+          child: FutureBuilder<CatalogPage>(
+            future: _future,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState != ConnectionState.done) {
+                return const Center(child: CircularProgressIndicator());
               }
-              return Container(
-                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.white.withAlpha(5),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: SelectableText(
-                  prettyJson,
-                  style: const TextStyle(
-                    fontFamily: 'monospace',
-                    fontSize: 11,
-                    color: Colors.white70,
+              if (snapshot.hasError) {
+                return Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: Text('Catalog unavailable: ${snapshot.error}'),
                   ),
-                ),
+                );
+              }
+              final page = snapshot.requireData;
+              return Column(
+                children: [
+                  Text('${page.total} published entries'),
+                  Expanded(
+                    child: page.entries.isEmpty
+                        ? const Center(child: Text('No results found'))
+                        : ListView.builder(
+                            padding: const EdgeInsets.all(16),
+                            itemCount: page.entries.length,
+                            itemBuilder: (context, index) {
+                              final entry = page.entries[index];
+                              return Card(
+                                margin: const EdgeInsets.only(bottom: 12),
+                                child: ListTile(
+                                  leading: const Icon(
+                                    Icons.storage,
+                                    color: CommandCenterTheme.secondaryCyan,
+                                  ),
+                                  title: Text(entry.title ?? entry.name),
+                                  subtitle: Text(
+                                    '${entry.kind} • ${entry.resources.length} resources',
+                                  ),
+                                  trailing: const Icon(Icons.chevron_right),
+                                  onTap: () => Navigator.of(context).push(
+                                    MaterialPageRoute<void>(
+                                      builder: (_) =>
+                                          EntryScreen(entryId: entry.id),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        TextButton(
+                          onPressed: _history.isEmpty ? null : _previous,
+                          child: const Text('Previous page'),
+                        ),
+                        TextButton(
+                          onPressed:
+                              page.entries.isNotEmpty &&
+                                  page.offset + page.entries.length < page.total
+                              ? () => _next(page)
+                              : null,
+                          child: const Text('Next page'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               );
             },
           ),
         ),
       ],
+    ),
+  );
+}
+
+/// Shows published entry metadata and every resource before selection.
+class EntryScreen extends StatefulWidget {
+  /// Loads the selected entry identifier.
+  const EntryScreen({super.key, required this.entryId});
+
+  /// The selected catalog entry ID.
+  final String entryId;
+
+  @override
+  State<EntryScreen> createState() => _EntryScreenState();
+}
+
+class _EntryScreenState extends State<EntryScreen> {
+  DataGovClient? _client;
+  CancellationController _cancellation = CancellationController();
+  late Future<CatalogEntry> _future;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final client = context.watch<SDKState>().client;
+    if (!identical(client, _client)) {
+      _client = client;
+      _load();
+    }
+  }
+
+  void _load() {
+    _cancellation.cancel('Entry replaced.');
+    _cancellation = CancellationController();
+    _future = _client!.catalog.getEntry(
+      widget.entryId,
+      cancellation: _cancellation.signal,
     );
   }
+
+  @override
+  void didUpdateWidget(EntryScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.entryId != widget.entryId) _load();
+  }
+
+  @override
+  void dispose() {
+    _cancellation.cancel('Entry closed.');
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(title: const Text('RESOURCES')),
+    body: FutureBuilder<CatalogEntry>(
+      future: _future,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasError) {
+          return Center(child: Text('Entry unavailable: ${snapshot.error}'));
+        }
+        final entry = snapshot.requireData;
+        return ListView(
+          padding: const EdgeInsets.all(16),
+          children: [
+            if (context.watch<SDKState>().demo)
+              const Text('Demo — synthetic data'),
+            Text(
+              entry.title ?? entry.name,
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            if (entry.description != null)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                child: Text(entry.description!),
+              ),
+            if (entry.publisher != null) Text('Publisher: ${entry.publisher}'),
+            if (entry.metadataModified != null)
+              Text('Published modification: ${entry.metadataModified!.raw}'),
+            const SizedBox(height: 16),
+            const Text('Choose a published resource'),
+            if (entry.resources.isEmpty) const Text('No resources published'),
+            for (final resource in entry.resources)
+              Card(
+                child: ListTile(
+                  title: Text(
+                    '${resource.name ?? resource.id} • ${resource.format ?? 'Unknown format'}',
+                  ),
+                  subtitle: Text(resource.url ?? 'No file URL published'),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (_) => ResourceScreen(resource: resource),
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        );
+      },
+    ),
+  );
 }

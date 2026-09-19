@@ -1,11 +1,12 @@
+import 'package:data_gov_gr/data_gov_gr.dart' hide Theme;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:data_gov_gr/data_gov_gr.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../state.dart';
 import '../theme.dart';
 
+/// Edits configuration drafts and displays published quota observations.
 class SystemScreen extends StatefulWidget {
+  /// Creates the configuration page.
   const SystemScreen({super.key});
 
   @override
@@ -13,30 +14,45 @@ class SystemScreen extends StatefulWidget {
 }
 
 class _SystemScreenState extends State<SystemScreen> {
-  late TextEditingController _controller;
+  late final TextEditingController _endpoint;
+  late final TextEditingController _token;
+  late bool _demo;
+  String? _error;
 
   @override
   void initState() {
     super.initState();
-    final sdkState = context.read<SDKState>();
-    _controller = TextEditingController(text: sdkState.apiKey);
+    final state = context.read<SDKState>();
+    _endpoint = TextEditingController(text: state.actionBaseUrl.toString());
+    _token = TextEditingController(text: state.apiKey ?? '');
+    _demo = state.demo;
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _endpoint.dispose();
+    _token.dispose();
     super.dispose();
+  }
+
+  void _apply() {
+    try {
+      context.read<SDKState>().applyConfiguration(
+        actionBaseUrl: Uri.parse(_endpoint.text.trim()),
+        apiKey: _token.text,
+        demo: _demo,
+      );
+      setState(() => _error = null);
+    } on ArgumentError catch (error) {
+      setState(() => _error = error.toString());
+    } on FormatException catch (error) {
+      setState(() => _error = error.toString());
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final sdkState = context.watch<SDKState>();
-
-    // Sync controller if apiKey is updated elsewhere
-    if (_controller.text != sdkState.apiKey) {
-      _controller.text = sdkState.apiKey;
-    }
-
+    final state = context.watch<SDKState>();
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -48,13 +64,11 @@ class _SystemScreenState extends State<SystemScreen> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          const Text(
-            'API CONFIGURATION',
-            style: TextStyle(
-              letterSpacing: 2,
+          Text(
+            state.demo ? 'Demo — synthetic data' : 'Real data',
+            style: const TextStyle(
+              color: CommandCenterTheme.secondaryCyan,
               fontWeight: FontWeight.bold,
-              fontSize: 10,
-              color: Colors.white38,
             ),
           ),
           const SizedBox(height: 16),
@@ -63,129 +77,94 @@ class _SystemScreenState extends State<SystemScreen> {
               padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
-                  SwitchListTile(
-                    title: const Text(
-                      'Use Mock Client',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                  TextField(
+                    key: const Key('endpoint'),
+                    controller: _endpoint,
+                    decoration: const InputDecoration(
+                      labelText: 'Action directory URL',
+                      border: OutlineInputBorder(),
                     ),
-                    subtitle: const Text(
-                      'Simulate data without hitting the API',
-                    ),
-                    value: sdkState.useMock,
-                    onChanged: (val) => sdkState.toggleMock(val),
-                    activeThumbColor: Colors.amber,
-                    activeTrackColor: Colors.amber.withAlpha(128),
                   ),
-                  if (!sdkState.useMock) ...[
-                    const Divider(height: 32),
-                    TextField(
-                      controller: _controller,
-                      decoration: const InputDecoration(
-                        labelText: 'API Token',
-                        hintText: 'Enter your data.gov.gr token',
-                        border: OutlineInputBorder(),
-                      ),
-                      onChanged: (val) => sdkState.updateApiKey(val),
+                  const SizedBox(height: 16),
+                  TextField(
+                    key: const Key('token'),
+                    controller: _token,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      labelText: 'Optional token',
+                      border: OutlineInputBorder(),
                     ),
-                    const SizedBox(height: 16),
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.blue.withAlpha(20),
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: Colors.blue.withAlpha(40)),
-                      ),
-                      child: const Row(
-                        children: [
-                          Icon(
-                            Icons.info_outline,
-                            size: 16,
-                            color: Colors.blueAccent,
-                          ),
-                          SizedBox(width: 12),
-                          Expanded(
-                            child: Text(
-                              'Web Browser Hint: If you see "No Internet Connection" in Live Mode, it is likely a CORS restriction. Run Chrome with --disable-web-security for testing.',
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: Colors.blueAccent,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                  ),
+                  SwitchListTile(
+                    title: const Text('Demo'),
+                    subtitle: const Text('Synthetic catalog and files'),
+                    value: _demo,
+                    onChanged: (value) => setState(() => _demo = value),
+                  ),
+                  const Text(
+                    'Public reads work anonymously. Web access needs your backend; keep private credentials on the server.',
+                  ),
+                  const SizedBox(height: 12),
+                  FilledButton(onPressed: _apply, child: const Text('Apply')),
+                  if (_error != null)
+                    Text(
+                      _error!,
+                      style: const TextStyle(color: Colors.redAccent),
                     ),
-                  ],
                 ],
               ),
             ),
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: 24),
           const Text(
             'RATE LIMIT STATUS',
-            style: TextStyle(
-              letterSpacing: 2,
-              fontWeight: FontWeight.bold,
-              fontSize: 10,
-              color: Colors.white38,
-            ),
+            style: TextStyle(letterSpacing: 2, color: Colors.white38),
           ),
           const SizedBox(height: 16),
-          const RateLimitMeter(),
+          RateLimitMeter(key: ObjectKey(state.client)),
         ],
       ),
     );
   }
 }
 
+/// Displays absent quota headers as unavailable.
 class RateLimitMeter extends StatelessWidget {
+  /// Creates the current client quota meter.
   const RateLimitMeter({super.key});
 
   @override
   Widget build(BuildContext context) {
     final client = context.watch<SDKState>().client;
-
     return StreamBuilder<RateLimitStatus>(
       stream: client.rateLimitStatus,
+      initialData: client.currentRateLimitStatus,
       builder: (context, snapshot) {
         final status = snapshot.data ?? RateLimitStatus.initial();
-        final percentage = status.limit == 0
-            ? 0.0
-            : status.remaining / status.limit;
-        final color = percentage < 0.2
-            ? Colors.redAccent
-            : (percentage < 0.5
-                  ? Colors.orangeAccent
-                  : CommandCenterTheme.pulseGreen);
-
+        final limit = status.limit;
+        final remaining = status.remaining;
         return Card(
           child: Padding(
             padding: const EdgeInsets.all(20),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      '${status.remaining} / ${status.limit} remaining',
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                if (!status.available)
+                  const Text('Unavailable')
+                else ...[
+                  Text(
+                    '${remaining ?? 'Unknown'} / ${limit ?? 'Unknown'} remaining',
+                  ),
+                  if (limit != null && limit > 0 && remaining != null) ...[
+                    const SizedBox(height: 12),
+                    LinearProgressIndicator(
+                      value: (remaining / limit).clamp(0.0, 1.0),
+                      color: CommandCenterTheme.pulseGreen,
                     ),
-                    FaIcon(FontAwesomeIcons.gauge, size: 16, color: color),
                   ],
-                ),
-                const SizedBox(height: 16),
-                LinearProgressIndicator(
-                  value: percentage,
-                  backgroundColor: Colors.white10,
-                  color: color,
-                  minHeight: 8,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  'Auto-reset at: ${status.resetTime.toLocal().toString().split('.').first}',
-                  style: Theme.of(context).textTheme.labelSmall,
-                ),
+                  if (status.resetAt != null)
+                    Text('Resets ${status.resetAt!.toLocal()}'),
+                ],
               ],
             ),
           ),

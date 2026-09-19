@@ -49,7 +49,26 @@ class _MainScaffoldState extends State<MainScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _screens[_currentIndex],
+      body: Column(
+        children: [
+          if (context.watch<SDKState>().demo)
+            Container(
+              width: double.infinity,
+              color: CommandCenterTheme.accentAmber.withAlpha(30),
+              padding: const EdgeInsets.all(8),
+              child: const Text(
+                'Demo — synthetic data',
+                textAlign: TextAlign.center,
+              ),
+            ),
+          Expanded(
+            child: KeyedSubtree(
+              key: ObjectKey(context.watch<SDKState>().client),
+              child: _screens[_currentIndex],
+            ),
+          ),
+        ],
+      ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           border: Border(top: BorderSide(color: Colors.white.withAlpha(13))),
