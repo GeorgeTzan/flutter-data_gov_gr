@@ -64,16 +64,13 @@ jobs:
       - uses: dart-lang/setup-dart@v1
         with:
           sdk: ${{ matrix.sdk }}
-      - name: Set up Chrome
-        id: chrome
-        uses: browser-actions/setup-chrome@v2
-        with:
-          chrome-version: stable
+      - name: Verify installed Chrome
+        run: /usr/bin/google-chrome --version
       - name: Resolve SDK dependencies
         run: dart pub get --no-example
       - name: Run Chrome transport tests
         env:
-          CHROME_EXECUTABLE: ${{ steps.chrome.outputs.chrome-path }}
+          CHROME_EXECUTABLE: /usr/bin/google-chrome
         run: dart test --platform chrome --exclude-tags live test/v2/browser_transport_test.dart
 
   example:
