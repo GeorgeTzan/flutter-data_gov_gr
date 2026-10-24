@@ -7,10 +7,10 @@ Production data must come from the selected resource, missing values stay missin
 ```bash
 git clone https://github.com/GeorgeTzan/flutter-data_gov_gr.git
 cd flutter-data_gov_gr
-dart pub get
+dart pub get --no-example
 ```
 
-The SDK targets Dart 3.8 and current stable Dart. The Flutter example has a separate Dart 3.11 constraint; use a compatible Flutter SDK and run `flutter pub get` from `example/`.
+The SDK targets Dart 3.8 and current stable Dart. `--no-example` keeps SDK dependency resolution separate from the Flutter example, which has a Dart 3.11 constraint; use a compatible Flutter SDK and run `flutter pub get` from `example/`.
 
 The production library is pure Dart. Applications own file storage and proxy deployment. Keep fixtures/scripted adapters behind `package:data_gov_gr/testing.dart`; never return demo data for a failing production request.
 

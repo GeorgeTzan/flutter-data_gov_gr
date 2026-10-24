@@ -24,7 +24,7 @@ jobs:
         with:
           sdk: ${{ matrix.sdk }}
       - name: Resolve SDK dependencies
-        run: dart pub get
+        run: dart pub get --no-example
       - name: Check generated sources are reproducible
         shell: bash
         run: |
@@ -70,7 +70,7 @@ jobs:
         with:
           chrome-version: stable
       - name: Resolve SDK dependencies
-        run: dart pub get
+        run: dart pub get --no-example
       - name: Run Chrome transport tests
         env:
           CHROME_EXECUTABLE: ${{ steps.chrome.outputs.chrome-path }}

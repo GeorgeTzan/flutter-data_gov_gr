@@ -21,6 +21,6 @@ jobs:
         with:
           sdk: stable
       - name: Resolve SDK dependencies
-        run: dart pub get
+        run: dart pub get --no-example
       - name: Run small live portal tests
         run: dart test --tags live test/live/portal_test.dart
