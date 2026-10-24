@@ -1,150 +1,163 @@
-# flutter-data_gov_gr
+# data_gov_gr
 
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![pub package](https://img.shields.io/pub/v/data_gov_gr.svg)](https://pub.dev/packages/data_gov_gr)
 
-An unofficial, type-safe, and modular Dart SDK for the Greek Government Open Data API ([data.gov.gr](https://data.gov.gr)).
+An unofficial, pure Dart SDK for the Greek Government Open Data catalog at [data.gov.gr](https://data.gov.gr). Use it from Dart or Flutter to discover entries, select published resources, query supported DataStore tables, and read or download files.
 
-## Features
+See [SUPPORT.md](SUPPORT.md) for supported operations and source limitations. The SDK targets Dart 3.8 or later; the Flutter example has its own Dart 3.11 requirement.
 
-- **Full Coverage**: Access to **all 200+ datasets** via type-safe modules or the universal generic service.
-- **Unified Authentication**: Simple API Token management.
-- **Type-Safe Models**: Built with [Freezed](https://pub.dev/packages/freezed) for robust data handling.
-- **Fluent Query DSL**: Chainable filtering for fuel prices and more.
-- **Reactive Rate Limiting**: Real-time status stream of your API usage.
-- **Built-in Mocking**: Test your apps offline with `DataGovMockClient` and realistic stubs.
-- **Discovery**: Programmatically list and search datasets, topics, and providers.
-- **Robust Networking**: Automatic retries, logging, and error mapping.
+## Coverage
 
-## Getting Started
+Catalog discovery retains datasets, services, decisions, unknown entry types, and every published resource. Downloads require usable published HTTP(S) file URLs. DataStore queries require source support. CSV and JSON have built-in readers; other files can be downloaded for your application to parse.
 
-### 1. Add dependency
+This scope does not guarantee healthy publisher links, structured queries for every resource, or CKAN compatibility for external service APIs. Production requests return data from the selected source and report failures explicitly. See the [official portal API guide](https://data-gov-gr.gitbook.io/guides/texnika-egxeiridia/data.gov.gr/metadedomena/tekmiriosi-api).
 
-Add `data_gov_gr` to your project using the command line:
+## Anonymous quick start
 
-```bash
-dart pub add data_gov_gr
-```
-
-Or add it directly to your `pubspec.yaml` dependencies:
+Add the package:
 
 ```yaml
 dependencies:
-  data_gov_gr: ^1.0.0
+  data_gov_gr: ^2.0.0
 ```
 
-
-### 2. Initialize the client
+Public reads do not require a token. Inspect the resource list and select by ID rather than taking the first resource:
 
 ```dart
 import 'package:data_gov_gr/data_gov_gr.dart';
 
-final client = DataGovClient(apiKey: 'YOUR_API_TOKEN');
+Future<void> main() async {
+  final client = DataGovClient();
+  try {
+    final page = await client.catalog.search(
+      CatalogQuery(text: 'traffic', pageSize: 20),
+    );
+    for (final entry in page.entries) {
+      print('${entry.name}: ${entry.title ?? entry.id}');
+    }
+
+    final entry = await client.catalog.getEntry('internet_traffic');
+    for (final resource in entry.resources) {
+      print('${resource.id}: ${resource.format} ${resource.url}');
+    }
+    final resource = entry.resources.singleWhere(
+      (resource) => resource.id == '14560622-570b-479a-a05f-659afc3d92d8',
+    );
+    final records = await client.datastore.search(
+      resource.id,
+      DataStoreQuery(limit: 20, sort: [DataStoreSort('_id')]),
+    );
+    for (final row in records.records) {
+      print(row);
+    }
+  } finally {
+    client.close();
+  }
+}
 ```
 
-### 3. Usage Examples
+This is an audited traffic resource selection, not a promise of permanent availability or recent observations. Inspect current metadata and handle source/schema failures.
 
-#### Fetch Type-Safe Vaccination Data
+## Pagination and server queries
+
+`catalog.search` and `datastore.search` return one page. `catalog.entries`, `datastore.pages`, and `datastore.records` traverse pages on demand. Default catalog page size and DataStore limit are 100. Traversal advances by actual returned count, including server-clamped pages. Offset traversal is not a snapshot: source records can change while it runs.
+
 ```dart
-final stats = await client.health.getVaccinationStatistics(
-  from: DateTime(2023, 1, 1),
-  area: 'ΑΘΗΝΩΝ',
-);
+import 'package:data_gov_gr/data_gov_gr.dart';
+
+Future<void> previewTraffic(DataGovClient client) async {
+  final rows = client.datastore.records(
+    '14560622-570b-479a-a05f-659afc3d92d8',
+    DataStoreQuery(
+      fields: ['_id', 'date', 'avg_in', 'avg_out'],
+      sort: [DataStoreSort('_id')],
+      limit: 100,
+    ),
+  );
+  await for (final row in rows.take(20)) {
+    print(row);
+  }
+}
 ```
 
-#### Use the Query DSL for Fuel Prices
+`DataStoreQuery` accepts exact `filters`, full-text `text`, projected `fields`, ordered `sort`, `limit`, and `offset`. These run on the server. File readers do not accept DataStore filters. The audited portal does not expose a supported SQL action.
+
+## Files and typed helpers
+
+Choose a resource from its entry before reading it. CSV cells remain strings, including leading zeros and empty values:
+
 ```dart
-final stations = await client.fuel.query()
-    .wherePrefecture(Prefecture.attica)
-    .fetch();
+import 'package:data_gov_gr/data_gov_gr.dart';
+
+Future<void> previewVaccinations(DataGovClient client) async {
+  final entry = await client.catalog.getEntry('mdg_emvolio');
+  final resource = entry.resources.singleWhere(
+    (resource) => resource.id == 'd0c5e369-461d-4110-8930-f4b656c119d5',
+  );
+  await for (final row in client.resources.csvRows(resource).take(5)) {
+    print(row);
+  }
+}
 ```
 
-#### Fetch Procurement Data (KIMDIS)
+`resources.download(resource)` returns a `ResourceDownload` with a single-subscription `bytes` stream and provenance. Your application chooses storage. `resources.readJson(resource)` preserves JSON shape; `resources.jsonObjectRows(document, select: ...)` selects object rows explicitly. CSV defaults to UTF-8 and comma delimiters; use `CsvOptions` for another supported encoding or delimiter.
+
+Typed streams are `client.telecom.internetTraffic()`, `client.health.vaccinations()`, and `client.environment.forestFires(resourceId: selectedId)`. Forest fires require explicit resource selection. Models retain `raw` source values and `provenance`; missing optional measurements remain null. Traffic has no derived-unit conversion, and burned-area units remain unspecified.
+
+## Errors, cancellation, and lifecycle
+
+Catch SDK exceptions around both initial calls and returned stream consumption. The application owns the cancellation controller:
+
 ```dart
-final decisions = await client.procurement.getKimdisDecisions(
-  organizationId: '99200827',
-);
+import 'package:data_gov_gr/data_gov_gr.dart';
+
+Future<void> loadCatalogPreview(
+  DataGovClient client,
+  CancellationSignal cancellation,
+) async {
+  try {
+    await for (final entry in client.catalog.entries(
+      CatalogQuery(pageSize: 20),
+      cancellation: cancellation,
+    ).take(20)) {
+      print(entry.name);
+    }
+  } on CancelledException {
+    return;
+  } on DataGovException catch (error) {
+    print('${error.action}: ${error.message}');
+  }
+}
 ```
 
-#### Generic Access to Any Dataset
+Create a `CancellationController`, pass its `signal`, and call `cancel('Screen closed')` when work is replaced or abandoned. Stream cancellation stops active requests and future pages. Keep one client per active configuration and call `close()` when finished. Closing is idempotent, cancels work, and rejects new calls. Injected adapters remain caller-owned unless `DataGovConfig(disposeInjectedAdapter: true)` transfers disposal to the client.
+
+Downloads and CSV reads default to 64 MiB of decoded bytes; JSON defaults to 8 MiB. Options can raise the limit or disable it explicitly with `maxBytes: null`. Networking defaults to three attempts including the first, a 30-second request timeout, and a 60-second operation deadline per page or complete file transfer. Downloads do not retry after emitting bytes.
+
+Metadata lookups use a client-local cache with a five-minute TTL, up to 128 entries and 8 MiB of JSON payload. Use `refresh: true` on supported metadata calls or `client.catalog.clearCache()`. Search results, tables, and files are not cached by default. Check `client.currentRateLimitStatus.available`; nullable quotas are distinct from zero.
+
+## Flutter Web and optional credentials
+
+Flutter Web needs an application backend or same-origin proxy for portal requests under the audited CORS policy. Configure `DataGovConfig(actionBaseUrl: Uri.parse('https://your-app.example/ckan/api/3/action/'))` to use your deployed CKAN proxy.
+
+That setting only changes CKAN requests. Resource URLs remain intact in SDK metadata. Downloads also need publisher CORS support or explicit routing through an allowlisted resource-host proxy. Your backend can return resource links rewritten to its own proxy URLs, or your application can inject a routing adapter. Configure portal/resource-host allowlists, preflight handling, and response streaming. See [browser setup](SUPPORT.md#browser-setup).
+
+If your deployment needs an API key, use `DataGovConfig(apiKey: ...)` on a trusted server. Keep secrets server-side; browser bundles cannot keep them private. CKAN credentials are not forwarded to external resource origins or redirect destinations.
+
+## Explicit offline fixtures
+
+Fixtures are available only through the testing library:
+
 ```dart
-final results = await client.generic.query('mcp_forest_fires');
+import 'package:data_gov_gr/testing.dart';
+
+void main() {
+  final client = createFixtureClient();
+  client.close();
+}
 ```
 
-## Testing & Verification
+Use `createFixtureClient()` or `ScriptedAdapter` for offline tests and visibly labelled demos. Production never falls back to fixtures.
 
-### Unit & Mock Tests
-Run the standard test suite:
-```bash
-dart test
-```
-
-### Integration Tests (Live API)
-To verify the SDK against the real Greek government servers, provide your API token as an environment variable:
-```bash
-DATA_GOV_GR_TOKEN=your_token_here dart test test/integration_test.dart
-```
-
-### Flutter Example App
-Explore the interactive dashboard:
-```bash
-cd example
-# For Web (handles CORS)
-flutter run -d chrome --web-browser-flag "--disable-web-security"
-```
-
-## Supported Type-Safe Modules
-
-- [x] **Fuel**: Detailed Station Prices & Prefecture Min/Max
-- [x] **Health**: COVID-19 Vaccinations & Ministry Statistics
-- [x] **Procurement**: KIMDIS Decisions (`khmdhs_decisions`)
-- [x] **Telecom**: GR-IX Internet Traffic
-- [x] **Environment**: Forest Fire Statistics
-- [x] **Business & Economy**: Debt, Budget, and Revenue Data
-- [x] **Crime & Justice**: Road Accident Statistics
-- [x] **Education**: University & Training Data
-- [x] **Society**: Employment & Labor Market Metrics
-- [x] **Technology**: Digital Adoption & Internet Usage
-- [x] **Transport**: Public Transport & Airport Traffic
-- [x] **Discovery**: Datasets, Topics, Providers
-- [x] **Generic**: Universal access to all endpoints with auto-pagination
-
-## Related Projects
-
-- **Python**: [pydatagovgr](https://github.com/ilias-ant/pydatagovgr)
-- **Go**: [go-data-gov-gr-sdk](https://github.com/ppapapetrou76/go-data-gov-gr-sdk)
-- **R**: [datagovgR](https://github.com/elenigvasilaki/datagovgR)
-
-## API Compatibility & Architecture
-
-```mermaid
-graph TD
-    App[User's Application] --> Client[DataGovClient]
-    
-    subgraph SDK Client Architecture
-        Client --> Services[Type-Safe Services]
-        Client --> Generic[GenericService]
-        Client --> Interceptors[Interceptors Pipeline]
-        
-        Services --> Fuel[FuelService / Query DSL]
-        Services --> Health[HealthService]
-        Services --> Telecom[TelecomService]
-        Services --> Others[Other Services...]
-        
-        Interceptors --> Ckan[CkanCompatibilityInterceptor]
-        Interceptors --> Error[ErrorInterceptor]
-        Interceptors --> RateLimit[RateLimitInterceptor]
-        Interceptors --> Retry[RetryInterceptor]
-    end
-    
-    Interceptors --> Dio[Dio Network Client]
-    Dio --> API[data.gov.gr CKAN API v3]
-```
-
-The SDK targets the modern **`data.gov.gr` CKAN Action API v3** (`https://data.gov.gr/api/3/action/`).
-
-To prevent breaking existing applications, a built-in `CkanCompatibilityInterceptor` automatically intercepts legacy REST-style endpoints (e.g., vaccine, fuel, and traffic paths) and translates them on-the-fly into CKAN action queries (like `datastore_search`). This ensures 100% backward compatibility for all API methods.
-
-## License
-
-MIT License - see [LICENSE](LICENSE) for details.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development and validation commands. Licensed under [MIT](LICENSE).

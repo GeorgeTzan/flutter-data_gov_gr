@@ -1,13 +1,26 @@
-# Ignore agent and IDE folders
-.gemini/
-.antigravitycli/
-.idea/
-.vscode/
+# Local planning, credentials, agent state, and repository tooling.
+/.superpowers/
+/docs/superpowers/
+/.agents/
+/.codex/
+/.aws/
+/.gemini/
+/.antigravitycli/
+/.git/
+/.github/
+**/.idea/
+**/.vscode/
 
-# Ignore local tool files
-.dart_tool/
-build/
-all_packages.json
+# Generated caches, builds, and API documentation.
+**/.dart_tool/
+**/build/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.packages
+/doc/api/
+**/.DS_Store
 
-# Ignore temporary test resources
-scratch/
+# Library lockfile and local investigation artifacts.
+/pubspec.lock
+/all_packages.json
+/scratch/

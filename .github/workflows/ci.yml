@@ -2,48 +2,100 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
+
+permissions:
+  contents: read
 
 jobs:
-  analyze_and_test:
-    name: Code Quality & Unit Tests
+  sdk:
+    name: Dart ${{ matrix.sdk }} SDK
     runs-on: ubuntu-latest
-
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        sdk: ['3.8.0', stable]
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Set up Flutter SDK
-        uses: subosito/flutter-action@v2
+      - uses: actions/checkout@v4
+      - uses: dart-lang/setup-dart@v1
         with:
-          channel: 'stable'
-          cache: true
-
-      - name: Print Flutter & Dart versions
-        run: |
-          flutter --version
-          dart --version
-
-      - name: Install SDK Dependencies
+          sdk: ${{ matrix.sdk }}
+      - name: Resolve SDK dependencies
         run: dart pub get
-
-      - name: Install Example App Dependencies
+      - name: Check generated sources are reproducible
+        shell: bash
         run: |
-          cd example
-          flutter pub get
-
-      - name: Check Formatting
-        run: dart format --output=none --set-exit-if-changed .
-
-      - name: Analyze SDK Core
+          generated_manifest() {
+            find lib -type f \( -name '*.freezed.dart' -o -name '*.g.dart' \) -print0 |
+              sort -z | xargs -0 -r sha256sum
+          }
+          generation_dir=$(mktemp -d)
+          generated_manifest > "$generation_dir/before"
+          dart run build_runner build --delete-conflicting-outputs
+          generated_manifest > "$generation_dir/first"
+          diff -u "$generation_dir/before" "$generation_dir/first"
+          dart run build_runner build --delete-conflicting-outputs
+          generated_manifest > "$generation_dir/second"
+          diff -u "$generation_dir/first" "$generation_dir/second"
+      - name: Check SDK formatting
+        shell: bash
+        run: |
+          targets=(lib test)
+          if [[ -d bin ]]; then targets+=(bin); fi
+          dart format --output=none --set-exit-if-changed "${targets[@]}"
+      - name: Analyze SDK
         run: dart analyze --fatal-infos --fatal-warnings
+      - name: Run offline SDK tests
+        run: dart test --exclude-tags live
 
-      - name: Analyze Example App
-        run: |
-          cd example
-          flutter analyze
+  browser:
+    name: Dart ${{ matrix.sdk }} Chrome transport
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        sdk: ['3.8.0', stable]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: ${{ matrix.sdk }}
+      - name: Set up Chrome
+        id: chrome
+        uses: browser-actions/setup-chrome@v2
+        with:
+          chrome-version: stable
+      - name: Resolve SDK dependencies
+        run: dart pub get
+      - name: Run Chrome transport tests
+        env:
+          CHROME_EXECUTABLE: ${{ steps.chrome.outputs.chrome-path }}
+        run: dart test --platform chrome --exclude-tags live test/v2/browser_transport_test.dart
 
-      - name: Run SDK Tests
-        run: dart test
+  example:
+    name: Flutter stable example
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: example
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - name: Resolve example dependencies
+        run: flutter pub get
+      - name: Check example formatting
+        run: dart format --output=none --set-exit-if-changed lib test
+      - name: Analyze example
+        run: flutter analyze --fatal-infos --fatal-warnings
+      - name: Test example
+        run: flutter test
+      - name: Build example for web
+        run: flutter build web

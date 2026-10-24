@@ -1,102 +1,75 @@
-# Contributing to flutter-data_gov_gr
+# Contributing to data_gov_gr
 
-Hey there! 👋 Thanks so much for taking the time to read this. Whether you're here to fix a small typo in a doc, add support for a brand new dataset, or optimize network calls, we're really glad to have you!
+Production data must come from the selected resource, missing values stay missing, and upstream failures remain visible. Read [README.md](README.md) and [SUPPORT.md](SUPPORT.md) before changing a public API.
 
-This SDK is built to make accessing Hellenic open data (from `data.gov.gr`) easy, type-safe, and pleasant for Flutter/Dart developers. Here's a quick guide on how to get up and running, and how we keep the codebase clean.
-
----
-
-## 🚀 Getting Set Up
-
-To get started, fork the repository, clone it locally, and pull the dependencies:
+## Setup
 
 ```bash
-git clone https://github.com/georgetzan/flutter-data_gov_gr.git
+git clone https://github.com/GeorgeTzan/flutter-data_gov_gr.git
 cd flutter-data_gov_gr
 dart pub get
 ```
 
-If you want to run or work on the example app:
+The SDK targets Dart 3.8 and current stable Dart. The Flutter example has a separate Dart 3.11 constraint; use a compatible Flutter SDK and run `flutter pub get` from `example/`.
+
+The production library is pure Dart. Applications own file storage and proxy deployment. Keep fixtures/scripted adapters behind `package:data_gov_gr/testing.dart`; never return demo data for a failing production request.
+
+## Changes and tests
+
+Document public contracts with Dart docstrings, including source semantics, cancellation, bounds, and ownership. Keep ordinary inline comments sparse and reserve them for reasoning the code cannot express. Update the README, support table, and changelog when a public contract changes.
+
+Add focused tests for meaningful behavior using deterministic fixtures and scripted responses. Cover source errors, pagination boundaries, cancellation, malformed inputs, and schema differences where relevant. Retain raw values and unmapped columns. Do not invent units, dates, identities, or missing quantities.
+
+Run SDK checks from the repository root:
+
 ```bash
-cd example
-flutter pub get
+dart format --output=none --set-exit-if-changed lib test bin
+dart analyze --fatal-infos --fatal-warnings
+dart test --exclude-tags live
+dart test --platform chrome test/v2/browser_transport_test.dart
 ```
 
----
+Chrome must be available for the browser check. Verify dependency resolution, generation, analysis, and offline SDK tests with both Dart 3.8 and current stable before claiming minimum-version compatibility.
 
-## ✍️ Writing Great Commit Messages
+For generated model changes:
 
-We care a lot about keeping our Git history clean, readable, and easy to search. Good commit messages make it easy to figure out *why* a change was made six months down the line, and they help us write clean changelogs!
-
-Think of your commit message as a quick summary of your changes written for a fellow developer. Here's how we structure them:
-
-### 1. The Subject Line (First Line)
-* **Keep it short**: Try to keep the first line under 50–60 characters.
-* **Use prefix categories**: We recommend starting with a prefix to categorize the change:
-  - `feat:` for new features (e.g., adding a new dataset service)
-  - `fix:` for bug fixes (e.g., correcting an API parser)
-  - `docs:` for documentation updates (e.g., README fixes)
-  - `refactor:` for code changes that don't add features or fix bugs (e.g., renaming a variable, restructuring a class)
-  - `chore:` for build tools, dependencies, or git configs
-* **Imperative mood**: Write it like a command (e.g., `fix: map inbound traffic fields` instead of `fixed mapping` or `fixes mapping`).
-
-### 2. The Body (Optional, but highly recommended for non-trivial changes)
-* Leave a blank line after the subject line.
-* Use bullet points to list the key changes. Write in plain, conversational English explaining **what** changed and **why**.
-
----
-
-### Good vs. Bad Examples
-
-❌ **Bad (Vague and unhelpful)**:
-> fix bug
-> updates
-> final code changes
-> working on app screen
-
-**Good (Clear, structured, and informative)**:
-> fix: correct out-of-bounds error on datastore pagination
-> 
-> - Added check for empty records array in CkanCompatibilityInterceptor.
-> - Handled empty responses gracefully instead of throwing a RangeError.
-> - Added a unit test to verify this behavior under bad network connectivity.
-
----
-
-## 🛠 Project Architecture
-
-Our codebase is designed to be simple and backward-compatible:
-* **The Core SDK** is inside [lib/](lib).
-* **The Example App** is inside [example/](example).
-* **The Compatibility Interceptor** ([ckan_compatibility_interceptor.dart](lib/src/interceptors/ckan_compatibility_interceptor.dart)) sits between our code and the new CKAN API. We use it to map legacy REST URLs to CKAN actions so we don't break existing apps using this SDK.
-
----
-
-## 🧪 Testing Your Changes
-
-Before submitting your pull request, please make sure your changes don't break anything. 
-
-Run local unit tests (uses mock/stub data, no internet required):
 ```bash
-dart test
+dart run build_runner build --delete-conflicting-outputs
 ```
 
-Run live integration tests (queries the real production `data.gov.gr` portal):
-```bash
-DATA_GOV_GR_TOKEN="your_actual_api_token" dart test test/integration_test.dart
-```
+Check declarations/generated files agree and no removed model leaves stale parts. For release verification, record content hashes for all generated files, generate twice, and compare the results, including new files. A clean Git tree alone does not prove reproducibility.
 
-Ensure formatting is tidy and there are no analyzer warnings:
+Run the Flutter example checks from `example/`:
+
 ```bash
-dart format .
+flutter test
 flutter analyze
+flutter build web
 ```
 
----
+Validate browser behavior with the application's proxy and resource routing. A web build does not prove publisher CORS support.
 
-## 🙌 Submitting a Pull Request
+## Opt-in live checks
 
-* **Keep it small**: Try to address one issue or feature per pull request. It makes review times faster and much easier.
-* **Update documentation**: If you change any public-facing API signatures, please update `README.md` or code comments.
-* **Be patient and kind**: We'll review your pull request as soon as we can. Let's make this library great together!
+Live checks are tagged `live` and require an explicit flag:
+
+```bash
+DATA_GOV_GR_LIVE=1 dart test test/live --tags live
+```
+
+Public reads need no token. Record actual source failures/outages; live checks must never fall back to fixtures. Keep checks small and bounded. Normal CI excludes live tests; the separate live workflow provides manual/scheduled checks.
+
+A bounded catalog audit records observed entries/resources and completeness separately from parser/download success:
+
+```bash
+dart run bin/coverage_audit.dart --max-entries 500 --output /tmp/data-gov-coverage.json
+```
+
+Use `--full` only when full traversal is intended. A capped audit is incomplete and cannot establish full coverage. Do not download all publisher files automatically.
+
+## Pull requests and release verification
+
+Describe the concrete problem, resulting behavior, and validation performed. Keep changes focused and include source evidence for new provider mappings or units. External service clients need separate adapters/designs rather than guessed CKAN routes.
+
+Before release, compile README/support examples against public imports, run `dart doc`, `dart pub publish --dry-run`, and `git diff --check`, and review packaging, generated files, removed exports, source boundaries, and live outcomes. A dry run does not publish a package. Report unavailable checks honestly.
 

@@ -1,0 +1,26 @@
+name: Live portal checks
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 5 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  portal:
+    name: Anonymous portal smoke tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      DATA_GOV_GR_LIVE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+      - name: Resolve SDK dependencies
+        run: dart pub get
+      - name: Run small live portal tests
+        run: dart test --tags live test/live/portal_test.dart
