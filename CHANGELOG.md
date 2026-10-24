@@ -1,6 +1,6 @@
 # Changelog
 
-## [2.0.0] - Unreleased
+## [2.0.0] - 2026-10-24
 
 General-purpose catalog and resource access with anonymous reads, streaming downloads, and verified source helpers.
 
